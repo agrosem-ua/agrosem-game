@@ -1,0 +1,1256 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png"><title>Сезон Агросем</title>
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+/* Повноекранна гра для планшета (landscape). Поле — canvas, інтерфейс — HTML поверх.
+   Бренд: червоний FF0000, чорний, білий; шрифт Arial (запасний фірмовий). */
+:root{
+  --red:#FF0000; --ink:#0d0d0d; --panel:rgba(14,14,14,.86); --card:#161616;
+  --white:#ffffff; --muted:#b9b4ae; --line:rgba(255,255,255,.14);
+  --herb:#f2c230; --ins:#ff8a1f; --fung:#a274ff; --ok:#4ee07e; --grain:#e9bd45; --fuel:#ff9d1c;
+  --font:Arial,"Helvetica Neue",Helvetica,sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+.logo{aspect-ratio:585/120;flex:none;background:url(data:image/png;base64,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) left center/contain no-repeat}
+html,body{height:100%;margin:0;background:#2a1d12;overflow:hidden}
+body{color:var(--white);font-family:var(--font);-webkit-user-select:none;user-select:none;
+  -webkit-tap-highlight-color:transparent;overscroll-behavior:none;touch-action:none}
+#app{position:fixed;inset:0;overflow:hidden}
+#cv{position:absolute;inset:0;display:block;touch-action:none}
+button{font-family:var(--font);cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
+
+/* верхня панель */
+#top{position:absolute;left:0;right:0;top:0;height:64px;display:flex;align-items:center;gap:20px;
+  padding:0 20px;background:var(--panel);border-bottom:1px solid var(--line);box-sizing:border-box}
+#top .logo{height:30px;width:auto}
+#stage{font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+#timer{margin-left:auto;margin-right:auto;font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+#timer.hot{color:var(--red);animation:pulse .5s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.08)}}
+.chips{display:flex;gap:10px}
+.chip{display:flex;flex-direction:column;align-items:flex-start;padding:4px 12px;border-radius:10px;background:rgba(255,255,255,.07);min-width:96px}
+.chip small{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.chip b{font-size:20px;font-variant-numeric:tabular-nums;white-space:nowrap}
+#snd{background:none;border:1px solid var(--line);color:var(--white);border-radius:10px;height:42px;padding:0 12px;font-size:14px;white-space:nowrap}
+
+/* нижня панель: препарати (етап 1) */
+.bar{position:absolute;left:0;right:0;bottom:0;height:112px;display:flex;gap:14px;padding:12px 20px;
+  box-sizing:border-box;background:var(--panel);border-top:1px solid var(--line)}
+.pbtn{flex:1;display:flex;align-items:center;gap:14px;padding:0 18px;border-radius:16px;border:3px solid transparent;
+  background:#1d1d1d;color:var(--white);text-align:left;transition:transform .08s,background .15s}
+.pbtn:active{transform:scale(.97)}
+.pbtn .ic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;flex:none}
+.pbtn .ic svg{width:32px;height:32px}
+.pbtn b{display:block;font-size:24px}
+.pbtn small{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+.pbtn.sel{background:#2b2b2b}
+.pbtn[data-p=herb] .ic{background:var(--herb)} .pbtn[data-p=herb].sel{border-color:var(--herb)}
+.pbtn[data-p=ins] .ic{background:var(--ins)}   .pbtn[data-p=ins].sel{border-color:var(--ins)}
+.pbtn[data-p=fung] .ic{background:var(--fung)} .pbtn[data-p=fung].sel{border-color:var(--fung)}
+
+/* нижня панель: прилади комбайна (етап 2) */
+#gauges{align-items:center;gap:28px}
+.gauge{flex:1;display:flex;flex-direction:column;gap:8px;max-width:380px}
+.gauge .lbl{display:flex;justify-content:space-between;font-size:16px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.gauge .lbl b{color:var(--white);font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:0}
+.track{height:22px;border-radius:11px;background:#2a2a2a;overflow:hidden}
+.fill{height:100%;width:50%;border-radius:11px;transition:background .3s}
+#gFuel .fill{background:var(--fuel)} #gFuel.low .fill{background:var(--red)}
+#gBunk .fill{background:var(--grain)} #gBunk.full .fill{background:var(--red)}
+#hint{flex:1.3;font-size:20px;line-height:1.25;color:var(--white)}
+#hint.warn{color:#ffd24a}
+
+#toast{position:absolute;left:50%;bottom:132px;transform:translateX(-50%);background:rgba(0,0,0,.78);
+  padding:12px 22px;border-radius:12px;font-size:20px;white-space:nowrap;pointer-events:none;transition:opacity .3s}
+
+/* екрани */
+.screen{position:absolute;inset:0;display:flex}
+#start .panel{width:52%;min-width:420px;background:var(--red);clip-path:ellipse(100% 125% at 0% 50%);
+  display:flex;flex-direction:column;justify-content:center;gap:22px;padding:0 9% 0 64px;box-sizing:border-box}
+#start .logo{height:52px;width:auto;align-self:flex-start}
+.eyebrow{font-size:15px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+#start h1{font-size:76px;line-height:.95;margin:0;letter-spacing:-.01em;text-wrap:balance}
+#start p{font-size:24px;line-height:1.3;margin:0;max-width:30ch}
+.big{align-self:flex-start;background:var(--white);color:var(--red);border:0;border-radius:999px;
+  font-size:30px;font-weight:700;padding:20px 64px;letter-spacing:.04em;text-transform:uppercase;
+  box-shadow:0 8px 0 rgba(0,0,0,.22)}
+.big:active{transform:translateY(4px);box-shadow:0 4px 0 rgba(0,0,0,.22)}
+.best{font-size:17px;opacity:.9}
+
+.dim{background:rgba(0,0,0,.62);align-items:center;justify-content:center}
+.card{background:var(--card);border-radius:22px;padding:32px 44px;width:min(800px,92vw);max-height:94vh;overflow:auto;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:20px;border:1px solid var(--line)}
+.card h2{margin:0;font-size:38px;line-height:1.05}
+.card h2 span{color:var(--red)}
+.card p{margin:0;font-size:21px;line-height:1.35;color:#e6e2dd}
+.legend{display:grid;grid-template-columns:auto auto 1fr;gap:14px 18px;align-items:center;font-size:21px}
+.legend .t{display:flex;align-items:center;gap:12px}
+.legend .arr{color:var(--muted)}
+.dot{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;flex:none}
+.dot svg{width:26px;height:26px}
+.rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{display:flex;gap:12px;align-items:flex-start;background:#222;border-radius:14px;padding:12px 14px;font-size:18px;line-height:1.3}
+.rule i{font-style:normal;width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#111}
+.rule b{display:block;font-size:19px;margin-bottom:2px}
+.levels{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.levels span{font-size:18px;color:var(--muted);margin-right:4px}
+.lvl{background:#222;color:var(--white);border:3px solid transparent;border-radius:999px;font-size:20px;font-weight:700;padding:12px 26px}
+.lvl[aria-checked=true]{border-color:var(--red);background:#2c1414}
+.row{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.btn-red{background:var(--red);color:var(--white);border:0;border-radius:999px;font-size:26px;font-weight:700;
+  padding:18px 52px;text-transform:uppercase;letter-spacing:.04em}
+.btn-ghost{background:none;color:var(--white);border:2px solid var(--line);border-radius:999px;font-size:20px;padding:15px 30px}
+.score{font-size:96px;font-weight:700;color:var(--red);line-height:.9;font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stats.s3{grid-template-columns:repeat(3,1fr)}
+.stat{background:#222;border-radius:14px;padding:12px 16px}
+.stat small{display:block;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.stat b{font-size:32px;font-variant-numeric:tabular-nums}
+.note{font-size:15px;color:var(--muted)}
+.contacts{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);padding-top:16px;font-size:17px;color:var(--muted)}
+.contacts .logo{height:26px;width:auto}
+.contacts .cta{color:var(--white);flex:1;font-size:17px}
+.contacts .cta b{color:var(--white)}
+
+/* фінал з рейтингом */
+.card.wide{width:min(1180px,95vw);padding:26px 34px;gap:16px}
+.fgrid{display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:start}
+.fcol{display:flex;flex-direction:column;gap:14px;min-width:0}
+.card.wide .score{font-size:76px}
+.card.wide .stat{padding:9px 14px}
+.card.wide .stat b{font-size:26px}
+.nameform{display:flex;flex-direction:column;gap:8px}
+.nameform label{font-size:18px;color:#e6e2dd}
+.nameform input{flex:1;min-width:0;font-family:var(--font);font-size:22px;padding:12px 16px;border-radius:12px;border:2px solid var(--line);
+  background:#0f0f0f;color:var(--white);-webkit-user-select:text;user-select:text}
+.nameform input:focus{outline:none;border-color:var(--red)}
+.btn-red.sm{font-size:19px;padding:14px 26px}
+.btn-ghost.sm{font-size:17px;padding:12px 20px}
+.row.nowrap{flex-wrap:nowrap}
+.added{font-size:20px;color:var(--ok);font-weight:700}
+.board h3,.sboard h3{margin:0;font-size:22px}
+.board-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.board-list li{display:grid;grid-template-columns:30px 1fr auto 64px;gap:10px;align-items:center;padding:7px 12px;border-radius:10px;background:#1f1f1f;font-size:18px}
+.board-list .pl{color:var(--muted);font-weight:700;font-variant-numeric:tabular-nums}
+.board-list li:first-child .pl{color:#ffd24a}
+.board-list .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.board-list .lv{font-size:13px;color:var(--muted)}
+.board-list b{text-align:right;font-variant-numeric:tabular-nums}
+.board-list li.me{background:var(--red)}
+.board-list li.me .pl,.board-list li.me .lv{color:var(--white)}
+.board-list li.empty{display:block;background:none;color:var(--muted);padding:6px 0}
+.sboard{position:absolute;right:48px;top:50%;transform:translateY(-50%);width:400px;display:flex;flex-direction:column;gap:12px;
+  background:rgba(10,10,10,.84);border:1px solid var(--line);border-radius:20px;padding:22px 24px}
+
+#portrait{position:absolute;inset:0;background:var(--red);display:none;align-items:center;justify-content:center;
+  font-size:28px;text-align:center;padding:40px;box-sizing:border-box;z-index:20}
+@media (orientation:portrait){#portrait{display:flex}}
+@media (prefers-reduced-motion:reduce){#timer.hot{animation:none}}
+</style>
+
+<!-- іконки препаратів -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-herb" viewBox="0 0 24 24"><path d="M12 21V11M12 14C11 8 7 5 2 5c0 6 4 9 10 9zM12 12c1-6 5-9 10-9 0 6-4 9-10 9z" fill="#111" stroke="#111" stroke-width="1.2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-ins" viewBox="0 0 24 24"><g stroke="#111" stroke-width="1.8" stroke-linecap="round"><path d="M5 8l3 2M19 8l-3 2M4 13h4M20 13h-4M5 18l3-2M19 18l-3-2M10 5l1 2M14 5l-1 2"/></g><ellipse cx="12" cy="13.5" rx="4.6" ry="6" fill="#111"/><circle cx="12" cy="7" r="2.4" fill="#111"/></symbol>
+    <symbol id="i-fung" viewBox="0 0 24 24"><path d="M12 2.5C9 7 6 10.5 6 14.5a6 6 0 0 0 12 0c0-4-3-7.5-6-12z" fill="#111"/><circle cx="10" cy="15" r="1.7" fill="var(--fung)"/><circle cx="14" cy="12.5" r="1.2" fill="var(--fung)"/></symbol>
+  </defs>
+</svg>
+
+<div id="app">
+  <canvas id="cv"></canvas>
+
+  <header id="top" hidden>
+    <div class="logo" role="img" aria-label="Агросем"></div>
+    <div id="stage">Етап 1 · Захист агродроном</div>
+    <div id="timer">1:00</div>
+    <div class="chips">
+      <div class="chip"><small id="l1">Вилікувано</small><b id="c1">0</b></div>
+      <div class="chip"><small id="l2">Втрачено</small><b id="c2">0</b></div>
+      <div class="chip"><small id="l3">Точність</small><b id="c3">—</b></div>
+    </div>
+    <button id="snd" type="button">Музика: увімк.</button>
+  </header>
+
+  <nav id="tools" class="bar" hidden>
+    <button class="pbtn sel" data-p="herb" type="button"><span class="ic"><svg><use href="#i-herb"/></svg></span><span><b>Гербіцид</b><small>проти бур'янів</small></span></button>
+    <button class="pbtn" data-p="ins" type="button"><span class="ic"><svg><use href="#i-ins"/></svg></span><span><b>Інсектицид</b><small>проти шкідників</small></span></button>
+    <button class="pbtn" data-p="fung" type="button"><span class="ic"><svg><use href="#i-fung"/></svg></span><span><b>Фунгіцид</b><small>проти хвороб</small></span></button>
+  </nav>
+
+  <div id="gauges" class="bar" hidden>
+    <div class="gauge" id="gFuel"><div class="lbl">Пальне <b id="vFuel">100%</b></div><div class="track"><div class="fill" id="fFuel"></div></div></div>
+    <div class="gauge" id="gBunk"><div class="lbl">Бункер <b id="vBunk">0%</b></div><div class="track"><div class="fill" id="fBunk"></div></div></div>
+    <div id="hint">Ведіть комбайн пальцем — жатка зрізає пшеницю.</div>
+  </div>
+
+  <div id="toast" style="opacity:0"></div>
+
+  <section id="start" class="screen">
+    <div class="panel">
+      <div class="logo" role="img" aria-label="Агросем"></div>
+      <div class="eyebrow">Точне землеробство · agrosem.ua</div>
+      <h1>Сезон Агросем</h1>
+      <p>Захистіть поле агродроном і зберіть урожай комбайном.</p>
+      <button id="bPlay" class="big" type="button">Грати</button>
+    </div>
+    <aside class="sboard" aria-label="Рейтинг дня">
+      <h3 id="sBoardTitle">Топ-5 агрономів дня</h3>
+      <ol id="sBoard" class="board-list"></ol>
+    </aside>
+  </section>
+
+  <section id="brief1" class="screen dim" hidden>
+    <div class="card">
+      <h2>Етап 1. <span>Точний захист агродроном</span></h2>
+      <p>Мультиспектральний дрон знайде проблемні вогнища на полі. Натисніть і тримайте палець на вогнищі — агродрон прилетить і обприскає його.</p>
+      <div class="legend">
+        <div class="t"><span class="dot" style="background:var(--herb)"><svg><use href="#i-herb"/></svg></span>Бур'яни</div><span class="arr">→</span><b>Гербіцид</b>
+        <div class="t"><span class="dot" style="background:var(--ins)"><svg><use href="#i-ins"/></svg></span>Шкідники</div><span class="arr">→</span><b>Інсектицид</b>
+        <div class="t"><span class="dot" style="background:var(--fung)"><svg><use href="#i-fung"/></svg></span>Хвороба</div><span class="arr">→</span><b>Фунгіцид</b>
+      </div>
+      <p class="note">Препарат обирайте кнопками внизу. Краплі повз вогнище — це перевитрата. Час — 60 секунд.</p>
+      <div class="levels" role="radiogroup" aria-label="Рівень складності">
+        <span>Рівень:</span>
+        <button class="lvl" type="button" role="radio" data-l="easy">Легкий</button>
+        <button class="lvl" type="button" role="radio" data-l="medium">Середній</button>
+        <button class="lvl" type="button" role="radio" data-l="hard">Важкий</button>
+      </div>
+      <div class="row"><button id="bGo1" class="btn-red" type="button">Почати</button></div>
+    </div>
+  </section>
+
+  <section id="result1" class="screen dim" hidden>
+    <div class="card">
+      <h2>Поле <span>захищено</span></h2>
+      <div class="stats">
+        <div class="stat"><small>Вилікувано</small><b id="r1Treat">0</b></div>
+        <div class="stat"><small>Втрачено</small><b id="r1Lost">0</b></div>
+        <div class="stat"><small>Точність</small><b id="r1Prec">0%</b></div>
+        <div class="stat"><small>Стан посівів</small><b id="r1Crop">0%</b></div>
+      </div>
+      <p id="r1Msg"></p>
+      <div class="row"><button id="bNext" class="btn-red" type="button">Далі: збирання врожаю</button></div>
+    </div>
+  </section>
+
+  <section id="brief2" class="screen dim" hidden>
+    <div class="card">
+      <h2>Етап 2. <span>Пора збирати врожай</span></h2>
+      <p>Пшениця дозріла. Ведіть комбайн пальцем — він їде туди, куди ви показуєте, а жатка зрізає колоски. Зберіть якомога більше врожаю за 60 секунд.</p>
+      <div class="rules">
+        <div class="rule"><i style="background:var(--fuel)">П</i><span><b>Пальне</b>Закінчується — під'їдьте до паливозаправника.</span></div>
+        <div class="rule"><i style="background:var(--grain)">Б</i><span><b>Бункер</b>Повний — вивантажте зерно в перевантажувач за трактором.</span></div>
+        <div class="rule"><i style="background:#cfcfcf">Л</i><span><b>Опори ЛЕП</b>Стоять посеред поля — об'їжджайте.</span></div>
+        <div class="rule"><i style="background:#8fa4b8">Н</i><span><b>Вилягання і мокра низина</b>На полеглій пшениці та в низині комбайн іде повільніше.</span></div>
+      </div>
+      <p class="note">Техніка John Deere із супутниковим приймачем StarFire. Урожайність залежить від того, як ви захистили поле на першому етапі.</p>
+      <div class="row"><button id="bGo2" class="btn-red" type="button">Почати</button></div>
+    </div>
+  </section>
+
+  <section id="final" class="screen dim" hidden>
+    <div class="card wide">
+     <div class="fgrid">
+      <div class="fcol">
+      <h2>Сезон <span>завершено!</span></h2>
+      <div class="row" style="align-items:flex-end;gap:18px">
+        <div class="score" id="fScore">0</div>
+        <div class="note" style="padding-bottom:8px">балів за сезон<br>рівень: <b id="fLvl"></b></div>
+      </div>
+      <div class="stats s3">
+        <div class="stat"><small>Точність захисту</small><b id="fPrec">0%</b></div>
+        <div class="stat"><small>Вилікувано вогнищ</small><b id="fTreat">0</b></div>
+        <div class="stat"><small>Урожайність</small><b id="fYield">0</b></div>
+        <div class="stat"><small>Зібрано</small><b id="fTons">0</b></div>
+        <div class="stat"><small>Зібрана площа</small><b id="fArea">0%</b></div>
+        <div class="stat"><small>Зачеплено опор</small><b id="fPoles">0</b></div>
+      </div>
+      <form id="nameForm" class="nameform" autocomplete="off">
+        <label for="pname">Впишіть ім'я в рейтинг дня</label>
+        <div class="row nowrap">
+          <input id="pname" name="pname" type="text" maxlength="18" enterkeyhint="done" placeholder="Ваше ім'я" autocomplete="off" autocapitalize="words" spellcheck="false">
+          <button class="btn-red sm" type="submit">Додати</button>
+          <button id="bSkip" class="btn-ghost sm" type="button">Пропустити</button>
+        </div>
+      </form>
+      <div id="added" class="added" hidden></div>
+      <div class="row">
+        <button id="bAgain" class="btn-red sm" type="button">Грати ще</button>
+        <button id="bHome" class="btn-ghost sm" type="button">На головну</button>
+      </div>
+      </div>
+      <div class="fcol board">
+        <h3>Топ-10 агрономів дня</h3>
+        <ol id="fBoard" class="board-list"></ol>
+        <div id="fPlace" class="note"></div>
+        <p id="fMsg" class="note"></p>
+      </div>
+     </div>
+      <div class="contacts">
+        <div class="logo" role="img" aria-label="Агросем"></div>
+        <span class="cta"><b>Хочете так само точно на своєму полі?</b> Запитайте фахівців Агросем на стенді.</span>
+        <span>agrosem.ua · 0 800 50 17 17</span>
+      </div>
+    </div>
+  </section>
+
+  <div id="portrait">Поверніть планшет горизонтально</div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const $ = s => document.querySelector(s);
+const cv = $('#cv'), g = cv.getContext('2d');
+const TOP = 64, BOT = 112, PLAY1 = 60, PLAY2 = 60, SCAN = 3.2, IDLE_PLAY = 25, IDLE_SCREEN = 45;
+const TAU = Math.PI * 2;
+
+const rnd = (a, b) => a + Math.random() * (b - a);
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const fmt1 = v => v.toFixed(1).replace('.', ',');
+
+const PROD = { herb: { name: 'Гербіцид', col: '#f2c230' }, ins: { name: 'Інсектицид', col: '#ff8a1f' }, fung: { name: 'Фунгіцид', col: '#a274ff' } };
+const TYPES = { weed: { name: "Бур'яни", prod: 'herb' }, pest: { name: 'Шкідники', prod: 'ins' }, dis: { name: 'Хвороба', prod: 'fung' } };
+const TYPE_KEYS = ['weed', 'pest', 'dis'];
+const SCREENS = ['start', 'brief1', 'result1', 'brief2', 'final'];
+// рівні складності: інтервал появи вогнищ (початок→кінець), час життя вогнища, макс. одночасно,
+// скільки крапель треба на вогнище (× радіус), запас пального і місткість бункера для комбайна
+const LEVELS = {
+  easy:   { name: 'Легкий',   mult: 1,    spawn: [3.4, 2.0], life: [16, 11],  max: 4, need: 1.1, start: 2, fuel: 9500, bunker: 540 },
+  medium: { name: 'Середній', mult: 1.15, spawn: [2.9, 1.5], life: [13.5, 9], max: 5, need: 1.35, start: 3, fuel: 7600, bunker: 480 },
+  hard:   { name: 'Важкий',   mult: 1.3,  spawn: [2.6, 1.1], life: [12, 7.5], max: 6, need: 1.6, start: 3, fuel: 6200, bunker: 430 }
+};
+let level = 'medium';
+try { const saved = localStorage.getItem('agrosem-level'); if (LEVELS[saved]) level = saved; } catch (e) {}
+const L = () => LEVELS[level];
+
+let W = 0, H = 0, DPR = 1, bg = null, ndvi = null;
+// режими: attract | s1scan | s1play | s1end | s2play | s2end
+let mode = 'attract';
+let t = 0, lastInput = performance.now();
+let hold = false;
+let floaters = [], parts = [];
+let res1 = null;
+
+/* ======================= полотно ======================= */
+function mk(w, h) {
+  const c = document.createElement('canvas');
+  c.width = Math.round(w * DPR); c.height = Math.round(h * DPR);
+  const x = c.getContext('2d'); x.setTransform(DPR, 0, 0, DPR, 0, 0);
+  return [c, x];
+}
+function buildLayers() {
+  let [c, x] = mk(W, H);
+  x.fillStyle = '#5b4129'; x.fillRect(0, 0, W, H);
+  for (let i = 0; i < W * H / 900; i++) {
+    x.fillStyle = `rgba(${rnd(25, 95) | 0},${rnd(18, 60) | 0},${rnd(8, 30) | 0},${rnd(.15, .35)})`;
+    x.fillRect(rnd(0, W), rnd(0, H), rnd(1, 3), rnd(1, 3));
+  }
+  for (let y = 11; y < H; y += 22) {
+    x.fillStyle = 'rgba(38,26,14,.35)'; x.fillRect(0, y + 6, W, 3);
+    for (let px = rnd(0, 8); px < W; px += rnd(7, 11)) {
+      const s = rnd(3.5, 6.5);
+      x.fillStyle = `hsl(${rnd(92, 122) | 0},${rnd(42, 62) | 0}%,${rnd(26, 38) | 0}%)`;
+      x.beginPath(); x.ellipse(px, y + rnd(-2, 2), s, s * .7, rnd(0, 3.14), 0, TAU); x.fill();
+    }
+  }
+  bg = c;
+  [c, x] = mk(W, H);
+  x.fillStyle = 'rgba(0,160,70,.22)'; x.fillRect(0, 0, W, H);
+  for (let i = 0; i < 28; i++) {
+    const cx = rnd(0, W), cy = rnd(0, H), r = rnd(90, 260), hue = rnd(75, 140);
+    const gr = x.createRadialGradient(cx, cy, 0, cx, cy, r);
+    gr.addColorStop(0, `hsla(${hue},90%,45%,.32)`); gr.addColorStop(1, `hsla(${hue},90%,45%,0)`);
+    x.fillStyle = gr; x.fillRect(cx - r, cy - r, r * 2, r * 2);
+  }
+  ndvi = c;
+}
+function resize() {
+  DPR = Math.min(window.devicePixelRatio || 1, 1.5);
+  W = innerWidth; H = innerHeight;
+  if (!W || !H) return;                       // вікно ще не має розміру (прихована вкладка)
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+  buildLayers();
+  if (!drone.x) { drone.x = W * .7; drone.y = H * .5; }
+}
+function rrect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+
+/* ======================= звук: лаунж-музика + сигнали ======================= */
+let ac = null, master = null, echo = null, muted = false, nextBar = 0, barIdx = 0;
+const CHORDS = [[57, 60, 64, 67], [53, 57, 60, 64], [48, 52, 55, 59], [55, 59, 62, 64]]; // Am7 · Fmaj7 · Cmaj7 · G6
+const BEAT = 60 / 84, BAR = BEAT * 4, ARP = [0, 2, 1, 3, 2, 1, 3, 2];
+const mtof = m => 440 * Math.pow(2, (m - 69) / 12);
+function initAudio() {
+  if (ac) return;
+  try {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    master = ac.createGain(); master.gain.value = muted ? 0 : .55; master.connect(ac.destination);
+    echo = ac.createDelay(1); echo.delayTime.value = BEAT * .75;
+    const fb = ac.createGain(); fb.gain.value = .32; const wet = ac.createGain(); wet.gain.value = .45;
+    echo.connect(fb).connect(echo); echo.connect(wet).connect(master);
+    nextBar = ac.currentTime + .15;
+    setInterval(scheduleMusic, 200);
+  } catch (e) { ac = null; }
+}
+function voice(type, freq, time, dur, vol, att, cutoff) {
+  const o = ac.createOscillator(), v = ac.createGain(), f = ac.createBiquadFilter();
+  o.type = type; o.frequency.value = freq; f.type = 'lowpass'; f.frequency.value = cutoff || 1200;
+  v.gain.setValueAtTime(0, time); v.gain.linearRampToValueAtTime(vol, time + att);
+  v.gain.exponentialRampToValueAtTime(.0008, time + dur);
+  o.connect(f).connect(v).connect(master); o.start(time); o.stop(time + dur + .05);
+  return v;
+}
+function scheduleMusic() {
+  if (!ac || muted) return;
+  if (nextBar < ac.currentTime) nextBar = ac.currentTime + .1;
+  while (nextBar < ac.currentTime + .6) {
+    const ch = CHORDS[barIdx % 4], t0 = nextBar;
+    for (const n of ch) { voice('triangle', mtof(n) * 1.002, t0, BAR + .9, .028, 1.1, 900); voice('sine', mtof(n) * .998, t0, BAR + .9, .03, 1.1, 900); }
+    voice('sine', mtof(ch[0] - 12), t0, BEAT * 1.6, .16, .02, 400);
+    voice('sine', mtof(ch[0] - 12), t0 + BEAT * 2, BEAT * 1.4, .12, .02, 400);
+    ARP.forEach((ix, i) => {
+      if (Math.random() < .22) return;
+      voice('sine', mtof(ch[ix] + 12), t0 + i * BEAT / 2, .5, .045, .01, 2600).connect(echo);
+    });
+    nextBar += BAR; barIdx++;
+  }
+}
+function sfx(kind) {
+  if (!ac || muted) return;
+  const now = ac.currentTime, o = ac.createOscillator(), v = ac.createGain();
+  o.connect(v).connect(ac.destination);
+  const env = (f0, f1, type, vol, dur) => { o.type = type; o.frequency.setValueAtTime(f0, now); if (f1) o.frequency.exponentialRampToValueAtTime(f1, now + dur * .6); v.gain.setValueAtTime(vol, now); v.gain.exponentialRampToValueAtTime(.001, now + dur); o.start(now); o.stop(now + dur + .02); };
+  if (kind === 'ok') env(660, 1320, 'sine', .18, .35);
+  else if (kind === 'lost') env(180, 70, 'square', .08, .35);
+  else if (kind === 'bad') env(220, 0, 'triangle', .1, .18);
+  else if (kind === 'tick') env(990, 0, 'sine', .06, .08);
+  else if (kind === 'done') env(520, 1040, 'triangle', .12, .45);
+}
+
+/* ======================= ЕТАП 1: дрон ======================= */
+const drone = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0, prop: 0, spraying: false };
+let prod = 'herb', spots = [], drops = [], splats = [], lastTypes = [];
+let s1 = null, scanT = 0, playT = 0, spawnT = 0, emitAcc = 0, wasteRecent = 0, wasteWarnAt = -9;
+const PA = () => ({ x0: 40, x1: W - 40, y0: TOP + 46, y1: H - BOT - 30 });
+
+function spawnSpot(prog, lifeBonus = 0) {
+  const a = PA();
+  for (let k = 0; k < 30; k++) {
+    const r = rnd(44, 62);
+    const x = rnd(a.x0 + r, a.x1 - r), y = rnd(a.y0 + r, a.y1 - r);
+    if (spots.some(s => Math.hypot(s.x - x, s.y - y) < s.r0 * 1.25 + r * 1.25 + 30)) continue;
+    let type = TYPE_KEYS[(Math.random() * 3) | 0];
+    if (lastTypes.length >= 2 && lastTypes.every(tp => tp === type)) type = TYPE_KEYS[(TYPE_KEYS.indexOf(type) + 1 + ((Math.random() * 2) | 0)) % 3];
+    lastTypes.push(type); if (lastTypes.length > 2) lastTypes.shift();
+    spots.push({
+      x, y, r0: r, r, type, age: 0, life: lerp(L().life[0], L().life[1], prog) + lifeBonus, prog: 0, need: Math.round(r * L().need),
+      state: 'active', fx: 0, warn: -9,
+      bits: Array.from({ length: 7 }, () => ({ a: rnd(0, TAU), d: rnd(.05, .68), s: rnd(.75, 1.2), p: rnd(0, TAU) }))
+    });
+    return true;
+  }
+  return false;
+}
+function emit() {
+  const a = rnd(0, TAU), rr = Math.sqrt(Math.random()) * 20;
+  drops.push({ sx: drone.x + rnd(-20, 20), sy: drone.y + rnd(-8, 8), ex: drone.x + Math.cos(a) * rr, ey: drone.y + 4 + Math.sin(a) * rr, t: 0, dur: rnd(.2, .32), prod });
+}
+function land(p) {
+  let hit = null;
+  for (const s of spots) if (s.state === 'active' && Math.hypot(p.ex - s.x, p.ey - s.y) < s.r) { hit = s; break; }
+  splats.push({ x: p.ex, y: p.ey, col: PROD[p.prod].col, age: 0 });
+  if (splats.length > 260) splats.shift();
+  if (!hit) { s1.waste++; wasteRecent++; return; }
+  const need = TYPES[hit.type].prod;
+  if (need === p.prod) {
+    s1.good++; hit.prog += 1 / hit.need;
+    if (hit.prog >= 1) {
+      hit.prog = 1; hit.state = 'done'; hit.fx = 0; s1.treated++;
+      floatText(hit.x, hit.y - hit.r - 14, 'Вилікувано!', '#5dff8a'); sfx('ok');
+      burst(hit.x, hit.y, '#7dffa6', 18);
+    }
+  } else {
+    s1.wrong++;
+    if (t - hit.warn > 1.3) { hit.warn = t; floatText(hit.x, hit.y - hit.r - 14, 'Потрібен ' + PROD[need].name.toLowerCase(), '#ffffff'); sfx('bad'); }
+  }
+}
+function precision() { const n = s1.good + s1.wrong + s1.waste; return n ? Math.round(s1.good / n * 100) : 0; }
+
+function beginStage1() {
+  s1 = { good: 0, wrong: 0, waste: 0, treated: 0, lost: 0 };
+  spots = []; drops = []; splats = []; floaters = []; parts = []; lastTypes = [];
+  playT = 0; scanT = 0; spawnT = 1.2; hold = false;
+  drone.x = W * .5; drone.y = (TOP + H - BOT) / 2; drone.tx = drone.x; drone.ty = drone.y; drone.vx = drone.vy = 0;
+  for (let i = 0; i < L().start; i++) spawnSpot(0, 3);
+  setProd('herb');
+  $('#stage').textContent = 'Етап 1 · Захист агродроном';
+  setChips(['Вилікувано', 'Втрачено', 'Точність']);
+  mode = 's1scan';
+  showOnly(null); show('top'); show('tools'); hide('gauges');
+  toast('Мультиспектральний дрон сканує поле…', SCAN * 1000);
+  lastInput = performance.now();
+}
+function endStage1() {
+  mode = 's1end'; hold = false;
+  const left = spots.filter(s => s.state === 'active').length;
+  const prec = precision();
+  const denom = s1.treated + s1.lost + left;
+  const crop = denom ? Math.round(lerp(70, 100, s1.treated / denom)) : 100;
+  const score = Math.max(0, s1.treated * 100 - s1.lost * 50 + prec * 10);
+  res1 = { score, prec, crop, treated: s1.treated, lost: s1.lost };
+  $('#r1Treat').textContent = s1.treated; $('#r1Lost').textContent = s1.lost;
+  $('#r1Prec').textContent = prec + '%'; $('#r1Crop').textContent = crop + '%';
+  $('#r1Msg').textContent = prec >= 85 ? 'Ювелірна робота: майже кожна крапля потрапила у вогнище.'
+    : prec >= 65 ? 'Непогано! Тримайте дрон точно над вогнищем — і перевитрати не буде.'
+    : 'Чимало крапель пішло на здорові рослини. Точне землеробство економить препарат саме так.';
+  hide('tools');
+  setTimeout(() => { if (mode === 's1end') { showOnly('result1'); lastInput = performance.now(); } }, 900);
+}
+function update1(dt) {
+  const dx = drone.tx - drone.x, dy = drone.ty - drone.y, d = Math.hypot(dx, dy);
+  const want = Math.min(950, d * 6), k = Math.min(1, dt * 8);
+  drone.vx = lerp(drone.vx, d > .01 ? dx / d * want : 0, k);
+  drone.vy = lerp(drone.vy, d > .01 ? dy / d * want : 0, k);
+  drone.x += drone.vx * dt; drone.y += drone.vy * dt;
+  drone.spraying = mode === 's1play' && hold && d < 26;
+  if (drone.spraying) { emitAcc += dt * 75; while (emitAcc >= 1) { emitAcc--; emit(); } } else emitAcc = 0;
+  for (const p of drops) { p.t += dt; if (p.t >= p.dur && !p.done) { p.done = true; land(p); } }
+  drops = drops.filter(p => !p.done);
+  for (const s of splats) s.age += dt;
+  splats = splats.filter(s => s.age < 2.2);
+
+  if (mode === 's1scan') { scanT += dt; if (scanT >= SCAN) { mode = 's1play'; toast('Старт! Тримайте палець на вогнищі', 1800); } }
+  if (mode !== 's1play') return;
+  const prevSec = Math.ceil(PLAY1 - playT);
+  playT += dt;
+  const prog = Math.min(1, playT / PLAY1);
+  const active = spots.filter(s => s.state === 'active').length;
+  spawnT -= dt;
+  if (active === 0 && spawnT > .5) spawnT = .5;
+  if (spawnT <= 0 && active < L().max) { spawnSpot(prog); spawnT = lerp(L().spawn[0], L().spawn[1], prog); }
+  for (const s of spots) {
+    if (s.state === 'active') {
+      s.age += dt; s.r = s.r0 * (1 + .25 * Math.min(1, s.age / s.life));
+      if (s.age >= s.life) { s.state = 'lost'; s.fx = 0; s1.lost++; floatText(s.x, s.y - s.r - 14, 'Втрачено', '#ff6b6b'); sfx('lost'); }
+    } else s.fx += dt;
+  }
+  spots = spots.filter(s => !(s.state === 'done' && s.fx > 1.6));
+  if (wasteRecent > 22 && t - wasteWarnAt > 2.5) { wasteWarnAt = t; floatText(drone.x, drone.y - 70, 'Перевитрата — тут поле здорове', '#ffd2d2'); }
+  wasteRecent = Math.max(0, wasteRecent - dt * 30);
+  const sec = Math.ceil(PLAY1 - playT);
+  if (sec !== prevSec && sec <= 5 && sec > 0) sfx('tick');
+  if (playT >= PLAY1) endStage1();
+}
+function drawSpot(s) {
+  const { x, y } = s, r = s.r;
+  if (s.state === 'lost') {
+    g.fillStyle = 'rgba(48,30,16,.78)'; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill();
+    g.strokeStyle = 'rgba(120,90,50,.7)'; g.lineWidth = 2;
+    for (const b of s.bits) { const bx = x + Math.cos(b.a) * b.d * r, by = y + Math.sin(b.a) * b.d * r; g.beginPath(); g.moveTo(bx - 5, by + 4); g.lineTo(bx + 5, by - 4); g.stroke(); }
+    return;
+  }
+  const fade = s.state === 'done' ? Math.max(0, 1 - s.fx / 1.6) : 1;
+  g.save(); g.globalAlpha = fade;
+  const heat = 1 - s.prog;
+  if (heat > 0) {
+    const gr = g.createRadialGradient(x, y, 0, x, y, r);
+    gr.addColorStop(0, `rgba(235,25,0,${.78 * heat})`); gr.addColorStop(.55, `rgba(255,170,0,${.55 * heat})`); gr.addColorStop(1, 'rgba(255,220,0,0)');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill();
+  }
+  if (s.prog > 0) { g.fillStyle = 'rgba(40,210,90,.5)'; g.beginPath(); g.arc(x, y, r * Math.sqrt(s.prog), 0, TAU); g.fill(); }
+  if (s.state === 'active') {
+    for (const b of s.bits) {
+      const bx = x + Math.cos(b.a) * b.d * r, by = y + Math.sin(b.a) * b.d * r, sc = b.s;
+      if (s.type === 'weed') {
+        g.fillStyle = '#c4f24f'; g.strokeStyle = '#3d5a10'; g.lineWidth = 1.2;
+        for (let i = 0; i < 5; i++) { const a = i * 1.2566 + b.p; g.beginPath(); g.ellipse(bx + Math.cos(a) * 6 * sc, by + Math.sin(a) * 6 * sc, 7 * sc, 2.6 * sc, a, 0, TAU); g.fill(); g.stroke(); }
+      } else if (s.type === 'pest') {
+        const wx = bx + Math.sin(t * 5 + b.p) * 3, wy = by + Math.cos(t * 4 + b.p) * 3, a = b.p + Math.sin(t * 3 + b.p) * .5;
+        g.save(); g.translate(wx, wy); g.rotate(a);
+        g.strokeStyle = '#1a0f05'; g.lineWidth = 1.5;
+        for (let i = -1; i <= 1; i++) { g.beginPath(); g.moveTo(-8 * sc, i * 4 * sc); g.lineTo(8 * sc, i * 4 * sc); g.stroke(); }
+        g.fillStyle = '#2b1606'; g.beginPath(); g.ellipse(0, 0, 4.5 * sc, 7.5 * sc, 0, 0, TAU); g.fill();
+        g.fillStyle = '#5a3110'; g.beginPath(); g.arc(0, -8 * sc, 3 * sc, 0, TAU); g.fill();
+        g.restore();
+      } else {
+        g.fillStyle = '#6f8f2a'; g.beginPath(); g.ellipse(bx, by, 9 * sc, 5 * sc, b.p, 0, TAU); g.fill();
+        g.fillStyle = '#b8611d'; g.beginPath(); g.arc(bx + 2, by, 3.2 * sc, 0, TAU); g.fill();
+        g.fillStyle = '#e0a63a'; g.beginPath(); g.arc(bx - 3, by - 1, 1.8 * sc, 0, TAU); g.fill();
+      }
+    }
+    const rem = 1 - s.age / s.life;
+    g.lineWidth = 5; g.lineCap = 'round';
+    g.strokeStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.arc(x, y, r + 7, 0, TAU); g.stroke();
+    g.strokeStyle = rem > .4 ? '#ffffff' : '#ff3b3b';
+    g.beginPath(); g.arc(x, y, r + 7, -Math.PI / 2, -Math.PI / 2 + rem * TAU); g.stroke();
+    const label = TYPES[s.type].name, col = PROD[TYPES[s.type].prod].col;
+    g.font = 'bold 16px Arial, Helvetica, sans-serif';
+    const tw = g.measureText(label).width + 22, lx = x - tw / 2, ly = y - r - 40;
+    g.fillStyle = 'rgba(0,0,0,.78)'; rrect(g, lx, ly, tw, 26, 13); g.fill();
+    g.strokeStyle = col; g.lineWidth = 2; g.stroke();
+    g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(label, x, ly + 14);
+  } else {
+    g.strokeStyle = '#5dff8a'; g.lineWidth = 6; g.lineCap = 'round'; g.lineJoin = 'round';
+    g.beginPath(); g.moveTo(x - 16, y); g.lineTo(x - 4, y + 12); g.lineTo(x + 18, y - 12); g.stroke();
+  }
+  g.restore();
+}
+function drawAgras(x, y, spraying) {
+  const tilt = clamp(drone.vx / 2500, -.12, .12);
+  g.save(); g.translate(x + 18, y + 26); g.fillStyle = 'rgba(0,0,0,.26)';
+  g.beginPath(); g.ellipse(0, 0, 54, 46, 0, 0, TAU); g.fill(); g.restore();
+  if (spraying) {
+    const col = PROD[prod].col, gr = g.createRadialGradient(x, y + 4, 4, x, y + 4, 30);
+    gr.addColorStop(0, col + '88'); gr.addColorStop(1, col + '00');
+    g.fillStyle = gr; g.beginPath(); g.arc(x, y + 4, 30, 0, TAU); g.fill();
+  }
+  g.save(); g.translate(x, y); g.rotate(tilt);
+  for (let k = 0; k < 6; k++) {
+    const a = k * Math.PI / 3 + Math.PI / 6, ex = Math.cos(a) * 52, ey = Math.sin(a) * 52;
+    g.strokeStyle = '#2a2a2a'; g.lineWidth = 7; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(Math.cos(a) * 14, Math.sin(a) * 14); g.lineTo(ex, ey); g.stroke();
+    g.fillStyle = 'rgba(230,230,230,.16)'; g.beginPath(); g.arc(ex, ey, 22, 0, TAU); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,.6)'; g.lineWidth = 3;
+    const pa = drone.prop * (k % 2 ? 1 : -1);
+    g.beginPath(); g.moveTo(ex + Math.cos(pa) * 21, ey + Math.sin(pa) * 21); g.lineTo(ex - Math.cos(pa) * 21, ey - Math.sin(pa) * 21); g.stroke();
+    g.fillStyle = '#111'; g.beginPath(); g.arc(ex, ey, 7, 0, TAU); g.fill();
+  }
+  g.fillStyle = '#ececec'; rrect(g, -19, -26, 38, 52, 11); g.fill();
+  g.fillStyle = '#c9d3d8'; rrect(g, -13, -12, 26, 28, 7); g.fill();
+  g.globalAlpha = .55; g.fillStyle = PROD[prod].col; rrect(g, -13, 0.6, 26, 15.4, 5); g.fill(); g.globalAlpha = 1;
+  g.fillStyle = '#FF0000'; rrect(g, -19, -26, 38, 9, 5); g.fill();
+  g.fillStyle = '#1b1b1b'; g.fillRect(-30, 22, 60, 4);
+  g.restore();
+}
+function drawScanner(x, y) {
+  const gr = g.createLinearGradient(x - 120, 0, x, 0);
+  gr.addColorStop(0, 'rgba(120,255,170,0)'); gr.addColorStop(1, 'rgba(120,255,170,.32)');
+  g.fillStyle = gr; g.fillRect(x - 120, 0, 120, H);
+  g.fillStyle = 'rgba(200,255,220,.9)'; g.fillRect(x - 1.5, 0, 3, H);
+  g.save(); g.translate(x, y);
+  g.fillStyle = 'rgba(0,0,0,.25)'; g.beginPath(); g.ellipse(14, 22, 34, 30, 0, 0, TAU); g.fill();
+  for (let k = 0; k < 4; k++) {
+    const a = k * Math.PI / 2 + Math.PI / 4, ex = Math.cos(a) * 32, ey = Math.sin(a) * 32;
+    g.strokeStyle = '#f4f4f4'; g.lineWidth = 6; g.beginPath(); g.moveTo(0, 0); g.lineTo(ex, ey); g.stroke();
+    g.fillStyle = 'rgba(255,255,255,.18)'; g.beginPath(); g.arc(ex, ey, 15, 0, TAU); g.fill();
+  }
+  g.fillStyle = '#ffffff'; rrect(g, -14, -18, 28, 36, 9); g.fill();
+  g.fillStyle = '#222'; g.beginPath(); g.arc(0, 10, 5, 0, TAU); g.fill();
+  g.restore();
+}
+function draw1() {
+  g.drawImage(bg, 0, 0, W, H);
+  const reveal = mode === 's1scan' ? (scanT / SCAN) * (W + 120) : W;
+  g.save(); g.beginPath(); g.rect(0, 0, reveal, H); g.clip();
+  g.drawImage(ndvi, 0, 0, W, H);
+  for (const s of spots) drawSpot(s);
+  g.restore();
+  for (const s of splats) { g.globalAlpha = Math.max(0, .7 * (1 - s.age / 2.2)); g.fillStyle = s.col; g.beginPath(); g.arc(s.x, s.y, 2.2, 0, TAU); g.fill(); }
+  g.globalAlpha = 1;
+  for (const p of drops) {
+    const k = p.t / p.dur, x = lerp(p.sx, p.ex, k), y = lerp(p.sy, p.ey, k);
+    g.fillStyle = PROD[p.prod].col; g.beginPath(); g.arc(x, y, 3.2 - k * 1.4, 0, TAU); g.fill();
+  }
+  if (mode === 's1scan') drawScanner(reveal, H * .5 + Math.sin(t * 2) * 40);
+  if (mode === 's1play' && hold) {
+    g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = 2; g.setLineDash([6, 6]);
+    g.beginPath(); g.arc(drone.tx, drone.ty, 20, 0, TAU); g.stroke(); g.setLineDash([]);
+  }
+  drawAgras(drone.x, drone.y, drone.spraying);
+}
+
+/* ======================= ЕТАП 2: комбайн ======================= */
+const CELL = 16, FIELD_HA = 25, BASE_YIELD = 7.5;           // поле 25 га, потенціал 7,5 т/га
+const MAXV = 175, TURN = 2.1;
+let R = null, cols = 0, rows = 0, cropArr = null, terr = null, field2 = null, fx2 = null, stubPat = null;
+let totalCells = 0, cutCells = 0, play2 = 0, poles = [], wire = null, poleHits = 0;
+let fuelTruck = null, grainTruck = null, warnAt = -9;
+const cmb = { x: 0, y: 0, a: 0, v: 0, tx: 0, ty: 0, fuel: 1, bunk: 0, stun: 0, cutting: false, unloading: false, refuel: false, reel: 0 };
+
+function makeStubble() {
+  const [c, x] = mk(64, 64);
+  x.fillStyle = '#c9ab64'; x.fillRect(0, 0, 64, 64);
+  for (let i = 0; i < 160; i++) { x.fillStyle = `rgba(${rnd(120, 170) | 0},${rnd(95, 130) | 0},${rnd(40, 70) | 0},.7)`; x.fillRect(rnd(0, 64), rnd(0, 64), 1.5, rnd(1.5, 3.5)); }
+  for (let y = 0; y < 64; y += 8) { x.fillStyle = 'rgba(150,120,60,.35)'; x.fillRect(0, y, 64, 1); }
+  return g.createPattern(c, 'repeat');
+}
+function inEllipse(px, py, e) { const dx = (px - e.x) / e.rx, dy = (py - e.y) / e.ry; return dx * dx + dy * dy <= 1; }
+
+function buildField2() {
+  R = { x0: 110, y0: TOP + 76, x1: W - 110, y1: H - BOT - 62 };
+  cols = Math.floor((R.x1 - R.x0) / CELL); rows = Math.floor((R.y1 - R.y0) / CELL);
+  R.x1 = R.x0 + cols * CELL; R.y1 = R.y0 + rows * CELL;
+  cropArr = new Uint8Array(cols * rows); terr = new Uint8Array(cols * rows);
+  const fw = R.x1 - R.x0, fh = R.y1 - R.y0;
+
+  // опори ЛЕП: лінія навскіс через поле
+  const ly0 = R.y0 + fh * rnd(.15, .3), ly1 = R.y0 + fh * rnd(.7, .85);
+  wire = { x0: 0, y0: ly0 - (ly1 - ly0) * R.x0 / fw, x1: W, y1: ly1 + (ly1 - ly0) * (W - R.x1) / fw };
+  poles = [.2, .5, .8].map(f => ({ x: R.x0 + fw * f, y: lerp(ly0, ly1, f) }));
+  const wAng = Math.atan2(ly1 - ly0, fw);
+  poles.forEach(p => p.a = wAng);
+
+  // полеглий хліб і мокра низина
+  const patches = [];
+  const pick = (rx, ry, kind) => {
+    for (let k = 0; k < 40; k++) {
+      const e = { x: rnd(R.x0 + rx + 40, R.x1 - rx - 40), y: rnd(R.y0 + ry, R.y1 - ry), rx, ry, kind };
+      if (patches.some(p => Math.hypot(p.x - e.x, p.y - e.y) < p.rx + rx + 30)) continue;
+      if (poles.some(p => inEllipse(p.x, p.y, { ...e, rx: rx + 40, ry: ry + 40 }))) continue;
+      patches.push(e); return;
+    }
+  };
+  pick(rnd(90, 130), rnd(55, 75), 1); pick(rnd(80, 110), rnd(50, 70), 1); pick(rnd(100, 130), rnd(60, 80), 2);
+
+  totalCells = 0; cutCells = 0;
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const px = R.x0 + c * CELL + CELL / 2, py = R.y0 + r * CELL + CELL / 2, i = r * cols + c;
+    if (poles.some(p => Math.hypot(p.x - px, p.y - py) < 15)) continue;
+    cropArr[i] = 1; totalCells++;
+    for (const e of patches) if (inEllipse(px, py, e)) terr[i] = e.kind;
+  }
+
+  // малюємо шар поля
+  const [c, x] = mk(W, H); field2 = c; fx2 = x;
+  x.fillStyle = '#6f8a3a'; x.fillRect(0, 0, W, H);                         // трава навколо
+  for (let i = 0; i < 1600; i++) { x.fillStyle = `rgba(${rnd(60, 110) | 0},${rnd(110, 150) | 0},${rnd(40, 70) | 0},.5)`; x.fillRect(rnd(0, W), rnd(0, H), 2, rnd(2, 5)); }
+  x.fillStyle = '#9b8257'; x.fillRect(R.x0 - 52, R.y0 - 52, fw + 104, fh + 104);   // польова дорога
+  for (let i = 0; i < 1400; i++) { x.fillStyle = `rgba(${rnd(110, 150) | 0},${rnd(90, 120) | 0},${rnd(55, 80) | 0},.6)`; x.fillRect(rnd(R.x0 - 52, R.x1 + 52), rnd(R.y0 - 52, R.y1 + 52), rnd(1, 3), rnd(1, 3)); }
+  x.fillStyle = 'rgba(80,62,38,.35)';
+  for (const off of [-38, -18]) { x.fillRect(R.x0 + off, R.y0 - 52, 6, fh + 104); x.fillRect(R.x1 - off - 6, R.y0 - 52, 6, fh + 104); x.fillRect(R.x0 - 52, R.y0 + off, fw + 104, 6); x.fillRect(R.x0 - 52, R.y1 - off - 6, fw + 104, 6); }
+  // пшениця
+  x.fillStyle = '#d6ad43'; x.fillRect(R.x0, R.y0, fw, fh);
+  for (let y = R.y0 + 3; y < R.y1; y += 6) {
+    for (let px = R.x0 + rnd(0, 4); px < R.x1; px += rnd(3, 5)) {
+      x.fillStyle = `hsl(${rnd(38, 48) | 0},${rnd(60, 78) | 0}%,${rnd(48, 64) | 0}%)`;
+      x.fillRect(px, y + rnd(-1.5, 1.5), 2, rnd(3, 5));
+    }
+  }
+  for (const e of patches) {
+    x.save(); x.beginPath(); x.ellipse(e.x, e.y, e.rx, e.ry, 0, 0, TAU); x.clip();
+    if (e.kind === 1) {                                                      // полеглий хліб — завитки
+      x.fillStyle = 'rgba(150,110,30,.45)'; x.fillRect(e.x - e.rx, e.y - e.ry, e.rx * 2, e.ry * 2);
+      x.strokeStyle = 'rgba(235,200,110,.7)'; x.lineWidth = 2;
+      for (let i = 0; i < 90; i++) { const a = rnd(0, TAU), cx = e.x + rnd(-e.rx, e.rx), cy = e.y + rnd(-e.ry, e.ry); x.beginPath(); x.arc(cx, cy, rnd(5, 12), a, a + 2.2); x.stroke(); }
+    } else {                                                                 // мокра низина
+      x.fillStyle = 'rgba(70,72,60,.55)'; x.fillRect(e.x - e.rx, e.y - e.ry, e.rx * 2, e.ry * 2);
+      for (let i = 0; i < 7; i++) { x.fillStyle = 'rgba(120,150,170,.45)'; x.beginPath(); x.ellipse(e.x + rnd(-e.rx * .6, e.rx * .6), e.y + rnd(-e.ry * .6, e.ry * .6), rnd(10, 26), rnd(6, 12), rnd(0, 3), 0, TAU); x.fill(); }
+    }
+    x.restore();
+  }
+  for (const p of poles) { x.fillStyle = '#b89a5a'; x.beginPath(); x.arc(p.x, p.y, 15, 0, TAU); x.fill(); }
+  stubPat = makeStubble();
+}
+function terrainAt(px, py) {
+  const c = ((px - R.x0) / CELL) | 0, r = ((py - R.y0) / CELL) | 0;
+  if (c < 0 || r < 0 || c >= cols || r >= rows) return 0;
+  return terr[r * cols + c];
+}
+function cutAt(px, py) {
+  if (px < R.x0 || py < R.y0) return 0;
+  const c = ((px - R.x0) / CELL) | 0, r = ((py - R.y0) / CELL) | 0;
+  if (c >= cols || r >= rows) return 0;
+  const i = r * cols + c;
+  if (!cropArr[i]) return 0;
+  cropArr[i] = 0; cutCells++;
+  fx2.fillStyle = stubPat; fx2.fillRect(R.x0 + c * CELL, R.y0 + r * CELL, CELL, CELL);
+  if (terr[i] === 2) { fx2.fillStyle = 'rgba(70,72,60,.45)'; fx2.fillRect(R.x0 + c * CELL, R.y0 + r * CELL, CELL, CELL); }
+  return 1;
+}
+const yieldTHa = () => BASE_YIELD * (res1 ? res1.crop : 85) / 100;
+const tonsCut = () => cutCells / totalCells * FIELD_HA * yieldTHa();
+
+function beginStage2() {
+  buildField2();
+  cmb.x = R.x0 - 18; cmb.y = R.y0 + 48; cmb.a = 0; cmb.v = 0; cmb.tx = cmb.x; cmb.ty = cmb.y;
+  cmb.fuel = .62; cmb.bunk = 0; cmb.stun = 0;
+  fuelTruck = { x: R.x0 + 90, y: R.y1 + 28, a: 0 };
+  grainTruck = { x: R.x0 + (R.x1 - R.x0) * .45, y: R.y0 - 28, tx: 0, a: Math.PI, load: 0 };
+  grainTruck.tx = grainTruck.x;
+  poleHits = 0; play2 = 0; hold = false; floaters = []; parts = []; warnAt = -9;
+  $('#stage').textContent = 'Етап 2 · Збирання врожаю';
+  setChips(['Зібрано', 'Площа', 'Урожайність']);
+  mode = 's2play';
+  showOnly(null); show('top'); show('gauges'); hide('tools');
+  toast('Пора збирати врожай! Ведіть комбайн пальцем', 2400);
+  lastInput = performance.now();
+}
+function angDiff(a, b) { let d = (b - a) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return d; }
+function segDist(px, py, ax, ay, bx, by) {
+  const vx = bx - ax, vy = by - ay, k = clamp(((px - ax) * vx + (py - ay) * vy) / (vx * vx + vy * vy), 0, 1);
+  return Math.hypot(px - ax - vx * k, py - ay - vy * k);
+}
+function update2(dt) {
+  if (mode !== 's2play') return;
+  const prevSec = Math.ceil(PLAY2 - play2);
+  play2 += dt;
+  cmb.reel += dt;
+
+  // керування
+  let wantV = 0;
+  if (hold && cmb.stun <= 0) {
+    const dx = cmb.tx - cmb.x, dy = cmb.ty - cmb.y, d = Math.hypot(dx, dy);
+    if (d > 28) {
+      const diff = angDiff(cmb.a, Math.atan2(dy, dx));
+      cmb.a += clamp(diff, -TURN * dt, TURN * dt);
+      wantV = MAXV * clamp(.35 + .65 * Math.cos(diff), .3, 1);
+    }
+  }
+  const tr = terrainAt(cmb.x, cmb.y);
+  let factor = tr === 1 ? .55 : tr === 2 ? .4 : 1;
+  if (cmb.fuel <= 0) factor *= .18;
+  cmb.stun = Math.max(0, cmb.stun - dt);
+  cmb.v = lerp(cmb.v, wantV * factor, Math.min(1, dt * 3));
+  const ca = Math.cos(cmb.a), sa = Math.sin(cmb.a);
+  cmb.x = clamp(cmb.x + ca * cmb.v * dt, R.x0 - 40, R.x1 + 40);
+  cmb.y = clamp(cmb.y + sa * cmb.v * dt, R.y0 - 40, R.y1 + 40);
+  cmb.fuel = Math.max(0, cmb.fuel - (cmb.v * dt / L().fuel) - dt * .002);
+
+  // опори ЛЕП
+  const hx = cmb.x + ca * 50, hy = cmb.y + sa * 50, px = -sa, py = ca;
+  for (const p of poles) {
+    const dBody = segDist(p.x, p.y, cmb.x - ca * 40, cmb.y - sa * 40, cmb.x + ca * 30, cmb.y + sa * 30);
+    const dHead = segDist(p.x, p.y, hx - px * 56, hy - py * 56, hx + px * 56, hy + py * 56);
+    if ((dBody < 34 || dHead < 12) && cmb.stun <= 0) {
+      cmb.stun = 1.1; cmb.v = 0; poleHits++;
+      const ax = cmb.x - p.x, ay = cmb.y - p.y, d = Math.hypot(ax, ay) || 1;
+      cmb.x += ax / d * 18 - ca * 34; cmb.y += ay / d * 18 - sa * 34;
+      floatText(p.x, p.y - 40, 'Обережно, опора ЛЕП!', '#ffd2d2'); sfx('lost');
+    }
+  }
+
+  // жатка
+  cmb.cutting = false;
+  if (cmb.v > 8 && cmb.bunk < 1) {
+    let n = 0;
+    for (let s = -52; s <= 52; s += 6) n += cutAt(hx + px * s, hy + py * s);
+    if (n) {
+      cmb.cutting = true; cmb.bunk = Math.min(1, cmb.bunk + n / L().bunker);
+      if (Math.random() < .5) parts.push({ x: cmb.x - ca * 52 + rnd(-10, 10), y: cmb.y - sa * 52 + rnd(-10, 10), vx: -ca * rnd(20, 50) + rnd(-20, 20), vy: -sa * rnd(20, 50) + rnd(-20, 20), age: 0, col: '#f3d98a', life: .7 });
+    }
+  }
+
+  // зерновоз: розвантаження
+  cmb.unloading = false;
+  const dG = Math.hypot(cmb.x - grainTruck.x, cmb.y - grainTruck.y);
+  if (dG < 95 && cmb.bunk > 0 && Math.abs(grainTruck.tx - grainTruck.x) < 2) {
+    cmb.unloading = true;
+    const amt = Math.min(cmb.bunk, dt * .7); cmb.bunk -= amt; grainTruck.load = Math.min(1, grainTruck.load + amt * .6);
+    if (cmb.bunk <= 0) {
+      floatText(grainTruck.x, grainTruck.y - 34, 'Розвантажено!', '#ffe28a'); sfx('done');
+      if (grainTruck.load >= .95) { grainTruck.load = 0; floatText(grainTruck.x, grainTruck.y + 30, 'Перевантажувач повний — повіз зерно на тік', '#ffffff'); }
+      let nx; do { nx = rnd(R.x0 + 80, R.x1 - 80); } while (Math.abs(nx - grainTruck.x) < 200);
+      grainTruck.tx = nx;
+    }
+  }
+  if (Math.abs(grainTruck.tx - grainTruck.x) > 1) {
+    const dir = Math.sign(grainTruck.tx - grainTruck.x);
+    grainTruck.x += dir * Math.min(Math.abs(grainTruck.tx - grainTruck.x), 220 * dt);
+    grainTruck.a = dir > 0 ? 0 : Math.PI;
+  }
+
+  // паливозаправник
+  cmb.refuel = false;
+  if (Math.hypot(cmb.x - fuelTruck.x, cmb.y - fuelTruck.y) < 95 && cmb.fuel < 1) {
+    cmb.refuel = true; const was = cmb.fuel; cmb.fuel = Math.min(1, cmb.fuel + dt * .55);
+    if (was < 1 && cmb.fuel >= 1) { floatText(fuelTruck.x, fuelTruck.y - 34, 'Бак повний!', '#ffd08a'); sfx('done'); }
+  }
+
+  // підказки
+  if (cmb.fuel < .25 && t - warnAt > 4 && !cmb.refuel) { warnAt = t; toast('Пальне закінчується — до паливозаправника!', 2200); sfx('bad'); }
+  else if (cmb.bunk >= 1 && t - warnAt > 4 && !cmb.unloading) { warnAt = t; toast('Бункер повний — до перевантажувача!', 2200); sfx('bad'); }
+
+  const sec = Math.ceil(PLAY2 - play2);
+  if (sec !== prevSec && sec <= 5 && sec > 0) sfx('tick');
+  if (play2 >= PLAY2 || cutCells >= totalCells) endStage2();
+}
+function endStage2() {
+  mode = 's2end'; hold = false; hide('gauges');
+  const area = Math.round(cutCells / totalCells * 100);
+  const tons = tonsCut();
+  const score2 = Math.max(0, area * 20 + Math.round(tons * 4) - poleHits * 50);
+  const total = Math.round((res1.score + score2) * L().mult);
+  $('#fLvl').textContent = L().name.toLowerCase();
+  $('#fScore').textContent = total;
+  pending = { id: Date.now() + '-' + Math.random().toString(36).slice(2, 7), name: 'Ви', score: total, lv: level, ts: Date.now() };
+  $('#pname').value = ''; $('#nameForm').hidden = false; $('#added').hidden = true;
+  renderFinalBoard(true);
+  $('#fPrec').textContent = res1.prec + '%'; $('#fTreat').textContent = res1.treated;
+  $('#fYield').textContent = fmt1(yieldTHa()) + ' т/га'; $('#fTons').textContent = Math.round(tons) + ' т';
+  $('#fArea').textContent = area + '%'; $('#fPoles').textContent = poleHits;
+  $('#fMsg').textContent = res1.crop >= 92 ? 'Точний захист дав повний урожай. Саме так працює точне землеробство.'
+    : 'Кожне втрачене вогнище — мінус центнери з гектара. Точний захист окупається на збиранні.';
+  setTimeout(() => { if (mode === 's2end') { hide('top'); showOnly('final'); lastInput = performance.now(); } }, 900);
+}
+
+function drawTruckCab(c) {
+  c.fillStyle = '#e8e8e8'; rrect(c, 22, -15, 26, 30, 6); c.fill();
+  c.fillStyle = '#4a5a68'; rrect(c, 38, -12, 8, 24, 3); c.fill();
+  c.fillStyle = '#1a1a1a'; for (const wx of [30, -8, -26]) { c.fillRect(wx - 6, -19, 12, 5); c.fillRect(wx - 6, 14, 12, 5); }
+}
+function drawFuelTruck(tk) {
+  g.save(); g.translate(tk.x, tk.y); g.rotate(tk.a);
+  g.fillStyle = 'rgba(0,0,0,.25)'; rrect(g, -40, -12, 96, 34, 8); g.fill();
+  drawTruckCab(g);
+  const gr = g.createLinearGradient(0, -14, 0, 14); gr.addColorStop(0, '#f2f2f2'); gr.addColorStop(.5, '#b9c0c6'); gr.addColorStop(1, '#8e969c');
+  g.fillStyle = gr; rrect(g, -40, -14, 60, 28, 13); g.fill();
+  g.fillStyle = '#FF0000'; g.fillRect(-36, -2, 52, 4);
+  g.restore();
+  g.font = 'bold 13px Arial, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = 'rgba(0,0,0,.7)'; rrect(g, tk.x - 58, tk.y - 44, 116, 20, 10); g.fill();
+  g.fillStyle = '#fff'; g.fillText('Паливозаправник', tk.x, tk.y - 34);
+}
+/* техніка John Deere: зелений + жовтий */
+const JD_G = '#367c2b', JD_D = '#24561c', JD_Y = '#ffde00', GLASS = 'rgba(150,195,215,.85)';
+function tire(c, x, y, w, h) {
+  c.fillStyle = '#151515'; rrect(c, x, y, w, h, 3); c.fill();
+  c.fillStyle = 'rgba(255,255,255,.09)'; for (let i = x + 3; i < x + w - 2; i += 5) c.fillRect(i, y, 2, h);
+}
+function drawGrainTruck(tk) {             // трактор John Deere з бункером-перевантажувачем
+  g.save(); g.translate(tk.x, tk.y); g.rotate(tk.a);
+  g.fillStyle = 'rgba(0,0,0,.25)'; rrect(g, -32, -16, 168, 44, 10); g.fill();
+  g.strokeStyle = '#222'; g.lineWidth = 4; g.beginPath(); g.moveTo(32, 0); g.lineTo(62, 0); g.stroke();
+  // бункер-перевантажувач
+  tire(g, -14, -27, 26, 9); tire(g, -14, 18, 26, 9);
+  g.fillStyle = '#2d2d2d'; rrect(g, -36, -20, 68, 40, 5); g.fill();
+  g.fillStyle = '#5a4a30'; g.fillRect(-32, -16, 60, 32);
+  if (tk.load > 0) { g.fillStyle = '#e9bd45'; g.fillRect(-32, -16, 60 * tk.load, 32); }
+  // трактор
+  g.translate(94, 0);
+  tire(g, -32, -31, 32, 12); tire(g, -32, 19, 32, 12);           // задні колеса
+  tire(g, 14, -25, 18, 8); tire(g, 14, 17, 18, 8);               // передні колеса
+  g.fillStyle = JD_G; rrect(g, -2, -10, 38, 20, 5); g.fill();     // капот
+  g.fillStyle = JD_Y; g.fillRect(2, -10, 32, 2); g.fillRect(2, 8, 32, 2);
+  g.fillStyle = '#1a1a1a'; g.fillRect(34, -7, 3, 14);
+  g.fillStyle = JD_G; rrect(g, -33, -33, 34, 6, 3); g.fill(); rrect(g, -33, 27, 34, 6, 3); g.fill();   // крила
+  g.fillStyle = JD_D; rrect(g, -30, -18, 32, 36, 5); g.fill();    // кабіна
+  g.fillStyle = JD_G; rrect(g, -28, -16, 28, 32, 4); g.fill();
+  g.fillStyle = GLASS; rrect(g, -2, -14, 4, 28, 2); g.fill();
+  g.fillStyle = JD_Y; g.beginPath(); g.arc(-14, 0, 5, 0, TAU); g.fill();  // приймач StarFire
+  g.fillStyle = JD_D; g.beginPath(); g.arc(-14, 0, 2, 0, TAU); g.fill();
+  g.restore();
+  g.font = 'bold 13px Arial, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillStyle = 'rgba(0,0,0,.7)'; rrect(g, tk.x - 56, tk.y + 26, 112, 20, 10); g.fill();
+  g.fillStyle = '#fff'; g.fillText('Перевантажувач', tk.x, tk.y + 36);
+}
+function drawCombine() {                 // комбайн John Deere серії S
+  const { x, y, a } = cmb;
+  g.save(); g.translate(x + 10, y + 14); g.rotate(a); g.fillStyle = 'rgba(0,0,0,.28)';
+  rrect(g, -48, -36, 86, 72, 10); g.fill(); g.fillRect(40, -64, 22, 128); g.restore();
+  g.save(); g.translate(x, y); g.rotate(a);
+  tire(g, 4, -45, 32, 14); tire(g, 4, 31, 32, 14);                // ведучі колеса
+  tire(g, -44, -37, 22, 10); tire(g, -44, 27, 22, 10);            // керовані колеса
+  g.fillStyle = JD_Y; g.fillRect(14, -33, 12, 2); g.fillRect(14, 31, 12, 2);
+  g.fillStyle = JD_G; rrect(g, -48, -30, 84, 60, 8); g.fill();     // корпус
+  g.fillStyle = JD_D; g.fillRect(-48, -30, 84, 4); g.fillRect(-48, 26, 84, 4);
+  g.fillStyle = JD_Y; g.fillRect(-42, -25, 70, 2.5); g.fillRect(-42, 22.5, 70, 2.5);
+  g.fillStyle = '#1e1e1e'; g.fillRect(-48, -16, 6, 32);           // решітка двигуна
+  g.fillStyle = '#28331f'; rrect(g, -38, -20, 42, 40, 4); g.fill(); // бункер
+  if (cmb.bunk > 0) { g.fillStyle = '#e9bd45'; const w = 42 * cmb.bunk; rrect(g, -38, -20, w, 40, 4); g.fill(); }
+  g.strokeStyle = JD_D; g.lineWidth = 3; rrect(g, -38, -20, 42, 40, 4); g.stroke();
+  if (!cmb.unloading) {                                              // складений шнек уздовж лівого борту
+    g.fillStyle = JD_G; rrect(g, -46, -38, 76, 7, 3); g.fill();
+    g.strokeStyle = JD_D; g.lineWidth = 1.5; g.stroke();
+    g.fillStyle = '#111'; g.fillRect(28, -39, 7, 9);
+  }
+  g.fillStyle = JD_G; g.fillRect(34, -9, 9, 18);                    // похила камера
+  g.fillStyle = JD_D; rrect(g, 6, -18, 30, 36, 5); g.fill();        // кабіна
+  g.fillStyle = JD_G; rrect(g, 8, -16, 26, 32, 4); g.fill();
+  g.fillStyle = GLASS; rrect(g, 30, -14, 5, 28, 2); g.fill();
+  g.fillStyle = JD_Y; g.beginPath(); g.arc(18, 0, 5.5, 0, TAU); g.fill();   // приймач StarFire
+  g.fillStyle = JD_D; g.beginPath(); g.arc(18, 0, 2, 0, TAU); g.fill();
+  const blink = Math.sin(t * 8) > 0 ? '#ffb000' : '#a85f00';         // проблискові маячки
+  g.fillStyle = blink; g.beginPath(); g.arc(10, -14, 2.8, 0, TAU); g.arc(10, 14, 2.8, 0, TAU); g.fill();
+  g.fillStyle = '#1d1d1d'; rrect(g, 42, -60, 16, 120, 3); g.fill();  // жатка
+  g.fillStyle = '#7a7a7a'; g.fillRect(56, -60, 3, 120);              // ріжучий апарат
+  g.strokeStyle = '#4a4a4a'; g.lineWidth = 2.5;                      // мотовило
+  const off = (cmb.reel * (cmb.v > 5 ? 90 : 0)) % 10;
+  for (let s = -58 + off; s < 58; s += 10) { g.beginPath(); g.moveTo(45, s); g.lineTo(55, s + 4); g.stroke(); }
+  g.fillStyle = JD_G;                                                // боковини-подільники
+  g.beginPath(); g.moveTo(42, -60); g.lineTo(58, -60); g.lineTo(66, -63); g.lineTo(42, -66); g.closePath(); g.fill();
+  g.beginPath(); g.moveTo(42, 60); g.lineTo(58, 60); g.lineTo(66, 63); g.lineTo(42, 66); g.closePath(); g.fill();
+  if (cmb.unloading) {                                               // шнек повернуто до перевантажувача
+    g.restore(); g.save();
+    const ang = Math.atan2(grainTruck.y - y, grainTruck.x - x), len = Math.hypot(grainTruck.x - x, grainTruck.y - y) - 10;
+    g.translate(x, y); g.rotate(ang);
+    g.fillStyle = JD_G; rrect(g, 0, -4, len, 8, 3); g.fill();
+    g.fillStyle = '#111'; g.fillRect(len - 8, -5, 8, 10);
+    g.fillStyle = '#f3cf6a'; for (let i = 0; i < 6; i++) { g.beginPath(); g.arc(len - 4 + rnd(-4, 4), rnd(-5, 5), 2.5, 0, TAU); g.fill(); }
+  }
+  g.restore();
+  if (cmb.refuel) { g.strokeStyle = '#111'; g.lineWidth = 3; g.setLineDash([8, 5]); g.beginPath(); g.moveTo(fuelTruck.x, fuelTruck.y); g.lineTo(x, y); g.stroke(); g.setLineDash([]); }
+}
+function drawPoles() {
+  g.strokeStyle = 'rgba(0,0,0,.18)'; g.lineWidth = 2;                    // тіні дротів
+  for (const o of [-7, 0, 7]) { g.beginPath(); g.moveTo(wire.x0 + 16, wire.y0 + 22 + o); g.lineTo(wire.x1 + 16, wire.y1 + 22 + o); g.stroke(); }
+  for (const p of poles) {
+    g.fillStyle = 'rgba(0,0,0,.28)'; g.beginPath(); g.ellipse(p.x + 16, p.y + 22, 9, 9, 0, 0, TAU); g.fill();
+    g.fillStyle = '#8d8d8d'; g.fillRect(p.x - 7, p.y - 7, 14, 14);
+    g.save(); g.translate(p.x, p.y); g.rotate(p.a + Math.PI / 2);
+    g.fillStyle = '#6e6e6e'; g.fillRect(-18, -3, 36, 6); g.restore();
+  }
+  g.strokeStyle = 'rgba(30,30,30,.75)'; g.lineWidth = 1.5;
+  for (const o of [-7, 0, 7]) { g.beginPath(); g.moveTo(wire.x0, wire.y0 + o); g.lineTo(wire.x1, wire.y1 + o); g.stroke(); }
+}
+function drawPointer(target, label) {
+  const pulse = 1 + Math.sin(t * 6) * .12;
+  g.strokeStyle = '#ffd24a'; g.lineWidth = 4;
+  g.beginPath(); g.arc(target.x, target.y, 62 * pulse, 0, TAU); g.stroke();
+  const ang = Math.atan2(target.y - cmb.y, target.x - cmb.x), d = Math.hypot(target.y - cmb.y, target.x - cmb.x);
+  if (d < 140) return;
+  const ax = cmb.x + Math.cos(ang) * 92, ay = cmb.y + Math.sin(ang) * 92;
+  g.save(); g.translate(ax, ay); g.rotate(ang);
+  g.fillStyle = '#ffd24a'; g.strokeStyle = '#111'; g.lineWidth = 2;
+  g.beginPath(); g.moveTo(22, 0); g.lineTo(-8, -15); g.lineTo(-2, 0); g.lineTo(-8, 15); g.closePath(); g.fill(); g.stroke();
+  g.restore();
+}
+function draw2() {
+  g.drawImage(field2, 0, 0, W, H);
+  drawFuelTruck(fuelTruck); drawGrainTruck(grainTruck);
+  if (cmb.fuel < .25 && !cmb.refuel) drawPointer(fuelTruck);
+  else if (cmb.bunk >= 1 && !cmb.unloading) drawPointer(grainTruck);
+  if (mode === 's2play' && hold) {
+    g.strokeStyle = 'rgba(255,255,255,.75)'; g.lineWidth = 2; g.setLineDash([6, 6]);
+    g.beginPath(); g.arc(cmb.tx, cmb.ty, 20, 0, TAU); g.stroke(); g.setLineDash([]);
+  }
+  drawCombine();
+  drawPoles();
+}
+
+/* ======================= спільне ======================= */
+function floatText(x, y, s, col) { floaters.push({ x, y, s, col, age: 0 }); }
+function burst(x, y, col, n) { for (let i = 0; i < n; i++) { const a = rnd(0, TAU), v = rnd(60, 180); parts.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, age: 0, col, life: .8 }); } }
+/* ---------- рейтинг дня (лише на цьому планшеті, лише ім'я) ---------- */
+function today() { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+const boardKey = () => 'agrosem-board-' + today();
+let memBoard = [], memDay = today(), pending = null;
+function loadBoard() {
+  try { const v = JSON.parse(localStorage.getItem(boardKey()) || '[]'); if (Array.isArray(v)) return v; } catch (e) {}
+  if (memDay !== today()) { memBoard = []; memDay = today(); }
+  return memBoard.slice();
+}
+function saveBoard(b) { memBoard = b.slice(); memDay = today(); try { localStorage.setItem(boardKey(), JSON.stringify(b)); } catch (e) {} }
+const sortBoard = b => b.sort((a, c) => c.score - a.score || a.ts - c.ts);
+function renderBoard(ol, list, limit, hiId) {
+  ol.textContent = '';
+  if (!list.length) { const li = document.createElement('li'); li.className = 'empty'; li.textContent = 'Поки що порожньо — будьте першим!'; ol.appendChild(li); return; }
+  list.slice(0, limit).forEach((e, i) => {
+    const li = document.createElement('li'); if (e.id === hiId) li.className = 'me';
+    for (const [cls, txt, tag] of [['pl', i + 1, 'span'], ['nm', e.name, 'span'], ['lv', (LEVELS[e.lv] || {}).name || '', 'span'], ['', e.score, 'b']]) {
+      const el = document.createElement(tag); if (cls) el.className = cls; el.textContent = txt; li.appendChild(el);
+    }
+    ol.appendChild(li);
+  });
+}
+function renderFinalBoard(withPending) {
+  const list = sortBoard(loadBoard().concat(withPending && pending ? [pending] : []));
+  renderBoard($('#fBoard'), list, 10, pending && pending.id);
+  const place = pending ? list.findIndex(e => e.id === pending.id) + 1 : 0;
+  $('#fPlace').textContent = place > 10 ? 'Ваше місце: ' + place + ' з ' + list.length : '';
+  return place;
+}
+function renderStartBoard() { renderBoard($('#sBoard'), sortBoard(loadBoard()), 5, null); }
+function submitName(e) {
+  if (e) e.preventDefault();
+  poke();
+  const name = $('#pname').value.replace(/\s+/g, ' ').trim().slice(0, 18);
+  if (!name || !pending) { $('#pname').focus(); return; }
+  pending.name = name;
+  const board = loadBoard(); board.push({ id: pending.id, name, score: pending.score, lv: pending.lv, ts: pending.ts });
+  saveBoard(sortBoard(board));
+  const place = renderFinalBoard(false);
+  $('#pname').blur(); $('#nameForm').hidden = true;
+  $('#added').textContent = name + ', ви на ' + place + '-му місці рейтингу дня!'; $('#added').hidden = false;
+  sfx('done');
+}
+function skipName() {
+  poke(); $('#pname').blur(); $('#nameForm').hidden = true;
+  const place = renderFinalBoard(true);
+  pending = null; renderFinalBoard(false);
+  $('#fPlace').textContent = 'Ваш результат був би на ' + place + '-му місці.';
+}
+function resetBoard() { saveBoard([]); try { localStorage.removeItem(boardKey()); } catch (e) {} renderStartBoard(); toast('Рейтинг дня очищено', 2000); }
+function setLevel(lv) {
+  level = lv;
+  document.querySelectorAll('.lvl').forEach(b => b.setAttribute('aria-checked', String(b.dataset.l === lv)));
+  try { localStorage.setItem('agrosem-level', lv); } catch (e) {}
+}
+
+function update(dt) {
+  t += dt;
+  drone.prop += dt * 50;
+  if (mode === 'attract') {
+    drone.tx = W * .74 + Math.cos(t * .45) * W * .16; drone.ty = H * .5 + Math.sin(t * .8) * H * .22;
+    const dx = drone.tx - drone.x, dy = drone.ty - drone.y, d = Math.hypot(dx, dy), want = Math.min(240, d * 6), k = Math.min(1, dt * 8);
+    drone.vx = lerp(drone.vx, d > .01 ? dx / d * want : 0, k); drone.vy = lerp(drone.vy, d > .01 ? dy / d * want : 0, k);
+    drone.x += drone.vx * dt; drone.y += drone.vy * dt;
+  }
+  if (mode.startsWith('s1')) update1(dt);
+  if (mode.startsWith('s2')) update2(dt);
+  for (const f of floaters) { f.age += dt; f.y -= 34 * dt; }
+  floaters = floaters.filter(f => f.age < 1.3);
+  for (const p of parts) { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= .94; p.vy *= .94; }
+  parts = parts.filter(p => p.age < p.life);
+
+  const idle = (performance.now() - lastInput) / 1000;
+  if ((mode === 's1play' || mode === 's2play') && idle > IDLE_PLAY) goHome();
+  else if (!$('#final').hidden && idle > (document.activeElement === $('#pname') ? 60 : 30)) goHome();
+  else if (mode !== 'attract' && idle > IDLE_SCREEN && SCREENS.some(id => id !== 'start' && !$('#' + id).hidden)) goHome();
+  hud();
+}
+let hudCache = '';
+function hud() {
+  let key = '';
+  if (mode.startsWith('s1')) {
+    const left = Math.max(0, Math.ceil(PLAY1 - playT));
+    const p = s1.good + s1.wrong + s1.waste ? precision() + '%' : '—';
+    key = [left, s1.treated, s1.lost, p].join('|');
+    if (key === hudCache) return; hudCache = key;
+    setTimer(left, mode === 's1play'); setVals([s1.treated, s1.lost, p]);
+  } else if (mode.startsWith('s2')) {
+    const left = Math.max(0, Math.ceil(PLAY2 - play2));
+    const fuel = Math.round(cmb.fuel * 100), bunk = Math.round(cmb.bunk * 100);
+    key = [left, Math.round(tonsCut()), cutCells, fuel, bunk, cmb.unloading, cmb.refuel, cmb.stun > 0].join('|');
+    if (key === hudCache) return; hudCache = key;
+    setTimer(left, mode === 's2play');
+    setVals([Math.round(tonsCut()) + ' т', Math.round(cutCells / totalCells * 100) + '%', fmt1(yieldTHa()) + ' т/га']);
+    $('#vFuel').textContent = fuel + '%'; $('#fFuel').style.width = fuel + '%'; $('#gFuel').classList.toggle('low', cmb.fuel < .25);
+    $('#vBunk').textContent = bunk + '%'; $('#fBunk').style.width = bunk + '%'; $('#gBunk').classList.toggle('full', cmb.bunk >= 1);
+    const h = $('#hint');
+    let msg = 'Ведіть комбайн пальцем — жатка зрізає пшеницю.', warn = false;
+    if (cmb.refuel) msg = 'Заправка…';
+    else if (cmb.unloading) msg = 'Вивантаження зерна…';
+    else if (cmb.stun > 0) { msg = 'Зачепили опору ЛЕП — об’їжджайте!'; warn = true; }
+    else if (cmb.fuel <= 0) { msg = 'Пальне скінчилося! Повільно їдьте до паливозаправника.'; warn = true; }
+    else if (cmb.fuel < .25) { msg = 'Мало пального — до паливозаправника (внизу ліворуч).'; warn = true; }
+    else if (cmb.bunk >= 1) { msg = 'Бункер повний — під’їдьте до трактора з перевантажувачем.'; warn = true; }
+    else if (terrainAt(cmb.x, cmb.y) === 1) msg = 'Вилягання пшениці — комбайн іде повільніше.';
+    else if (terrainAt(cmb.x, cmb.y) === 2) msg = 'Мокра низина — обережно, повільно.';
+    h.textContent = msg; h.classList.toggle('warn', warn);
+  }
+}
+function setTimer(left, hot) { const el = $('#timer'); el.textContent = Math.floor(left / 60) + ':' + String(left % 60).padStart(2, '0'); el.classList.toggle('hot', hot && left <= 10); }
+function setChips(labels) { labels.forEach((l, i) => $('#l' + (i + 1)).textContent = l); hudCache = ''; }
+function setVals(vals) { vals.forEach((v, i) => $('#c' + (i + 1)).textContent = v); }
+
+function draw() {
+  if (!W || !H || !bg) return;
+  g.clearRect(0, 0, W, H);
+  if (mode.startsWith('s2')) draw2(); else draw1();
+  for (const p of parts) { g.globalAlpha = Math.max(0, 1 - p.age / p.life); g.fillStyle = p.col; g.beginPath(); g.arc(p.x, p.y, 3.5, 0, TAU); g.fill(); }
+  g.globalAlpha = 1;
+  g.textAlign = 'center'; g.textBaseline = 'middle'; g.font = 'bold 22px Arial, Helvetica, sans-serif'; g.lineJoin = 'round';
+  for (const f of floaters) {
+    g.globalAlpha = Math.min(1, 2.2 * (1 - f.age / 1.3));
+    g.strokeStyle = 'rgba(0,0,0,.85)'; g.lineWidth = 5; g.strokeText(f.s, f.x, f.y);
+    g.fillStyle = f.col; g.fillText(f.s, f.x, f.y);
+  }
+  g.globalAlpha = 1;
+}
+
+let last = performance.now();
+function frame(now) {
+  const dt = Math.min(.05, (now - last) / 1000); last = now;
+  update(dt); draw();
+  requestAnimationFrame(frame);
+}
+
+/* ======================= інтерфейс ======================= */
+function show(id) { $('#' + id).hidden = false; }
+function hide(id) { $('#' + id).hidden = true; }
+function showOnly(id) { SCREENS.forEach(s => $('#' + s).hidden = s !== id); }
+let toastTimer = 0;
+function toast(s, ms) {
+  const el = $('#toast'); el.textContent = s; el.style.opacity = 1;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => el.style.opacity = 0, ms);
+}
+function setProd(p) { prod = p; document.querySelectorAll('.pbtn').forEach(b => b.classList.toggle('sel', b.dataset.p === p)); }
+function poke() { lastInput = performance.now(); }
+function goHome() {
+  mode = 'attract'; hold = false; spots = []; drops = []; floaters = []; parts = [];
+  hide('top'); hide('tools'); hide('gauges'); showOnly('start');
+  pending = null; try { $('#pname').blur(); } catch (e) {}
+  renderStartBoard();
+}
+
+function setTarget(e) {
+  if (mode.startsWith('s1')) { const a = PA(); drone.tx = clamp(e.clientX, a.x0 - 20, a.x1 + 20); drone.ty = clamp(e.clientY, TOP + 20, H - BOT - 10); }
+  else if (mode === 's2play') { cmb.tx = clamp(e.clientX, R.x0 - 40, R.x1 + 40); cmb.ty = clamp(e.clientY, R.y0 - 40, R.y1 + 40); }
+}
+cv.addEventListener('pointerdown', e => {
+  poke(); if (!(mode === 's1play' || mode === 's1scan' || mode === 's2play')) return;
+  hold = true; setTarget(e);
+  try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+});
+cv.addEventListener('pointermove', e => { if (!hold) return; poke(); setTarget(e); });
+const release = () => { hold = false; };
+cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
+
+document.querySelectorAll('.pbtn').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); poke(); setProd(b.dataset.p); }));
+addEventListener('keydown', e => { poke(); const m = { '1': 'herb', '2': 'ins', '3': 'fung' }[e.key]; if (m) setProd(m); });
+
+let wake = null;
+async function keepAwake() { try { if (navigator.wakeLock && !wake) { wake = await navigator.wakeLock.request('screen'); wake.addEventListener('release', () => wake = null); } } catch (e) {} }
+document.addEventListener('visibilitychange', () => { if (!document.hidden) keepAwake(); });
+
+$('#bPlay').addEventListener('click', () => {
+  poke(); initAudio(); if (ac && ac.state === 'suspended') ac.resume();
+  try { if (!document.fullscreenElement && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {}); } catch (e) {}
+  keepAwake(); showOnly('brief1');
+});
+$('#bGo1').addEventListener('click', () => { poke(); beginStage1(); });
+document.querySelectorAll('.lvl').forEach(b => b.addEventListener('click', () => { poke(); setLevel(b.dataset.l); }));
+$('#nameForm').addEventListener('submit', submitName);
+$('#bSkip').addEventListener('click', skipName);
+$('#pname').addEventListener('input', poke);
+// службове скидання рейтингу: утримувати логотип на стартовому екрані 3 секунди
+let resetTimer = 0;
+const startLogo = $('#start .logo');
+startLogo.addEventListener('pointerdown', () => { clearTimeout(resetTimer); resetTimer = setTimeout(resetBoard, 3000); });
+['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => startLogo.addEventListener(ev, () => clearTimeout(resetTimer)));
+setLevel(level);
+$('#bNext').addEventListener('click', () => { poke(); hide('top'); showOnly('brief2'); });
+$('#bGo2').addEventListener('click', () => { poke(); beginStage2(); });
+$('#bAgain').addEventListener('click', () => { poke(); hide('top'); showOnly('brief1'); });
+$('#bHome').addEventListener('click', () => { poke(); goHome(); });
+$('#snd').addEventListener('click', () => {
+  muted = !muted; $('#snd').textContent = 'Музика: ' + (muted ? 'вимк.' : 'увімк.');
+  if (master) master.gain.setTargetAtTime(muted ? 0 : .55, ac.currentTime, .15);
+});
+addEventListener('pointerdown', poke, true);
+addEventListener('resize', () => { resize(); if (mode.startsWith('s2')) goHome(); });
+addEventListener('contextmenu', e => e.preventDefault());
+
+// службовий хук для автотестів: прокрутити n кадрів без анімації
+window.agrosemStep = (n = 1, dt = 1 / 60) => {
+  for (let i = 0; i < n; i++) update(dt); draw();
+  return { mode, s1, cmb: { x: Math.round(cmb.x), y: Math.round(cmb.y), fuel: +cmb.fuel.toFixed(2), bunk: +cmb.bunk.toFixed(2) }, cut: cutCells, total: totalCells, poleHits,
+    fuelTruck, grainTruck: grainTruck && { x: Math.round(grainTruck.x), y: grainTruck.y, tx: Math.round(grainTruck.tx) }, R,
+    spots: spots.filter(s => s.state === 'active').map(s => ({ x: Math.round(s.x), y: Math.round(s.y), type: s.type })) };
+};
+
+resize(); goHome(); requestAnimationFrame(frame);
+})();
+</script>
+
+<script>
+// офлайн-режим: service worker кешує гру після першого відкриття (працює лише через https або localhost)
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  navigator.serviceWorker.register('sw.js').catch(function () {});
+}
+</script>
+</body>
+</html>

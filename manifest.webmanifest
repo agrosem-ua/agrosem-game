@@ -1,0 +1,16 @@
+{
+  "name": "Сезон Агросем",
+  "short_name": "Агросем",
+  "description": "Гра Агросем: точний захист поля агродроном і збирання врожаю.",
+  "lang": "uk",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "landscape",
+  "background_color": "#000000",
+  "theme_color": "#FF0000",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

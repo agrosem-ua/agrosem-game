@@ -14,7 +14,7 @@
 :root{
   --red:#FF0000; --ink:#0d0d0d; --panel:rgba(14,14,14,.86); --card:#161616;
   --white:#ffffff; --muted:#b9b4ae; --line:rgba(255,255,255,.14);
-  --herb:#f2c230; --ins:#ff8a1f; --fung:#a274ff; --ok:#4ee07e; --grain:#e9bd45; --fuel:#ff9d1c;
+  --herb:#f2c230; --ins:#ff8a1f; --fung:#a274ff; --ok:#4ee07e; --grain:#e9bd45; --fuel:#ff9d1c; --leap:#e6007e;
   --font:Arial,"Helvetica Neue",Helvetica,sans-serif;
   color-scheme:dark;
 }
@@ -30,7 +30,10 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 
 /* верхня панель */
 #top{position:absolute;left:0;right:0;top:0;height:64px;display:flex;align-items:center;gap:20px;
-  padding:0 20px;background:var(--panel);border-bottom:1px solid var(--line);box-sizing:border-box}
+  padding:0 20px 0 130px;background:var(--panel);border-bottom:1px solid var(--line);box-sizing:border-box}
+#bBack{position:absolute;left:12px;top:11px;z-index:15;height:42px;padding:0 16px;border-radius:999px;border:2px solid var(--line);
+  background:rgba(20,20,20,.85);color:var(--white);font-size:17px;font-weight:700}
+#bBack[hidden]{display:none}
 #top .logo{height:30px;width:auto}
 #stage{font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
 #timer{margin-left:auto;margin-right:auto;font-size:34px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:.02em}
@@ -53,6 +56,33 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 .pbtn b{display:block;font-size:24px}
 .pbtn small{display:block;font-size:14px;color:var(--muted);margin-top:3px}
 .pbtn.sel{background:#2b2b2b}
+.pbtn.leap{flex:1.1;background:#1f0d17;max-width:400px}
+.pbtn.leap .ring{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;flex:none;
+  background:conic-gradient(var(--leap) calc(var(--p,0) * 1turn), #3d1a2c 0)}
+.pbtn.leap .ring svg{width:46px;height:46px;background:#1f0d17;border-radius:50%;padding:8px;box-sizing:border-box}
+.pbtn.leap small{color:#ffb3d9;font-size:16px;margin-top:6px}
+.pbtn.leap.ready{border-color:var(--leap);animation:leapPulse .55s ease-in-out infinite alternate}
+.pbtn.leap.on{border-color:var(--leap);background:#3a0d24}
+@keyframes leapPulse{to{box-shadow:0 0 0 7px rgba(230,0,126,.4);transform:scale(1.03)}}
+.bbl-logo{display:block;height:24px;aspect-ratio:754.78/123.11;background:url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGlkPSJMYWFnXzEiIHZpZXdCb3g9IjAgMCA3NTQuNzggMTIzLjExIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4uY2xzLTF7ZmlsbDojZmMwO30uY2xzLTJ7ZmlsbDojMTE0NjM0O30uY2xzLTN7ZmlsbDojYTEyOTQ1O30uY2xzLTR7ZmlsbDojNzg4NTNiO30uY2xzLTV7ZmlsbDojZWNhYjAwO30uY2xzLTZ7ZmlsbDojNGE4NjhmO30uY2xzLTd7ZmlsbDojYzg5MjEzO30uY2xzLTh7ZmlsbDojMmEyNzUzO30uY2xzLTl7ZmlsbDojMDA4NDQwO30uY2xzLTEwe2ZpbGw6I2U2MDA3ZTt9PC9zdHlsZT4KICA8L2RlZnM+CiAgPHBvbHlnb24gY2xhc3M9ImNscy0xMCIgcG9pbnRzPSI1MjYuOTQgODMuNTkgNDgwLjM0IDgzLjU5IDQ4MC4zNCA3NC45NSA1MTMuNDkgNzQuOTUgNTEzLjQ5IDQ3Ljg5IDQ4MC4zNCA0Ny44OSA0ODAuMzQgMzkuMzkgNTI2Ljk4IDM5LjM5IDUyNi45OCAxMS45MiA0NDEuMzkgMTEuOTIgNDQxLjM5IDExMS4wNiA1MjYuOTQgMTExLjA2IDUyNi45NCA4My41OSI+PC9wb2x5Z29uPgogIDxwb2x5Z29uIGNsYXNzPSJjbHMtMTAiIHBvaW50cz0iNDMyLjY1IDc5LjM0IDM5NS4xMSA3OS4zNCAzOTUuMTEgMTEuOTIgMzU0LjMyIDExLjkyIDM1NC4zMiAxMTEuMDYgNDMyLjY1IDExMS4wNiA0MzIuNjUgNzkuMzQiPjwvcG9seWdvbj4KICA8cGF0aCBjbGFzcz0iY2xzLTEwIiBkPSJNNzQwLjAxLDQwLjAzYy0zLjUzLTE5LjY0LTE5Ljg1LTI4LjExLTQ1LjMxLTI4LjExaC00NC40OHYyNy42Mmg0Mi42M2M3LjA4LDAsMTAuNzYsMi45NywxMC43Niw5LjA2cy0zLjY4LDkuMDctMTAuNzYsOS4wN2gtNDIuNjN2NTMuNGgzOS42NnYtMjUuNzhoNC44MmMyNS40NiwwLDQxLjc4LTguNDcsNDUuMzEtMjguMTEuNDgtMi42NS43My01LjUuNzMtOC41N3MtLjI1LTUuOTItLjczLTguNTdaIj48L3BhdGg+CiAgPHBhdGggY2xhc3M9ImNscy0xMCIgZD0iTTU2Ni43NywxMS45MmwtMzEuNDQsOTkuMTVoMzguMWwyLjk3LTExLjQ3aDI0LjA4bDIuOTcsMTEuNDdoMzguMzhsLTMxLjQ0LTk5LjE1aC00My42MlpNNTgyLjkyLDczLjY3YzIuNjktMTEuMDUsNC45Ni0yMi4yNCw1LjUyLTI5LjMyLjU3LDcuMDgsMi44MywxOC4yNyw1LjM4LDI5LjMyaC0xMC45MVoiPjwvcGF0aD4KICA8cGF0aCBjbGFzcz0iY2xzLTEwIiBkPSJNMjIxLjMxLDU5LjM1YzguOTItNC4zOSwxNS4wMS0xMC4zNCwxNS4wMS0yMi4yMywwLTE1LjI5LTExLjc1LTI1LjIxLTM4LjUyLTI1LjIxaC01NC4yMnY5OS4xMmg1NC41YzI2LjM0LDAsMzkuNjUtMTAuNjIsMzkuNjUtMjkuNzQsMC0xMi42LTcuMDgtMTguNDEtMTYuNDMtMjEuOTVaTTE5MC40NCw4Ni4xMmgtOC4zNXYtMTMuODhoOC4zNWM1LjI0LDAsOC4wNywyLjQxLDguMDcsNi45NHMtMi44Myw2Ljk0LTguMDcsNi45NFpNMTkwLjQ0LDUwLjcyaC04LjM1di0xMy44OGg4LjM1YzUuMjQsMCw4LjA3LDIuNDEsOC4wNyw2Ljk0cy0yLjgzLDYuOTQtOC4wNyw2Ljk0WiI+PC9wYXRoPgogIDxwYXRoIGNsYXNzPSJjbHMtMTAiIGQ9Ik0zMjYuNzMsNTkuMzVjOC45Mi00LjM5LDE1LjAxLTEwLjM0LDE1LjAxLTIyLjIzLDAtMTUuMjktMTEuNzUtMjUuMjEtMzguNTItMjUuMjFoLTU0LjIydjk5LjEyaDU0LjVjMjYuMzQsMCwzOS42NS0xMC42MiwzOS42NS0yOS43NCwwLTEyLjYtNy4wOC0xOC40MS0xNi40My0yMS45NVpNMjk1Ljg2LDg2LjEyaC04LjM1di0xMy44OGg4LjM1YzUuMjQsMCw4LjA3LDIuNDEsOC4wNyw2Ljk0cy0yLjgzLDYuOTQtOC4wNyw2Ljk0Wk0yOTUuODYsNTAuNzJoLTguMzV2LTEzLjg4aDguMzVjNS4yNCwwLDguMDcsMi40MSw4LjA3LDYuOTRzLTIuODMsNi45NC04LjA3LDYuOTRaIj48L3BhdGg+CiAgPHBvbHlnb24gY2xhc3M9ImNscy05IiBwb2ludHM9IjM4OC45MSAxMTEuMzIgMzg4LjkyIDExMS4zMiAzODguOTIgMTExLjQ0IDM4OC45MSAxMTEuMzIiPjwvcG9seWdvbj4KICA8cGF0aCBjbGFzcz0iY2xzLTUiIGQ9Ik02OS4yMywxMS45MnMwLDAsMCwwYzAsLjAyLS4wMi4xMy0uMDQuMy0uNDEsMi44NC00LjQyLDI1LjY0LTI3LjI4LDI1LjY0LTI0LjA5LDAtMjcuMDgsMTkuNTEtMjcuMTUsMjBoMjkuMzVjMTMuOTUtLjQxLDI1LjEyLTExLDI1LjEyLTI0VjExLjkyczAsMCwwLDBaIj48L3BhdGg+CiAgPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNNDEuMjYsMzIuMDVjMjQuMTMsMCwyNy4yNi0xOS43MSwyNy4zMi0yMC4xM2gtMjkuMzZjLTEzLjk1LjQtMjUuMTIsMTAuOTktMjUuMTIsMjR2MjEuOTRzLjAzLS4yOC4wMy0uMjhjLjM5LTIuNzcsNC4yNS0yNS41MywyNy4xMi0yNS41M1oiPjwvcGF0aD4KICA8cGF0aCBjbGFzcz0iY2xzLTciIGQ9Ik02OC41OSwxMS45MmgwYy0uMDYuNDItMy4xOSwyMC4xMy0yNy4zMiwyMC4xMy0yMi44NywwLTI2LjczLDIyLjc2LTI3LjEyLDI1LjUzbC0uMDQuMjhoLjY1Yy4wNy0uNDksMy4wNy0yMCwyNy4xNS0yMHMyNi44Ny0yMi44LDI3LjI4LTI1LjY0Yy4wMi0uMTYuMDQtLjI3LjA0LS4zLDAsMCwwLDAsMCwwaC0uNjVaIj48L3BhdGg+CiAgPHBhdGggY2xhc3M9ImNscy05IiBkPSJNMTMyLjE2LDExLjkyczAsMCwwLDBjMCwuMDItLjAyLjEzLS4wNC4zLS40MSwyLjg0LTQuNDIsMjUuNjQtMjcuMjgsMjUuNjQtMjQuMDksMC0yNy4wOCwxOS41MS0yNy4xNSwyMGgyOS4zNWMxMy45NS0uNDEsMjUuMTItMTEsMjUuMTItMjRWMTEuOTJzMCwwLDAsMFoiPjwvcGF0aD4KICA8cGF0aCBjbGFzcz0iY2xzLTYiIGQ9Ik0xMDQuMTksMzIuMDVjMjQuMTMsMCwyNy4yNi0xOS43MSwyNy4zMi0yMC4xM2gtMjkuMzZjLTEzLjk1LjQtMjUuMTIsMTAuOTktMjUuMTIsMjR2MjEuOTRzLjAzLS4yOC4wMy0uMjhjLjM5LTIuNzcsNC4yNS0yNS41MywyNy4xMi0yNS41M1oiPjwvcGF0aD4KICA8cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik0xMzEuNTEsMTEuOTJoMGMtLjA2LjQyLTMuMTksMjAuMTMtMjcuMzIsMjAuMTMtMjIuODcsMC0yNi43MywyMi43Ni0yNy4xMiwyNS41M2wtLjA0LjI4aC42NWMuMDctLjQ5LDMuMDctMjAsMjcuMTUtMjBzMjYuODctMjIuOCwyNy4yOC0yNS42NGMuMDItLjE2LjA0LS4yNy4wNC0uMywwLDAsMCwwLDAsMGgtLjY1WiI+PC9wYXRoPgogIDxwYXRoIGNsYXNzPSJjbHMtNCIgZD0iTTY5LjIzLDY1LjA0czAsMCwwLDBjMCwuMDItLjAyLjEzLS4wNC4zLS40MSwyLjg0LTQuNDIsMjUuNjQtMjcuMjgsMjUuNjQtMjQuMDksMC0yNy4wOCwxOS41MS0yNy4xNSwyMGgyOS4zNWMxMy45NS0uNDEsMjUuMTItMTEsMjUuMTItMjR2LTIxLjkzczAsMCwwLDBaIj48L3BhdGg+CiAgPHBhdGggY2xhc3M9ImNscy05IiBkPSJNNDEuMjYsODUuMThjMjQuMTMsMCwyNy4yNi0xOS43MSwyNy4zMi0yMC4xM2gtMjkuMzZjLTEzLjk1LjQtMjUuMTIsMTAuOTktMjUuMTIsMjR2MjEuOTRzLjAzLS4yOC4wMy0uMjhjLjM5LTIuNzcsNC4yNS0yNS41MywyNy4xMi0yNS41M1oiPjwvcGF0aD4KICA8cGF0aCBjbGFzcz0iY2xzLTIiIGQ9Ik02OC41OSw2NS4wNGgwYy0uMDYuNDItMy4xOSwyMC4xMy0yNy4zMiwyMC4xMy0yMi44NywwLTI2LjczLDIyLjc2LTI3LjEyLDI1LjUzbC0uMDQuMjhoLjY1Yy4wNy0uNDksMy4wNy0yMCwyNy4xNS0yMHMyNi44Ny0yMi44LDI3LjI4LTI1LjY0Yy4wMi0uMTYuMDQtLjI3LjA0LS4zLDAsMCwwLDAsMCwwaC0uNjVaIj48L3BhdGg+CiAgPHBhdGggY2xhc3M9ImNscy0zIiBkPSJNMTMyLjE2LDY1LjA0czAsMCwwLDBjMCwuMDItLjAyLjEzLS4wNC4zLS40MSwyLjg0LTQuNDIsMjUuNjQtMjcuMjgsMjUuNjQtMjQuMDksMC0yNy4wOCwxOS41MS0yNy4xNSwyMGgyOS4zNWMxMy45NS0uNDEsMjUuMTItMTEsMjUuMTItMjR2LTIxLjkzczAsMCwwLDBaIj48L3BhdGg+CiAgPHBhdGggY2xhc3M9ImNscy0xMCIgZD0iTTEwNC4xOSw4NS4xOGMyNC4xMywwLDI3LjI2LTE5LjcxLDI3LjMyLTIwLjEzaC0yOS4zNmMtMTMuOTUuNC0yNS4xMiwxMC45OS0yNS4xMiwyNHYyMS45NHMuMDMtLjI4LjAzLS4yOGMuMzktMi43Nyw0LjI1LTI1LjUzLDI3LjEyLTI1LjUzWiI+PC9wYXRoPgogIDxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTEzMS41MSw2NS4wNGgwYy0uMDYuNDItMy4xOSwyMC4xMy0yNy4zMiwyMC4xMy0yMi44NywwLTI2LjczLDIyLjc2LTI3LjEyLDI1LjUzbC0uMDQuMjhoLjY1Yy4wNy0uNDksMy4wNy0yMCwyNy4xNS0yMHMyNi44Ny0yMi44LDI3LjI4LTI1LjY0Yy4wMi0uMTYuMDQtLjI3LjA0LS4zLDAsMCwwLDAsMCwwaC0uNjVaIj48L3BhdGg+Cjwvc3ZnPgo=) left center/contain no-repeat;
+  filter:drop-shadow(0 0 1px rgba(255,255,255,.35))}
+.bbl-logo.bbl-lg{height:40px;flex:none}
+#gCov .fill{background:#46a8ff} #gTank .fill{background:#7bd88f} #gTank.over .fill{background:var(--red)}
+#tools{align-items:center;gap:28px}
+.maplegend{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:18px;color:#e6e2dd}
+.maplegend span{display:flex;align-items:center;gap:8px}
+.maplegend i{width:22px;height:22px;border-radius:4px;display:block}
+.leapnote{display:flex;gap:18px;align-items:center;background:#1f0d17;border:1px solid rgba(230,0,126,.45);border-radius:14px;padding:14px 18px}
+.leapnote p{font-size:18px}
+.steps{margin:0;padding-left:26px;display:flex;flex-direction:column;gap:6px;font-size:20px;line-height:1.3;color:#e6e2dd}
+.steps b{color:var(--white)}
+.cmp{display:flex;flex-direction:column;gap:10px;background:#1f0d17;border:1px solid rgba(230,0,126,.45);border-radius:14px;padding:14px 18px}
+.cmprow{display:grid;grid-template-columns:140px 1fr 90px;gap:14px;align-items:center;font-size:18px}
+.cmprow .bbl-logo{height:20px}
+.cmprow b{text-align:right;font-variant-numeric:tabular-nums;font-size:22px}
+.cmpbar{height:18px;background:#2a2a2a;border-radius:9px;overflow:hidden}
+.cmpbar i{display:block;height:100%;border-radius:9px;width:0}
+@media (prefers-reduced-motion:reduce){.pbtn.leap.ready{animation:none}}
 .pbtn[data-p=herb] .ic{background:var(--herb)} .pbtn[data-p=herb].sel{border-color:var(--herb)}
 .pbtn[data-p=ins] .ic{background:var(--ins)}   .pbtn[data-p=ins].sel{border-color:var(--ins)}
 .pbtn[data-p=fung] .ic{background:var(--fung)} .pbtn[data-p=fung].sel{border-color:var(--fung)}
@@ -136,6 +166,15 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 .btn-red.sm{font-size:19px;padding:14px 26px}
 .btn-ghost.sm{font-size:17px;padding:12px 20px}
 .row.nowrap{flex-wrap:nowrap}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gift{font-size:15px;line-height:1.3;color:#ffd24a}
+.err{font-size:15px;color:#ff6b6b;font-weight:700}
+/* службова панель */
+.leads-wrap{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:12px}
+.leads{width:100%;border-collapse:collapse;font-size:17px;font-variant-numeric:tabular-nums}
+.leads th{position:sticky;top:0;background:#000;color:var(--white);text-align:left;padding:8px 12px;font-size:14px;text-transform:uppercase;letter-spacing:.04em}
+.leads td{padding:8px 12px;border-top:1px solid var(--line);-webkit-user-select:text;user-select:text}
+.leads td.empty{color:var(--muted)}
 .added{font-size:20px;color:var(--ok);font-weight:700}
 .board h3,.sboard h3{margin:0;font-size:22px}
 .board-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
@@ -151,6 +190,24 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 .sboard{position:absolute;right:48px;top:50%;transform:translateY(-50%);width:400px;display:flex;flex-direction:column;gap:12px;
   background:rgba(10,10,10,.84);border:1px solid var(--line);border-radius:20px;padding:22px 24px}
 
+/* компактні картки: усе вміщається на екрані планшета */
+.card{padding:16px 28px;gap:10px;width:min(760px,92vw);max-height:90vh;margin-top:36px}
+.card h2{font-size:28px}
+.card p{font-size:16px;line-height:1.3}
+.steps{font-size:16px;gap:3px;padding-left:22px}
+.maplegend{font-size:14px;gap:6px 16px}
+.maplegend i{width:16px;height:16px}
+.leapnote{padding:8px 14px;gap:12px}
+.leapnote p{font-size:14px;line-height:1.28}
+.bbl-logo.bbl-lg{height:30px}
+.levels span{font-size:15px}
+.lvl{font-size:16px;padding:8px 20px}
+.btn-red{font-size:20px;padding:12px 40px}
+.rule{font-size:15px;padding:8px 12px}
+.rule b{font-size:16px}
+.rule i{width:30px;height:30px}
+.stat b{font-size:24px}
+.card.wide{width:min(1100px,95vw);padding:16px 26px}
 #portrait{position:absolute;inset:0;background:var(--red);display:none;align-items:center;justify-content:center;
   font-size:28px;text-align:center;padding:40px;box-sizing:border-box;z-index:20}
 @media (orientation:portrait){#portrait{display:flex}}
@@ -182,9 +239,9 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
   </header>
 
   <nav id="tools" class="bar" hidden>
-    <button class="pbtn sel" data-p="herb" type="button"><span class="ic"><svg><use href="#i-herb"/></svg></span><span><b>Гербіцид</b><small>проти бур'янів</small></span></button>
-    <button class="pbtn" data-p="ins" type="button"><span class="ic"><svg><use href="#i-ins"/></svg></span><span><b>Інсектицид</b><small>проти шкідників</small></span></button>
-    <button class="pbtn" data-p="fung" type="button"><span class="ic"><svg><use href="#i-fung"/></svg></span><span><b>Фунгіцид</b><small>проти хвороб</small></span></button>
+    <div class="gauge" id="gCov"><div class="lbl">Оброблено поля <b id="vCov">0%</b></div><div class="track"><div class="fill" id="fCov"></div></div></div>
+    <div class="gauge" id="gTank"><div class="lbl">Препарат / норма <b id="vTank">0 / 250 л</b></div><div class="track"><div class="fill" id="fTank"></div></div></div>
+    <button id="leapBtn" class="pbtn leap" type="button" aria-disabled="true"><span class="ring"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="#ff5cb0"/></svg></span><span><span class="bbl-logo" role="img" aria-label="BBLeap"></span><small id="leapTxt">Заряд 0%</small></span></button>
   </nav>
 
   <div id="gauges" class="bar" hidden>
@@ -193,6 +250,7 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
     <div id="hint">Ведіть комбайн пальцем — жатка зрізає пшеницю.</div>
   </div>
 
+  <button id="bBack" type="button" hidden>← Назад</button>
   <div id="toast" style="opacity:0"></div>
 
   <section id="start" class="screen">
@@ -211,14 +269,22 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 
   <section id="brief1" class="screen dim" hidden>
     <div class="card">
-      <h2>Етап 1. <span>Точний захист агродроном</span></h2>
-      <p>Мультиспектральний дрон знайде проблемні вогнища на полі. Натисніть і тримайте палець на вогнищі — агродрон прилетить і обприскає його.</p>
-      <div class="legend">
-        <div class="t"><span class="dot" style="background:var(--herb)"><svg><use href="#i-herb"/></svg></span>Бур'яни</div><span class="arr">→</span><b>Гербіцид</b>
-        <div class="t"><span class="dot" style="background:var(--ins)"><svg><use href="#i-ins"/></svg></span>Шкідники</div><span class="arr">→</span><b>Інсектицид</b>
-        <div class="t"><span class="dot" style="background:var(--fung)"><svg><use href="#i-fung"/></svg></span>Хвороба</div><span class="arr">→</span><b>Фунгіцид</b>
+      <h2>Етап 1. <span>Оприскування поля</span></h2>
+      <p>Пшениця у фазі кущіння — час обробити все поле баковою сумішшю гербіциду й фунгіциду. На це 60 секунд.</p>
+      <ol class="steps">
+        <li><b>Затисніть палець</b> на полі й ведіть дрон уздовж <b style="color:#ffde00">жовтої лінії</b> — за ним лишається темний слід обробки.</li>
+        <li>Дійшли до краю — <b>переходьте на наступну лінію</b>. Відпустіть палець — форсунки вимкнуться.</li>
+        <li>Не проходьте двічі по тому самому місці — це <b style="color:#ff9600">подвійна доза й опік</b>.</li>
+      </ol>
+      <div class="maplegend">
+        <span><i style="background:#1d5226"></i>оброблено</span>
+        <span><i style="background:#ff9600"></i>перекриття — подвійна доза, опік</span>
+        <span><i style="background:#eb1e00"></i>осередки бур'янів — не пропускайте</span>
       </div>
-      <p class="note">Препарат обирайте кнопками внизу. Краплі повз вогнище — це перевитрата. Час — 60 секунд.</p>
+      <div class="leapnote">
+        <span class="bbl-logo bbl-lg" role="img" aria-label="BBLeap"></span>
+        <p>Обробляйте поле без перекриттів — і BBLeap зарядиться. Натисніть кнопку: 15 секунд кожна форсунка сама вимикається там, де вже оброблено, і вмикається, де треба. Ні краплі зайвої — у підсумку побачите, скільки літрів заощаджено.</p>
+      </div>
       <div class="levels" role="radiogroup" aria-label="Рівень складності">
         <span>Рівень:</span>
         <button class="lvl" type="button" role="radio" data-l="easy">Легкий</button>
@@ -231,12 +297,16 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 
   <section id="result1" class="screen dim" hidden>
     <div class="card">
-      <h2>Поле <span>захищено</span></h2>
+      <h2>Поле <span>оброблено</span></h2>
       <div class="stats">
-        <div class="stat"><small>Вилікувано</small><b id="r1Treat">0</b></div>
-        <div class="stat"><small>Втрачено</small><b id="r1Lost">0</b></div>
-        <div class="stat"><small>Точність</small><b id="r1Prec">0%</b></div>
-        <div class="stat"><small>Стан посівів</small><b id="r1Crop">0%</b></div>
+        <div class="stat"><small>Оброблено поля</small><b id="r1Treat">0%</b></div>
+        <div class="stat"><small>Осередки бур'янів</small><b id="r1Lost">0%</b></div>
+        <div class="stat"><small>Перекриття</small><b id="r1Prec">0%</b></div>
+        <div class="stat"><small>Препарат</small><b id="r1Crop">0 л</b></div>
+      </div>
+      <div id="r1Cmp" class="cmp">
+        <div class="cmprow"><span>Без BBLeap</span><div class="cmpbar"><i id="cmpA" style="background:#8c8c8c"></i></div><b id="cmpAv">0 л</b></div>
+        <div class="cmprow"><span class="bbl-logo" role="img" aria-label="З BBLeap"></span><div class="cmpbar"><i id="cmpB" style="background:var(--leap)"></i></div><b id="cmpBv">0 л</b></div>
       </div>
       <p id="r1Msg"></p>
       <div class="row"><button id="bNext" class="btn-red" type="button">Далі: збирання врожаю</button></div>
@@ -251,7 +321,7 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
         <div class="rule"><i style="background:var(--fuel)">П</i><span><b>Пальне</b>Закінчується — під'їдьте до паливозаправника.</span></div>
         <div class="rule"><i style="background:var(--grain)">Б</i><span><b>Бункер</b>Повний — вивантажте зерно в перевантажувач за трактором.</span></div>
         <div class="rule"><i style="background:#cfcfcf">Л</i><span><b>Опори ЛЕП</b>Стоять посеред поля — об'їжджайте.</span></div>
-        <div class="rule"><i style="background:#8fa4b8">Н</i><span><b>Вилягання і мокра низина</b>На полеглій пшениці та в низині комбайн іде повільніше.</span></div>
+        <div class="rule"><i style="background:#8fa4b8">Н</i><span><b>Наслідки оприскування</b>Зелені бур'яни на пропусках і бурі плями опіку — там урожай нижчий, а комбайн іде повільніше.</span></div>
       </div>
       <p class="note">Техніка John Deere із супутниковим приймачем StarFire. Урожайність залежить від того, як ви захистили поле на першому етапі.</p>
       <div class="row"><button id="bGo2" class="btn-red" type="button">Почати</button></div>
@@ -268,8 +338,8 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
         <div class="note" style="padding-bottom:8px">балів за сезон<br>рівень: <b id="fLvl"></b></div>
       </div>
       <div class="stats s3">
-        <div class="stat"><small>Точність захисту</small><b id="fPrec">0%</b></div>
-        <div class="stat"><small>Вилікувано вогнищ</small><b id="fTreat">0</b></div>
+        <div class="stat"><small>Оброблено поля</small><b id="fPrec">0%</b></div>
+        <div class="stat"><small>Перекриття</small><b id="fTreat">0%</b></div>
         <div class="stat"><small>Урожайність</small><b id="fYield">0</b></div>
         <div class="stat"><small>Зібрано</small><b id="fTons">0</b></div>
         <div class="stat"><small>Зібрана площа</small><b id="fArea">0%</b></div>
@@ -277,8 +347,13 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
       </div>
       <form id="nameForm" class="nameform" autocomplete="off">
         <label for="pname">Впишіть ім'я в рейтинг дня</label>
+        <div class="formgrid">
+          <input id="pname" name="pname" type="text" maxlength="18" enterkeyhint="next" placeholder="Ваше ім'я" autocomplete="off" autocapitalize="words" spellcheck="false">
+          <input id="pphone" name="pphone" type="tel" inputmode="tel" maxlength="19" enterkeyhint="done" placeholder="Телефон (за бажанням)" autocomplete="off">
+        </div>
+        <div class="gift">Залиште телефон — і отримайте подарунок від Агросем на стенді. Номер бачать лише наші консультанти.</div>
+        <div id="phoneErr" class="err" hidden>Перевірте номер: формат +380 XX XXX XX XX</div>
         <div class="row nowrap">
-          <input id="pname" name="pname" type="text" maxlength="18" enterkeyhint="done" placeholder="Ваше ім'я" autocomplete="off" autocapitalize="words" spellcheck="false">
           <button class="btn-red sm" type="submit">Додати</button>
           <button id="bSkip" class="btn-ghost sm" type="button">Пропустити</button>
         </div>
@@ -304,6 +379,27 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
     </div>
   </section>
 
+  <section id="staff" class="screen dim" hidden>
+    <div class="card wide">
+      <h2>Службова <span>панель</span></h2>
+      <p class="note">Контакти гравців, які залишили телефон для подарунка. Зберігаються лише на цьому планшеті й не зникають уночі разом із рейтингом.</p>
+      <div class="leads-wrap">
+        <table class="leads">
+          <thead><tr><th>Дата</th><th>Час</th><th>Ім'я</th><th>Телефон</th><th>Бали</th><th>Таблиця</th></tr></thead>
+          <tbody id="leadsBody"></tbody>
+        </table>
+      </div>
+      <div id="staffMsg" class="note"></div>
+      <div class="row">
+        <button id="bCopy" class="btn-red sm" type="button">Копіювати список</button>
+        <button id="bCsv" class="btn-ghost sm" type="button">Завантажити CSV</button>
+        <button id="bResetBoard" class="btn-ghost sm" type="button">Очистити рейтинг дня</button>
+        <button id="bDelLeads" class="btn-ghost sm" type="button">Видалити контакти</button>
+        <button id="bStaffClose" class="btn-ghost sm" type="button">Закрити</button>
+      </div>
+    </div>
+  </section>
+
   <div id="portrait">Поверніть планшет горизонтально</div>
 </div>
 
@@ -323,13 +419,13 @@ const fmt1 = v => v.toFixed(1).replace('.', ',');
 const PROD = { herb: { name: 'Гербіцид', col: '#f2c230' }, ins: { name: 'Інсектицид', col: '#ff8a1f' }, fung: { name: 'Фунгіцид', col: '#a274ff' } };
 const TYPES = { weed: { name: "Бур'яни", prod: 'herb' }, pest: { name: 'Шкідники', prod: 'ins' }, dis: { name: 'Хвороба', prod: 'fung' } };
 const TYPE_KEYS = ['weed', 'pest', 'dis'];
-const SCREENS = ['start', 'brief1', 'result1', 'brief2', 'final'];
+const SCREENS = ['start', 'brief1', 'result1', 'brief2', 'final', 'staff'];
 // рівні складності: інтервал появи вогнищ (початок→кінець), час життя вогнища, макс. одночасно,
 // скільки крапель треба на вогнище (× радіус), запас пального і місткість бункера для комбайна
 const LEVELS = {
-  easy:   { name: 'Легкий',   mult: 1,    spawn: [3.4, 2.0], life: [16, 11],  max: 4, need: 1.1, start: 2, fuel: 9500, bunker: 540 },
-  medium: { name: 'Середній', mult: 1.15, spawn: [2.9, 1.5], life: [13.5, 9], max: 5, need: 1.35, start: 3, fuel: 7600, bunker: 480 },
-  hard:   { name: 'Важкий',   mult: 1.3,  spawn: [2.6, 1.1], life: [12, 7.5], max: 6, need: 1.6, start: 3, fuel: 6200, bunker: 430 }
+  easy:   { name: 'Легкий',   mult: 1,    swath: 33, hot: 3, fuel: 9500, bunker: 540 },
+  medium: { name: 'Середній', mult: 1.15, swath: 28, hot: 4, fuel: 7600, bunker: 480 },
+  hard:   { name: 'Важкий',   mult: 1.3,  swath: 24, hot: 5, fuel: 6200, bunker: 430 }
 };
 let level = 'medium';
 try { const saved = localStorage.getItem('agrosem-level'); if (LEVELS[saved]) level = saved; } catch (e) {}
@@ -349,32 +445,6 @@ function mk(w, h) {
   c.width = Math.round(w * DPR); c.height = Math.round(h * DPR);
   const x = c.getContext('2d'); x.setTransform(DPR, 0, 0, DPR, 0, 0);
   return [c, x];
-}
-function buildLayers() {
-  let [c, x] = mk(W, H);
-  x.fillStyle = '#5b4129'; x.fillRect(0, 0, W, H);
-  for (let i = 0; i < W * H / 900; i++) {
-    x.fillStyle = `rgba(${rnd(25, 95) | 0},${rnd(18, 60) | 0},${rnd(8, 30) | 0},${rnd(.15, .35)})`;
-    x.fillRect(rnd(0, W), rnd(0, H), rnd(1, 3), rnd(1, 3));
-  }
-  for (let y = 11; y < H; y += 22) {
-    x.fillStyle = 'rgba(38,26,14,.35)'; x.fillRect(0, y + 6, W, 3);
-    for (let px = rnd(0, 8); px < W; px += rnd(7, 11)) {
-      const s = rnd(3.5, 6.5);
-      x.fillStyle = `hsl(${rnd(92, 122) | 0},${rnd(42, 62) | 0}%,${rnd(26, 38) | 0}%)`;
-      x.beginPath(); x.ellipse(px, y + rnd(-2, 2), s, s * .7, rnd(0, 3.14), 0, TAU); x.fill();
-    }
-  }
-  bg = c;
-  [c, x] = mk(W, H);
-  x.fillStyle = 'rgba(0,160,70,.22)'; x.fillRect(0, 0, W, H);
-  for (let i = 0; i < 28; i++) {
-    const cx = rnd(0, W), cy = rnd(0, H), r = rnd(90, 260), hue = rnd(75, 140);
-    const gr = x.createRadialGradient(cx, cy, 0, cx, cy, r);
-    gr.addColorStop(0, `hsla(${hue},90%,45%,.32)`); gr.addColorStop(1, `hsla(${hue},90%,45%,0)`);
-    x.fillStyle = gr; x.fillRect(cx - r, cy - r, r * 2, r * 2);
-  }
-  ndvi = c;
 }
 function resize() {
   DPR = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -439,200 +509,296 @@ function sfx(kind) {
   else if (kind === 'tick') env(990, 0, 'sine', .06, .08);
   else if (kind === 'done') env(520, 1040, 'triangle', .12, .45);
 }
-
-/* ======================= ЕТАП 1: дрон ======================= */
-const drone = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0, prop: 0, spraying: false };
-let prod = 'herb', spots = [], drops = [], splats = [], lastTypes = [];
-let s1 = null, scanT = 0, playT = 0, spawnT = 0, emitAcc = 0, wasteRecent = 0, wasteWarnAt = -9;
-const PA = () => ({ x0: 40, x1: W - 40, y0: TOP + 46, y1: H - BOT - 30 });
-
-function spawnSpot(prog, lifeBonus = 0) {
-  const a = PA();
-  for (let k = 0; k < 30; k++) {
-    const r = rnd(44, 62);
-    const x = rnd(a.x0 + r, a.x1 - r), y = rnd(a.y0 + r, a.y1 - r);
-    if (spots.some(s => Math.hypot(s.x - x, s.y - y) < s.r0 * 1.25 + r * 1.25 + 30)) continue;
-    let type = TYPE_KEYS[(Math.random() * 3) | 0];
-    if (lastTypes.length >= 2 && lastTypes.every(tp => tp === type)) type = TYPE_KEYS[(TYPE_KEYS.indexOf(type) + 1 + ((Math.random() * 2) | 0)) % 3];
-    lastTypes.push(type); if (lastTypes.length > 2) lastTypes.shift();
-    spots.push({
-      x, y, r0: r, r, type, age: 0, life: lerp(L().life[0], L().life[1], prog) + lifeBonus, prog: 0, need: Math.round(r * L().need),
-      state: 'active', fx: 0, warn: -9,
-      bits: Array.from({ length: 7 }, () => ({ a: rnd(0, TAU), d: rnd(.05, .68), s: rnd(.75, 1.2), p: rnd(0, TAU) }))
-    });
-    return true;
-  }
-  return false;
+// шум: переливання пального (булькання) і висипання зерна (шурхіт)
+let noiseBuf = null;
+function noise(freq, q, dur, vol, sweepTo) {
+  if (!ac || muted) return;
+  if (!noiseBuf) { noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate); const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; }
+  const now = ac.currentTime, s = ac.createBufferSource(), f = ac.createBiquadFilter(), v = ac.createGain();
+  s.buffer = noiseBuf; s.loop = true; f.type = 'bandpass'; f.Q.value = q; f.frequency.setValueAtTime(freq, now);
+  if (sweepTo) f.frequency.exponentialRampToValueAtTime(sweepTo, now + dur);
+  v.gain.setValueAtTime(0, now); v.gain.linearRampToValueAtTime(vol, now + dur * .2); v.gain.exponentialRampToValueAtTime(.001, now + dur);
+  s.connect(f).connect(v).connect(ac.destination); s.start(now, Math.random() * .5); s.stop(now + dur + .02);
 }
-function emit() {
-  const a = rnd(0, TAU), rr = Math.sqrt(Math.random()) * 20;
-  drops.push({ sx: drone.x + rnd(-20, 20), sy: drone.y + rnd(-8, 8), ex: drone.x + Math.cos(a) * rr, ey: drone.y + 4 + Math.sin(a) * rr, t: 0, dur: rnd(.2, .32), prod });
+let loopAt = 0;
+function loopSfx(kind) {
+  if (!ac || muted || ac.currentTime < loopAt) return;
+  if (kind === 'fuel') { loopAt = ac.currentTime + .11; noise(rnd(260, 420), 6, .16, .22, rnd(520, 800)); }   // бульк-бульк
+  else { loopAt = ac.currentTime + .05; noise(rnd(2600, 4200), 1.2, .09, .2, 0); }                           // шурхіт зерна
 }
-function land(p) {
-  let hit = null;
-  for (const s of spots) if (s.state === 'active' && Math.hypot(p.ex - s.x, p.ey - s.y) < s.r) { hit = s; break; }
-  splats.push({ x: p.ex, y: p.ey, col: PROD[p.prod].col, age: 0 });
-  if (splats.length > 260) splats.shift();
-  if (!hit) { s1.waste++; wasteRecent++; return; }
-  const need = TYPES[hit.type].prod;
-  if (need === p.prod) {
-    s1.good++; hit.prog += 1 / hit.need;
-    if (hit.prog >= 1) {
-      hit.prog = 1; hit.state = 'done'; hit.fx = 0; s1.treated++;
-      floatText(hit.x, hit.y - hit.r - 14, 'Вилікувано!', '#5dff8a'); sfx('ok');
-      burst(hit.x, hit.y, '#7dffa6', 18);
+
+/* ======================= ПОЛЕ (спільне для обох етапів) ======================= */
+// поле 25 га, потенціал 7,5 т/га, норма бакової суміші 10 л/га = 250 л на поле
+const CELL = 16, FIELD_HA = 25, BASE_YIELD = 7.5, NORM_L = 250;
+let R = null, cols = 0, rows = 0, totalCells = 0;
+let dose = null, seen = null, hot = null, hotZones = [], hotTotal = 0;
+
+function layoutField() {
+  R = { x0: 110, y0: TOP + 76, x1: W - 110, y1: H - BOT - 62 };
+  cols = Math.max(1, Math.floor((R.x1 - R.x0) / CELL)); rows = Math.max(1, Math.floor((R.y1 - R.y0) / CELL));
+  R.x1 = R.x0 + cols * CELL; R.y1 = R.y0 + rows * CELL;
+}
+function inEllipse(px, py, e) { const dx = (px - e.x) / e.rx, dy = (py - e.y) / e.ry; return dx * dx + dy * dy <= 1; }
+function drawGround(x) {                         // трава й польова дорога навколо поля
+  const fw = R.x1 - R.x0, fh = R.y1 - R.y0;
+  x.fillStyle = '#6f8a3a'; x.fillRect(0, 0, W, H);
+  for (let i = 0; i < 1600; i++) { x.fillStyle = `rgba(${rnd(60, 110) | 0},${rnd(110, 150) | 0},${rnd(40, 70) | 0},.5)`; x.fillRect(rnd(0, W), rnd(0, H), 2, rnd(2, 5)); }
+  x.fillStyle = '#9b8257'; x.fillRect(R.x0 - 52, R.y0 - 52, fw + 104, fh + 104);
+  for (let i = 0; i < 1400; i++) { x.fillStyle = `rgba(${rnd(110, 150) | 0},${rnd(90, 120) | 0},${rnd(55, 80) | 0},.6)`; x.fillRect(rnd(R.x0 - 52, R.x1 + 52), rnd(R.y0 - 52, R.y1 + 52), rnd(1, 3), rnd(1, 3)); }
+  x.fillStyle = 'rgba(80,62,38,.35)';
+  for (const off of [-38, -18]) { x.fillRect(R.x0 + off, R.y0 - 52, 6, fh + 104); x.fillRect(R.x1 - off - 6, R.y0 - 52, 6, fh + 104); x.fillRect(R.x0 - 52, R.y0 + off, fw + 104, 6); x.fillRect(R.x0 - 52, R.y1 - off - 6, fw + 104, 6); }
+}
+function buildLayers() {                         // зелене поле у фазі кущіння (старт і етап 1)
+  layoutField();
+  const [c, x] = mk(W, H); drawGround(x);
+  const fw = R.x1 - R.x0, fh = R.y1 - R.y0;
+  x.fillStyle = '#3d7428'; x.fillRect(R.x0, R.y0, fw, fh);
+  for (let y = R.y0 + 4; y < R.y1; y += 9) {
+    x.fillStyle = 'rgba(28,48,14,.4)'; x.fillRect(R.x0, y + 4, fw, 2);
+    for (let px = R.x0 + rnd(0, 5); px < R.x1; px += rnd(4, 7)) {
+      x.fillStyle = `hsl(${rnd(92, 118) | 0},${rnd(45, 62) | 0}%,${rnd(30, 44) | 0}%)`;
+      x.beginPath(); x.ellipse(px, y + rnd(-1.5, 1.5), rnd(2, 3.6), rnd(1.4, 2.4), rnd(0, 3.14), 0, TAU); x.fill();
     }
-  } else {
-    s1.wrong++;
-    if (t - hit.warn > 1.3) { hit.warn = t; floatText(hit.x, hit.y - hit.r - 14, 'Потрібен ' + PROD[need].name.toLowerCase(), '#ffffff'); sfx('bad'); }
+  }
+  // розмиті світліші й темніші плями — поле не «пласке»
+  x.save(); x.beginPath(); x.rect(R.x0, R.y0, fw, fh); x.clip();
+  for (let i = 0; i < 46; i++) {
+    const px = rnd(R.x0, R.x1), py = rnd(R.y0, R.y1), pr = rnd(50, 130), lite = Math.random() < .5;
+    const gr = x.createRadialGradient(px, py, 0, px, py, pr);
+    gr.addColorStop(0, lite ? 'rgba(170,220,90,.16)' : 'rgba(10,40,10,.2)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = gr; x.fillRect(px - pr, py - pr, pr * 2, pr * 2);
+  }
+  // технологічна колія: дві світліші смуги вздовж поля
+  x.fillStyle = 'rgba(210,235,150,.10)';
+  for (let px = R.x0 + 90; px < R.x1; px += 180) { x.fillRect(px, R.y0, 9, fh); x.fillRect(px + 22, R.y0, 9, fh); }
+  // світло з лівого верху, тінь знизу праворуч
+  const lg = x.createLinearGradient(R.x0, R.y0, R.x1, R.y1); lg.addColorStop(0, 'rgba(255,245,200,.10)'); lg.addColorStop(1, 'rgba(0,20,0,.18)');
+  x.fillStyle = lg; x.fillRect(R.x0, R.y0, fw, fh);
+  x.restore();
+  // м'яка тінь по краях поля
+  const eg = x.createLinearGradient(0, R.y0 - 14, 0, R.y0 + 14); eg.addColorStop(0, 'rgba(0,0,0,.22)'); eg.addColorStop(1, 'rgba(0,0,0,0)');
+  x.fillStyle = eg; x.fillRect(R.x0, R.y0 - 14, fw, 28);
+  const vg = x.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .4, W / 2, H / 2, Math.max(W, H) * .75);
+  vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, 'rgba(0,0,0,.28)'); x.fillStyle = vg; x.fillRect(0, 0, W, H);
+  bg = c;
+}
+
+/* ======================= ЕТАП 1: оприскування поля ======================= */
+const drone = { x: 0, y: 0, vx: 0, vy: 0, tx: 0, ty: 0, prop: 0, spraying: false };
+let s1 = null, scanT = 0, playT = 0, covLayer = null, covX = null, ndviX = null, prevDX = 0, prevDY = 0, recentOvl = 0, ovlWarnAt = -9;
+let doseT = null, lanes = [], laneT = 0, savePopAt = 0, savePopBase = 0;
+// слід обробки: зволожені темніші рослини; перекриття — помаранчеві плями опіку
+const COL_DOSE = [null, 'rgba(18,70,30,.5)', 'rgba(255,140,0,.6)', 'rgba(255,60,0,.72)'];
+const LPC = () => NORM_L / totalCells;            // літрів на клітинку при нормі
+
+function buildStage1() {
+  layoutField();
+  const n = cols * rows;
+  dose = new Uint8Array(n); seen = new Float32Array(n).fill(-9); hot = new Uint8Array(n); doseT = new Float32Array(n).fill(-9);
+  // лінії проходів (як AB-лінії автопілота): відстань — ширина смуги з невеликим запасом
+  lanes = []; const gap = L().swath * 1.85;
+  for (let y = R.y0 + L().swath * .9; y < R.y1; y += gap) lanes.push({ y, done: 0 });
+  hotZones = [];
+  for (let z = 0; z < L().hot; z++) for (let k = 0; k < 50; k++) {
+    const rx = rnd(60, 115), ry = rnd(40, 72);
+    const e = { x: rnd(R.x0 + rx, R.x1 - rx), y: rnd(R.y0 + ry, R.y1 - ry), rx, ry };
+    if (hotZones.some(p => Math.hypot(p.x - e.x, p.y - e.y) < p.rx + rx + 10)) continue;
+    hotZones.push(e); break;
+  }
+  totalCells = n; hotTotal = 0;
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
+    const i = r * cols + c, px = R.x0 + c * CELL + CELL / 2, py = R.y0 + r * CELL + CELL / 2;
+    if (hotZones.some(e => inEllipse(px, py, e))) { hot[i] = 1; hotTotal++; }
+  }
+  let [c, x] = mk(W, H); ndvi = c; ndviX = x;      // карта NDVI: червоне — осередки бур'янів
+  x.save(); x.beginPath(); x.rect(R.x0, R.y0, R.x1 - R.x0, R.y1 - R.y0); x.clip();
+  x.fillStyle = 'rgba(0,170,70,.16)'; x.fillRect(R.x0, R.y0, R.x1 - R.x0, R.y1 - R.y0);
+  for (const e of hotZones) {
+    x.save(); x.translate(e.x, e.y); x.scale(1, e.ry / e.rx);
+    const gr = x.createRadialGradient(0, 0, 0, 0, 0, e.rx * 1.08);
+    gr.addColorStop(0, 'rgba(235,30,0,.8)'); gr.addColorStop(.6, 'rgba(255,165,0,.6)'); gr.addColorStop(1, 'rgba(255,220,0,0)');
+    x.fillStyle = gr; x.beginPath(); x.arc(0, 0, e.rx * 1.08, 0, TAU); x.fill(); x.restore();
+  }
+  x.restore();
+  [c, x] = mk(W, H); covLayer = c; covX = x;      // карта внесення
+}
+function paintCell(i) {
+  const cx = R.x0 + (i % cols) * CELL + CELL / 2, cy = R.y0 + ((i / cols) | 0) * CELL + CELL / 2;
+  covX.fillStyle = COL_DOSE[Math.min(3, dose[i])];
+  covX.beginPath(); covX.arc(cx, cy, CELL * (dose[i] === 1 ? .8 : .62), 0, TAU); covX.fill();
+  if (dose[i] === 1) { covX.fillStyle = 'rgba(190,240,255,.13)'; covX.beginPath(); covX.arc(cx - 2, cy - 2, CELL * .32, 0, TAU); covX.fill(); }   // краплі на листі блищать
+  if (dose[i] === 1) {                             // осередок бур'янів оброблено — червоне зникає
+    ndviX.save(); ndviX.globalCompositeOperation = 'destination-out';
+    ndviX.beginPath(); ndviX.arc(cx, cy, CELL * .85, 0, TAU); ndviX.fill(); ndviX.restore();
   }
 }
-function precision() { const n = s1.good + s1.wrong + s1.waste; return n ? Math.round(s1.good / n * 100) : 0; }
+function laneUpdate() {                            // яка частка кожної лінії вже оброблена
+  for (const ln of lanes) {
+    const r = Math.min(rows - 1, Math.max(0, ((ln.y - R.y0) / CELL) | 0)); let k = 0;
+    for (let c = 0; c < cols; c++) if (dose[r * cols + c]) k++;
+    ln.done = k / cols;
+  }
+}
+const nextLane = () => lanes.findIndex(l => l.done < .85);
+function touchCell(i) {
+  const fresh = t - seen[i] > .3; seen[i] = t;
+  if (!fresh) return;                              // клітинка досі під смугою — це той самий прохід
+  if (leap.left > 0 && dose[i] >= 1) { s1.saved++; return; }   // BBLeap вимикає форсунку над обробленим
+  dose[i]++; s1.units++;
+  if (dose[i] === 1) { s1.covered++; doseT[i] = t; if (hot[i]) s1.hotDone++; leapGain(1); }
+  else { if (dose[i] === 2) s1.overlap++; recentOvl++; leapGain(-.6); }
+  paintCell(i);
+}
+function stamp(px, py, hw) {
+  const c0 = Math.max(0, Math.floor((px - hw - R.x0) / CELL)), c1 = Math.min(cols - 1, Math.floor((px + hw - R.x0) / CELL));
+  const r0 = Math.max(0, Math.floor((py - hw - R.y0) / CELL)), r1 = Math.min(rows - 1, Math.floor((py + hw - R.y0) / CELL));
+  for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
+    const cx = R.x0 + c * CELL + CELL / 2, cy = R.y0 + r * CELL + CELL / 2;
+    if ((cx - px) * (cx - px) + (cy - py) * (cy - py) < hw * hw) touchCell(r * cols + c);
+  }
+}
+function sprayPath(x0, y0, x1, y1, hw) {
+  const n = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / 6));
+  for (let k = 1; k <= n; k++) stamp(lerp(x0, x1, k / n), lerp(y0, y1, k / n), hw);
+}
+const swath = () => L().swath * (leap.left > 0 ? 1.35 : 1);
+
+/* ---------- BBLeap: заряджається новою обробленою площею без перекриттів ---------- */
+const LEAP_DUR = 15, LEAP_STEPS = [.18, .22, .26];   // частка поля, яку треба обробити без перекриттів
+let leap = { charge: 0, need: 1, ready: false, left: 0, uses: 0, savedAt: 0 }, leapCache = '';
+function leapReset() { leap = { charge: 0, need: Math.round(LEAP_STEPS[0] * totalCells), ready: false, left: 0, uses: 0, savedAt: 0 }; leapUI(true); }
+function leapGain(dv) {
+  if (leap.left > 0 || leap.ready || !s1) return;
+  leap.charge = Math.max(0, leap.charge + dv);
+  if (leap.charge >= leap.need) { leap.ready = true; toast('BBLeap заряджено — натисніть малинову кнопку праворуч внизу!', 2600); sfx('done'); }
+}
+function leapActivate() {
+  if (!leap.ready || mode !== 's1play') return;
+  leap.ready = false; leap.left = LEAP_DUR; leap.charge = 0; leap.uses++; leap.savedAt = s1.saved; savePopBase = s1.saved;
+  leap.need = Math.round(LEAP_STEPS[Math.min(leap.uses, LEAP_STEPS.length - 1)] * totalCells);
+  toast('BBLeap: кожна форсунка — лише там, де потрібно!', 2200); sfx('ok');
+  floatText(drone.x, drone.y - 80, 'BBLeap!', '#ff5cb0'); burst(drone.x, drone.y, '#ff5cb0', 30);
+  leapUI(true);
+}
+function leapUI(force) {
+  const pct = Math.min(100, Math.round(leap.charge / Math.max(1, leap.need) * 100));
+  const savedL = leap.left > 0 ? (s1.saved - leap.savedAt) * LPC() : 0;
+  const key = [pct, leap.ready, Math.ceil(leap.left), Math.round(savedL)].join('|');
+  if (!force && key === leapCache) return; leapCache = key;
+  const b = $('#leapBtn');
+  b.classList.toggle('ready', leap.ready); b.classList.toggle('on', leap.left > 0);
+  b.setAttribute('aria-disabled', String(!leap.ready));
+  b.style.setProperty('--p', leap.left > 0 ? leap.left / LEAP_DUR : leap.ready ? 1 : pct / 100);
+  $('#leapTxt').textContent = leap.left > 0 ? 'Активно ' + Math.ceil(leap.left) + ' с · −' + Math.round(savedL) + ' л'
+    : leap.ready ? 'Готово! Натисніть' : 'Заряд ' + pct + '%';
+}
 
 function beginStage1() {
-  s1 = { good: 0, wrong: 0, waste: 0, treated: 0, lost: 0 };
-  spots = []; drops = []; splats = []; floaters = []; parts = []; lastTypes = [];
-  playT = 0; scanT = 0; spawnT = 1.2; hold = false;
-  drone.x = W * .5; drone.y = (TOP + H - BOT) / 2; drone.tx = drone.x; drone.ty = drone.y; drone.vx = drone.vy = 0;
-  for (let i = 0; i < L().start; i++) spawnSpot(0, 3);
-  setProd('herb');
-  $('#stage').textContent = 'Етап 1 · Захист агродроном';
-  setChips(['Вилікувано', 'Втрачено', 'Точність']);
+  buildStage1();
+  s1 = { covered: 0, overlap: 0, units: 0, saved: 0, hotDone: 0, touched: false }; lastHoldAt = -99;
+  leapReset(); laneUpdate(); savePopAt = 0; savePopBase = 0;
+  playT = 0; scanT = 0; hold = false; floaters = []; parts = []; recentOvl = 0;
+  drone.x = R.x0 - 30; drone.y = R.y0 + 30; drone.tx = drone.x; drone.ty = drone.y; drone.vx = drone.vy = 0;
+  prevDX = drone.x; prevDY = drone.y;
+  $('#stage').textContent = 'Етап 1 · Оприскування поля';
+  setChips(['Оброблено', 'Перекриття', 'Препарат']);
   mode = 's1scan';
   showOnly(null); show('top'); show('tools'); hide('gauges');
-  toast('Мультиспектральний дрон сканує поле…', SCAN * 1000);
+  toast('Мультиспектральний дрон шукає осередки бур’янів…', SCAN * 1000);
   lastInput = performance.now();
 }
 function endStage1() {
   mode = 's1end'; hold = false;
-  const left = spots.filter(s => s.state === 'active').length;
-  const prec = precision();
-  const denom = s1.treated + s1.lost + left;
-  const crop = denom ? Math.round(lerp(70, 100, s1.treated / denom)) : 100;
-  const score = Math.max(0, s1.treated * 100 - s1.lost * 50 + prec * 10);
-  res1 = { score, prec, crop, treated: s1.treated, lost: s1.lost };
-  $('#r1Treat').textContent = s1.treated; $('#r1Lost').textContent = s1.lost;
-  $('#r1Prec').textContent = prec + '%'; $('#r1Crop').textContent = crop + '%';
-  $('#r1Msg').textContent = prec >= 85 ? 'Ювелірна робота: майже кожна крапля потрапила у вогнище.'
-    : prec >= 65 ? 'Непогано! Тримайте дрон точно над вогнищем — і перевитрати не буде.'
-    : 'Чимало крапель пішло на здорові рослини. Точне землеробство економить препарат саме так.';
+  const cov = Math.round(s1.covered / totalCells * 100), ovl = Math.round(s1.overlap / totalCells * 100);
+  const hotP = hotTotal ? Math.round(s1.hotDone / hotTotal * 100) : 100;
+  const litres = Math.round(s1.units * LPC()), saved = s1.saved * LPC();
+  const early = playT < PLAY1 ? Math.round((PLAY1 - playT) * 10) : 0;
+  const score = Math.max(0, Math.round(cov * 15 + hotP * 8 - ovl * 25 + leap.uses * 100 + early));
+  res1 = { score, cov, ovl, hotP, litres, saved, leapUses: leap.uses };
+  leap.left = 0; leap.ready = false; leapUI(true);
+  $('#r1Treat').textContent = cov + '%'; $('#r1Lost').textContent = hotP + '%';
+  $('#r1Prec').textContent = ovl + '%'; $('#r1Crop').textContent = litres + ' л';
+  const without = litres + Math.round(saved);       // скільки пішло б без автовимкнення форсунок
+  $('#r1Cmp').hidden = !leap.uses;
+  $('#cmpAv').textContent = without + ' л'; $('#cmpBv').textContent = litres + ' л';
+  $('#cmpA').style.width = '100%'; $('#cmpB').style.width = (without ? litres / without * 100 : 100) + '%';
+  $('#r1Msg').textContent = (leap.uses ? 'BBLeap вмикався ' + leap.uses + ' раз(и) і заощадив ' + fmt1(saved) + ' л препарату. '
+      : 'BBLeap так і не зарядився — обробляйте нову площу без перекриттів. ')
+    + (cov >= 95 ? 'Поле оброблене майже повністю — на збиранні буде чисто.'
+      : cov >= 70 ? 'Пропуски дадуть бур’яни — побачите їх на збиранні.'
+      : 'Більша частина поля лишилася без захисту — на збиранні її заглушать бур’яни.')
+    + (ovl >= 8 ? ' Перекриття дадуть опік рослин.' : '');
   hide('tools');
   setTimeout(() => { if (mode === 's1end') { showOnly('result1'); lastInput = performance.now(); } }, 900);
 }
 function update1(dt) {
+  const fast = leap.left > 0;
   const dx = drone.tx - drone.x, dy = drone.ty - drone.y, d = Math.hypot(dx, dy);
-  const want = Math.min(950, d * 6), k = Math.min(1, dt * 8);
+  const want = Math.min(fast ? 560 : 420, d * 12), k = Math.min(1, dt * 10);
   drone.vx = lerp(drone.vx, d > .01 ? dx / d * want : 0, k);
   drone.vy = lerp(drone.vy, d > .01 ? dy / d * want : 0, k);
   drone.x += drone.vx * dt; drone.y += drone.vy * dt;
-  drone.spraying = mode === 's1play' && hold && d < 26;
-  if (drone.spraying) { emitAcc += dt * 75; while (emitAcc >= 1) { emitAcc--; emit(); } } else emitAcc = 0;
-  for (const p of drops) { p.t += dt; if (p.t >= p.dur && !p.done) { p.done = true; land(p); } }
-  drops = drops.filter(p => !p.done);
-  for (const s of splats) s.age += dt;
-  splats = splats.filter(s => s.age < 2.2);
+  drone.spraying = mode === 's1play' && hold && d < 150;   // далекий тап — переліт без обприскування
+  if (hold) lastHoldAt = t;
+  if (drone.spraying) sprayPath(prevDX, prevDY, drone.x, drone.y, swath());
+  prevDX = drone.x; prevDY = drone.y;
 
-  if (mode === 's1scan') { scanT += dt; if (scanT >= SCAN) { mode = 's1play'; toast('Старт! Тримайте палець на вогнищі', 1800); } }
+  if (mode === 's1scan') { scanT += dt; if (scanT >= SCAN) { mode = 's1play'; toast('Старт! Ведіть дрон смугами вздовж рядків', 2200); } }
   if (mode !== 's1play') return;
   const prevSec = Math.ceil(PLAY1 - playT);
   playT += dt;
-  const prog = Math.min(1, playT / PLAY1);
-  const active = spots.filter(s => s.state === 'active').length;
-  spawnT -= dt;
-  if (active === 0 && spawnT > .5) spawnT = .5;
-  if (spawnT <= 0 && active < L().max) { spawnSpot(prog); spawnT = lerp(L().spawn[0], L().spawn[1], prog); }
-  for (const s of spots) {
-    if (s.state === 'active') {
-      s.age += dt; s.r = s.r0 * (1 + .25 * Math.min(1, s.age / s.life));
-      if (s.age >= s.life) { s.state = 'lost'; s.fx = 0; s1.lost++; floatText(s.x, s.y - s.r - 14, 'Втрачено', '#ff6b6b'); sfx('lost'); }
-    } else s.fx += dt;
+  if (leap.left > 0) {
+    leap.left = Math.max(0, leap.left - dt);
+    if (leap.left === 0) { toast('BBLeap вимкнено — заряджайте знову', 1800); sfx('bad'); }
   }
-  spots = spots.filter(s => !(s.state === 'done' && s.fx > 1.6));
-  if (wasteRecent > 22 && t - wasteWarnAt > 2.5) { wasteWarnAt = t; floatText(drone.x, drone.y - 70, 'Перевитрата — тут поле здорове', '#ffd2d2'); }
-  wasteRecent = Math.max(0, wasteRecent - dt * 30);
+  leapUI();
+  laneT -= dt; if (laneT <= 0) { laneT = .25; laneUpdate(); }
+  if (leap.left > 0 && t - savePopAt > .7) {        // BBLeap: показуємо зекономлені літри біля дрона
+    const dl = (s1.saved - savePopBase) * LPC();
+    if (dl >= .5) { floatText(drone.x + 60, drone.y - 50, '−' + fmt1(dl) + ' л', '#ff8ccc'); savePopBase = s1.saved; }
+    savePopAt = t;
+  }
+  if (recentOvl > 18 && t - ovlWarnAt > 3) { ovlWarnAt = t; floatText(drone.x, drone.y - 80, 'Перекриття — подвійна доза!', '#ffcf9a'); sfx('bad'); }
+  recentOvl = Math.max(0, recentOvl - dt * 12);
   const sec = Math.ceil(PLAY1 - playT);
   if (sec !== prevSec && sec <= 5 && sec > 0) sfx('tick');
-  if (playT >= PLAY1) endStage1();
-}
-function drawSpot(s) {
-  const { x, y } = s, r = s.r;
-  if (s.state === 'lost') {
-    g.fillStyle = 'rgba(48,30,16,.78)'; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill();
-    g.strokeStyle = 'rgba(120,90,50,.7)'; g.lineWidth = 2;
-    for (const b of s.bits) { const bx = x + Math.cos(b.a) * b.d * r, by = y + Math.sin(b.a) * b.d * r; g.beginPath(); g.moveTo(bx - 5, by + 4); g.lineTo(bx + 5, by - 4); g.stroke(); }
-    return;
-  }
-  const fade = s.state === 'done' ? Math.max(0, 1 - s.fx / 1.6) : 1;
-  g.save(); g.globalAlpha = fade;
-  const heat = 1 - s.prog;
-  if (heat > 0) {
-    const gr = g.createRadialGradient(x, y, 0, x, y, r);
-    gr.addColorStop(0, `rgba(235,25,0,${.78 * heat})`); gr.addColorStop(.55, `rgba(255,170,0,${.55 * heat})`); gr.addColorStop(1, 'rgba(255,220,0,0)');
-    g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, TAU); g.fill();
-  }
-  if (s.prog > 0) { g.fillStyle = 'rgba(40,210,90,.5)'; g.beginPath(); g.arc(x, y, r * Math.sqrt(s.prog), 0, TAU); g.fill(); }
-  if (s.state === 'active') {
-    for (const b of s.bits) {
-      const bx = x + Math.cos(b.a) * b.d * r, by = y + Math.sin(b.a) * b.d * r, sc = b.s;
-      if (s.type === 'weed') {
-        g.fillStyle = '#c4f24f'; g.strokeStyle = '#3d5a10'; g.lineWidth = 1.2;
-        for (let i = 0; i < 5; i++) { const a = i * 1.2566 + b.p; g.beginPath(); g.ellipse(bx + Math.cos(a) * 6 * sc, by + Math.sin(a) * 6 * sc, 7 * sc, 2.6 * sc, a, 0, TAU); g.fill(); g.stroke(); }
-      } else if (s.type === 'pest') {
-        const wx = bx + Math.sin(t * 5 + b.p) * 3, wy = by + Math.cos(t * 4 + b.p) * 3, a = b.p + Math.sin(t * 3 + b.p) * .5;
-        g.save(); g.translate(wx, wy); g.rotate(a);
-        g.strokeStyle = '#1a0f05'; g.lineWidth = 1.5;
-        for (let i = -1; i <= 1; i++) { g.beginPath(); g.moveTo(-8 * sc, i * 4 * sc); g.lineTo(8 * sc, i * 4 * sc); g.stroke(); }
-        g.fillStyle = '#2b1606'; g.beginPath(); g.ellipse(0, 0, 4.5 * sc, 7.5 * sc, 0, 0, TAU); g.fill();
-        g.fillStyle = '#5a3110'; g.beginPath(); g.arc(0, -8 * sc, 3 * sc, 0, TAU); g.fill();
-        g.restore();
-      } else {
-        g.fillStyle = '#6f8f2a'; g.beginPath(); g.ellipse(bx, by, 9 * sc, 5 * sc, b.p, 0, TAU); g.fill();
-        g.fillStyle = '#b8611d'; g.beginPath(); g.arc(bx + 2, by, 3.2 * sc, 0, TAU); g.fill();
-        g.fillStyle = '#e0a63a'; g.beginPath(); g.arc(bx - 3, by - 1, 1.8 * sc, 0, TAU); g.fill();
-      }
-    }
-    const rem = 1 - s.age / s.life;
-    g.lineWidth = 5; g.lineCap = 'round';
-    g.strokeStyle = 'rgba(0,0,0,.35)'; g.beginPath(); g.arc(x, y, r + 7, 0, TAU); g.stroke();
-    g.strokeStyle = rem > .4 ? '#ffffff' : '#ff3b3b';
-    g.beginPath(); g.arc(x, y, r + 7, -Math.PI / 2, -Math.PI / 2 + rem * TAU); g.stroke();
-    const label = TYPES[s.type].name, col = PROD[TYPES[s.type].prod].col;
-    g.font = 'bold 16px Arial, Helvetica, sans-serif';
-    const tw = g.measureText(label).width + 22, lx = x - tw / 2, ly = y - r - 40;
-    g.fillStyle = 'rgba(0,0,0,.78)'; rrect(g, lx, ly, tw, 26, 13); g.fill();
-    g.strokeStyle = col; g.lineWidth = 2; g.stroke();
-    g.fillStyle = '#fff'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText(label, x, ly + 14);
-  } else {
-    g.strokeStyle = '#5dff8a'; g.lineWidth = 6; g.lineCap = 'round'; g.lineJoin = 'round';
-    g.beginPath(); g.moveTo(x - 16, y); g.lineTo(x - 4, y + 12); g.lineTo(x + 18, y - 12); g.stroke();
-  }
-  g.restore();
+  if (playT >= PLAY1 || s1.covered >= totalCells) endStage1();
 }
 function drawAgras(x, y, spraying) {
-  const tilt = clamp(drone.vx / 2500, -.12, .12);
-  g.save(); g.translate(x + 18, y + 26); g.fillStyle = 'rgba(0,0,0,.26)';
-  g.beginPath(); g.ellipse(0, 0, 54, 46, 0, 0, TAU); g.fill(); g.restore();
-  if (spraying) {
-    const col = PROD[prod].col, gr = g.createRadialGradient(x, y + 4, 4, x, y + 4, 30);
-    gr.addColorStop(0, col + '88'); gr.addColorStop(1, col + '00');
-    g.fillStyle = gr; g.beginPath(); g.arc(x, y + 4, 30, 0, TAU); g.fill();
-  }
+  const tilt = clamp(drone.vx / 2500, -.12, .12), lp = leap.left > 0 && mode === 's1play';
+  // м'яка тінь на полі (дрон «висить» над ним)
+  g.save(); g.translate(x + 26, y + 38);
+  const sh = g.createRadialGradient(0, 0, 8, 0, 0, 74); sh.addColorStop(0, 'rgba(0,0,0,.34)'); sh.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = sh; g.beginPath(); g.ellipse(0, 0, 76, 66, 0, 0, TAU); g.fill(); g.restore();
   g.save(); g.translate(x, y); g.rotate(tilt);
-  for (let k = 0; k < 6; k++) {
-    const a = k * Math.PI / 3 + Math.PI / 6, ex = Math.cos(a) * 52, ey = Math.sin(a) * 52;
-    g.strokeStyle = '#2a2a2a'; g.lineWidth = 7; g.lineCap = 'round';
-    g.beginPath(); g.moveTo(Math.cos(a) * 14, Math.sin(a) * 14); g.lineTo(ex, ey); g.stroke();
-    g.fillStyle = 'rgba(230,230,230,.16)'; g.beginPath(); g.arc(ex, ey, 22, 0, TAU); g.fill();
-    g.strokeStyle = 'rgba(255,255,255,.6)'; g.lineWidth = 3;
+  const arms = [[-1, -1], [1, -1], [-1, 1], [1, 1]];
+  arms.forEach(([sx, sy], k) => {                  // чотири промені з моторами, як у DJI Agras
+    const ex = sx * 50, ey = sy * 50;
+    g.strokeStyle = '#1d1f22'; g.lineWidth = 9; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(sx * 10, sy * 10); g.lineTo(ex, ey); g.stroke();
+    g.strokeStyle = '#3a3f45'; g.lineWidth = 4; g.beginPath(); g.moveTo(sx * 10, sy * 10); g.lineTo(ex, ey); g.stroke();
+    const rg = g.createRadialGradient(ex, ey, 6, ex, ey, 27); rg.addColorStop(0, 'rgba(235,240,245,.34)'); rg.addColorStop(.8, 'rgba(235,240,245,.12)'); rg.addColorStop(1, 'rgba(235,240,245,0)');
+    g.fillStyle = rg; g.beginPath(); g.arc(ex, ey, 27, 0, TAU); g.fill();   // розмите коло гвинта
     const pa = drone.prop * (k % 2 ? 1 : -1);
-    g.beginPath(); g.moveTo(ex + Math.cos(pa) * 21, ey + Math.sin(pa) * 21); g.lineTo(ex - Math.cos(pa) * 21, ey - Math.sin(pa) * 21); g.stroke();
-    g.fillStyle = '#111'; g.beginPath(); g.arc(ex, ey, 7, 0, TAU); g.fill();
-  }
-  g.fillStyle = '#ececec'; rrect(g, -19, -26, 38, 52, 11); g.fill();
-  g.fillStyle = '#c9d3d8'; rrect(g, -13, -12, 26, 28, 7); g.fill();
-  g.globalAlpha = .55; g.fillStyle = PROD[prod].col; rrect(g, -13, 0.6, 26, 15.4, 5); g.fill(); g.globalAlpha = 1;
-  g.fillStyle = '#FF0000'; rrect(g, -19, -26, 38, 9, 5); g.fill();
-  g.fillStyle = '#1b1b1b'; g.fillRect(-30, 22, 60, 4);
+    g.strokeStyle = 'rgba(255,255,255,.75)'; g.lineWidth = 4; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(ex + Math.cos(pa) * 25, ey + Math.sin(pa) * 25); g.lineTo(ex - Math.cos(pa) * 25, ey - Math.sin(pa) * 25); g.stroke();
+    g.fillStyle = '#15171a'; g.beginPath(); g.arc(ex, ey, 8.5, 0, TAU); g.fill();
+    g.strokeStyle = '#FF0000'; g.lineWidth = 2; g.beginPath(); g.arc(ex, ey, 8.5, 0, TAU); g.stroke();
+  });
+  // штанга з форсунками внизу корпусу
+  g.fillStyle = '#26292d'; rrect(g, -38, 24, 76, 7, 3); g.fill();
+  g.fillStyle = '#9fd8ff'; for (let k = 0; k < 8; k++) { g.beginPath(); g.arc(-34 + k * 9.7, 31, 1.8, 0, TAU); g.fill(); }
+  // корпус: бак і кришка
+  const bg2 = g.createLinearGradient(-24, 0, 24, 0); bg2.addColorStop(0, '#d9dee2'); bg2.addColorStop(.5, '#ffffff'); bg2.addColorStop(1, '#cfd5da');
+  g.fillStyle = bg2; rrect(g, -24, -30, 48, 60, 14); g.fill();
+  g.strokeStyle = 'rgba(0,0,0,.18)'; g.lineWidth = 1.5; rrect(g, -24, -30, 48, 60, 14); g.stroke();
+  g.fillStyle = '#b8c3ca'; rrect(g, -15, -8, 30, 28, 8); g.fill();          // горловина бака
+  g.globalAlpha = .7; g.fillStyle = lp ? '#e6007e' : '#46a8ff'; rrect(g, -15, 5, 30, 15, 6); g.fill(); g.globalAlpha = 1;
+  g.fillStyle = 'rgba(255,255,255,.55)'; rrect(g, -12, -6, 10, 5, 2.5); g.fill();   // блік
+  g.fillStyle = '#FF0000'; rrect(g, -24, -30, 48, 11, 7); g.fill();          // «ніс» у фірмовому червоному
+  g.fillStyle = '#fff'; g.beginPath(); g.arc(0, -25, 3.2, 0, TAU); g.fill(); // камера
+  g.fillStyle = (Math.floor(t * 4) % 2) ? '#5cff8a' : '#14381f'; g.beginPath(); g.arc(-17, 26, 2.6, 0, TAU); g.fill();  // бортовий вогник
+  g.fillStyle = '#ff3b3b'; g.beginPath(); g.arc(17, 26, 2.6, 0, TAU); g.fill();
   g.restore();
 }
 function drawScanner(x, y) {
@@ -651,32 +817,95 @@ function drawScanner(x, y) {
   g.fillStyle = '#222'; g.beginPath(); g.arc(0, 10, 5, 0, TAU); g.fill();
   g.restore();
 }
+let lastHoldAt = -99, offPopAt = -9;
+function cellAt(x, y) {
+  if (x < R.x0 || y < R.y0 || x >= R.x1 || y >= R.y1) return -1;
+  return (((y - R.y0) / CELL) | 0) * cols + (((x - R.x0) / CELL) | 0);
+}
+function drawLanes() {                             // лінії проходів; поточна — жовта, з напрямком руху
+  const nx = nextLane();
+  lanes.forEach((ln, k) => {
+    const cur = k === nx;
+    if (!cur && ln.done >= .85) return;
+    g.strokeStyle = cur ? 'rgba(255,222,0,.95)' : 'rgba(255,255,255,.32)'; g.lineWidth = cur ? 3 : 1.5;
+    g.setLineDash(cur ? [16, 10] : [6, 12]); g.lineDashOffset = cur ? -t * 50 * (k % 2 ? -1 : 1) : 0;
+    g.beginPath(); g.moveTo(R.x0, ln.y); g.lineTo(R.x1, ln.y); g.stroke();
+    if (cur) {
+      const dir = k % 2 ? -1 : 1; g.setLineDash([]); g.fillStyle = 'rgba(255,222,0,.95)';
+      for (let x = R.x0 + 90; x < R.x1 - 40; x += 170) {
+        g.beginPath(); g.moveTo(x + dir * 9, ln.y); g.lineTo(x - dir * 7, ln.y - 9); g.lineTo(x - dir * 7, ln.y + 9); g.closePath(); g.fill();
+      }
+    }
+  });
+  g.setLineDash([]); g.lineDashOffset = 0;
+}
+function drawHand() {                              // підказка: палець показує, як вести дрон
+  const nx = nextLane(); if (nx < 0) return;
+  const ln = lanes[nx], dir = nx % 2 ? -1 : 1, p = (t * .4) % 1;
+  const x = (dir > 0 ? R.x0 + 40 : R.x1 - 40) + dir * p * (R.x1 - R.x0 - 80), y = ln.y;
+  g.fillStyle = 'rgba(0,0,0,.3)'; g.beginPath(); g.arc(x + 4, y + 6, 18, 0, TAU); g.fill();
+  g.fillStyle = 'rgba(255,255,255,.95)'; g.beginPath(); g.arc(x, y, 16, 0, TAU); g.fill();
+  g.strokeStyle = 'rgba(255,222,0,.9)'; g.lineWidth = 3; g.beginPath(); g.arc(x, y, 24 + 4 * Math.sin(t * 8), 0, TAU); g.stroke();
+  const msg = 'Затисніть палець і ведіть дрон уздовж жовтої лінії';
+  g.font = 'bold 20px Arial, Helvetica, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  const tw = g.measureText(msg).width + 36, bx = clamp(x, R.x0 + tw / 2, R.x1 - tw / 2), by = y < R.y0 + 90 ? y + 56 : y - 56;
+  g.fillStyle = 'rgba(0,0,0,.82)'; rrect(g, bx - tw / 2, by - 20, tw, 40, 20); g.fill();
+  g.fillStyle = '#ffde00'; g.fillText(msg, bx, by + 1);
+}
+function drawNozzles(lp) {                         // штанга з форсунками: з BBLeap вимикаються над обробленим
+  const N = 8, hw = swath();
+  if (Math.hypot(drone.vx, drone.vy) > 25) drone.ang = Math.atan2(drone.vy, drone.vx);
+  const ang = drone.ang || 0, px = -Math.sin(ang), py = Math.cos(ang);
+  const bx = -Math.cos(ang) * 50, by = -Math.sin(ang) * 50;   // факели малюємо позаду дрона, щоб їх не закривав корпус
+  let off = 0;
+  for (let k = 0; k < N; k++) {
+    const s = -hw + (k + .5) * (2 * hw / N), cx = drone.x + px * s, cy = drone.y + py * s, nx = cx + bx, ny = cy + by;
+    const i = cellAt(cx, cy), treated = i >= 0 && dose[i] >= 1 && t - doseT[i] > .5;
+    if (lp && treated) {
+      off++;
+      g.fillStyle = 'rgba(20,20,20,.9)'; g.beginPath(); g.arc(nx, ny, 7, 0, TAU); g.fill();
+      g.strokeStyle = '#ff5cb0'; g.lineWidth = 2.5; g.beginPath(); g.moveTo(nx - 4.5, ny - 4.5); g.lineTo(nx + 4.5, ny + 4.5); g.moveTo(nx + 4.5, ny - 4.5); g.lineTo(nx - 4.5, ny + 4.5); g.stroke();
+    } else {
+      g.fillStyle = lp ? 'rgba(230,0,126,.38)' : treated ? 'rgba(255,140,0,.45)' : 'rgba(170,225,255,.4)';
+      g.beginPath(); g.arc(nx, ny, hw / N * 1.7, 0, TAU); g.fill();
+      if (lp) { g.strokeStyle = 'rgba(255,92,176,.6)'; g.lineWidth = 1.2; g.beginPath(); g.moveTo(drone.x + bx * .5, drone.y + by * .5); g.lineTo(nx, ny); g.stroke(); }
+      g.fillStyle = lp ? '#ffc2e2' : '#e6f6ff';
+      for (let j = 0; j < 2; j++) { g.beginPath(); g.arc(nx + rnd(-5, 5), ny + rnd(-5, 5), 1.8, 0, TAU); g.fill(); }
+    }
+  }
+  if (lp && off >= 2 && t - offPopAt > 2.2) { offPopAt = t; floatText(drone.x, drone.y + 70, 'BBLeap вимкнув ' + off + ' форсунок — тут уже оброблено', '#ff8ccc'); }
+}
 function draw1() {
   g.drawImage(bg, 0, 0, W, H);
+  if (!s1 || mode === 'attract') { drawAgras(drone.x, drone.y, false); return; }
   const reveal = mode === 's1scan' ? (scanT / SCAN) * (W + 120) : W;
-  g.save(); g.beginPath(); g.rect(0, 0, reveal, H); g.clip();
-  g.drawImage(ndvi, 0, 0, W, H);
-  for (const s of spots) drawSpot(s);
-  g.restore();
-  for (const s of splats) { g.globalAlpha = Math.max(0, .7 * (1 - s.age / 2.2)); g.fillStyle = s.col; g.beginPath(); g.arc(s.x, s.y, 2.2, 0, TAU); g.fill(); }
-  g.globalAlpha = 1;
-  for (const p of drops) {
-    const k = p.t / p.dur, x = lerp(p.sx, p.ex, k), y = lerp(p.sy, p.ey, k);
-    g.fillStyle = PROD[p.prod].col; g.beginPath(); g.arc(x, y, 3.2 - k * 1.4, 0, TAU); g.fill();
-  }
+  g.save(); g.beginPath(); g.rect(0, 0, reveal, H); g.clip(); g.drawImage(ndvi, 0, 0, W, H); g.restore();
+  g.drawImage(covLayer, 0, 0, W, H);
+  const lp = leap.left > 0 && mode === 's1play';
+  if (mode === 's1play') drawLanes();
+  if (mode === 's1play' && !hold && t - lastHoldAt > 3.5) drawHand();
   if (mode === 's1scan') drawScanner(reveal, H * .5 + Math.sin(t * 2) * 40);
   if (mode === 's1play' && hold) {
     g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = 2; g.setLineDash([6, 6]);
     g.beginPath(); g.arc(drone.tx, drone.ty, 20, 0, TAU); g.stroke(); g.setLineDash([]);
   }
   drawAgras(drone.x, drone.y, drone.spraying);
+  if (drone.spraying) drawNozzles(lp);
+  if (lp) {                                        // BBLeap: малинове сяйво
+    const pulse = .5 + .5 * Math.sin(t * 6);
+    g.strokeStyle = `rgba(230,0,126,${.35 + .25 * pulse})`; g.lineWidth = 10;
+    g.strokeRect(5, TOP + 5, W - 10, H - TOP - BOT - 10);
+    g.strokeStyle = `rgba(255,92,176,${.5 + .3 * pulse})`; g.lineWidth = 3;
+    g.beginPath(); g.arc(drone.x, drone.y, swath() + 8 + pulse * 5, 0, TAU); g.stroke();
+  }
 }
 
 /* ======================= ЕТАП 2: комбайн ======================= */
-const CELL = 16, FIELD_HA = 25, BASE_YIELD = 7.5;           // поле 25 га, потенціал 7,5 т/га
 const MAXV = 175, TURN = 2.1;
-let R = null, cols = 0, rows = 0, cropArr = null, terr = null, field2 = null, fx2 = null, stubPat = null;
-let totalCells = 0, cutCells = 0, play2 = 0, poles = [], wire = null, poleHits = 0;
+// стан ділянки після етапу 1: 0 — чисто, 1 — пропуск (бур'яни), 2 — пропущений осередок (густі бур'яни), 3 — перекриття (опік)
+const ST_YIELD = [1, .7, .4, .75], ST_SLOW = [1, .85, .55, .95];
+let cropArr = null, terr = null, field2 = null, fx2 = null, stubPat = null, avgF = 1, harvested = 0;
+let cutCells = 0, play2 = 0, poles = [], wire = null, poleHits = 0;
 let fuelTruck = null, grainTruck = null, warnAt = -9;
 const cmb = { x: 0, y: 0, a: 0, v: 0, tx: 0, ty: 0, fuel: 1, bunk: 0, stun: 0, cutting: false, unloading: false, refuel: false, reel: 0 };
 
@@ -687,13 +916,14 @@ function makeStubble() {
   for (let y = 0; y < 64; y += 8) { x.fillStyle = 'rgba(150,120,60,.35)'; x.fillRect(0, y, 64, 1); }
   return g.createPattern(c, 'repeat');
 }
-function inEllipse(px, py, e) { const dx = (px - e.x) / e.rx, dy = (py - e.y) / e.ry; return dx * dx + dy * dy <= 1; }
-
+function weedTuft(x, px, py, s) {
+  x.fillStyle = '#6cc232'; x.strokeStyle = '#2f6a14'; x.lineWidth = 1;
+  for (let k = 0; k < 5; k++) { const a = k * 1.2566 + s; x.beginPath(); x.ellipse(px + Math.cos(a) * 3.2, py + Math.sin(a) * 3.2, 4.4, 1.7, a, 0, TAU); x.fill(); x.stroke(); }
+}
 function buildField2() {
-  R = { x0: 110, y0: TOP + 76, x1: W - 110, y1: H - BOT - 62 };
-  cols = Math.floor((R.x1 - R.x0) / CELL); rows = Math.floor((R.y1 - R.y0) / CELL);
-  R.x1 = R.x0 + cols * CELL; R.y1 = R.y0 + rows * CELL;
-  cropArr = new Uint8Array(cols * rows); terr = new Uint8Array(cols * rows);
+  layoutField();
+  const n = cols * rows, okDose = dose && dose.length === n;
+  cropArr = new Uint8Array(n); terr = new Uint8Array(n);
   const fw = R.x1 - R.x0, fh = R.y1 - R.y0;
 
   // опори ЛЕП: лінія навскіс через поле
@@ -703,35 +933,20 @@ function buildField2() {
   const wAng = Math.atan2(ly1 - ly0, fw);
   poles.forEach(p => p.a = wAng);
 
-  // полеглий хліб і мокра низина
-  const patches = [];
-  const pick = (rx, ry, kind) => {
-    for (let k = 0; k < 40; k++) {
-      const e = { x: rnd(R.x0 + rx + 40, R.x1 - rx - 40), y: rnd(R.y0 + ry, R.y1 - ry), rx, ry, kind };
-      if (patches.some(p => Math.hypot(p.x - e.x, p.y - e.y) < p.rx + rx + 30)) continue;
-      if (poles.some(p => inEllipse(p.x, p.y, { ...e, rx: rx + 40, ry: ry + 40 }))) continue;
-      patches.push(e); return;
-    }
-  };
-  pick(rnd(90, 130), rnd(55, 75), 1); pick(rnd(80, 110), rnd(50, 70), 1); pick(rnd(100, 130), rnd(60, 80), 2);
-
-  totalCells = 0; cutCells = 0;
+  totalCells = 0; cutCells = 0; harvested = 0; let sumF = 0;
   for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) {
     const px = R.x0 + c * CELL + CELL / 2, py = R.y0 + r * CELL + CELL / 2, i = r * cols + c;
     if (poles.some(p => Math.hypot(p.x - px, p.y - py) < 15)) continue;
     cropArr[i] = 1; totalCells++;
-    for (const e of patches) if (inEllipse(px, py, e)) terr[i] = e.kind;
+    const d = okDose ? dose[i] : 0;
+    terr[i] = d === 0 ? (okDose && hot[i] ? 2 : 1) : d >= 2 ? 3 : 0;
+    sumF += ST_YIELD[terr[i]];
   }
+  avgF = totalCells ? sumF / totalCells : 1;
 
-  // малюємо шар поля
+  // стигла пшениця — золотисто-солом'яна
   const [c, x] = mk(W, H); field2 = c; fx2 = x;
-  x.fillStyle = '#6f8a3a'; x.fillRect(0, 0, W, H);                         // трава навколо
-  for (let i = 0; i < 1600; i++) { x.fillStyle = `rgba(${rnd(60, 110) | 0},${rnd(110, 150) | 0},${rnd(40, 70) | 0},.5)`; x.fillRect(rnd(0, W), rnd(0, H), 2, rnd(2, 5)); }
-  x.fillStyle = '#9b8257'; x.fillRect(R.x0 - 52, R.y0 - 52, fw + 104, fh + 104);   // польова дорога
-  for (let i = 0; i < 1400; i++) { x.fillStyle = `rgba(${rnd(110, 150) | 0},${rnd(90, 120) | 0},${rnd(55, 80) | 0},.6)`; x.fillRect(rnd(R.x0 - 52, R.x1 + 52), rnd(R.y0 - 52, R.y1 + 52), rnd(1, 3), rnd(1, 3)); }
-  x.fillStyle = 'rgba(80,62,38,.35)';
-  for (const off of [-38, -18]) { x.fillRect(R.x0 + off, R.y0 - 52, 6, fh + 104); x.fillRect(R.x1 - off - 6, R.y0 - 52, 6, fh + 104); x.fillRect(R.x0 - 52, R.y0 + off, fw + 104, 6); x.fillRect(R.x0 - 52, R.y1 - off - 6, fw + 104, 6); }
-  // пшениця
+  drawGround(x);
   x.fillStyle = '#d6ad43'; x.fillRect(R.x0, R.y0, fw, fh);
   for (let y = R.y0 + 3; y < R.y1; y += 6) {
     for (let px = R.x0 + rnd(0, 4); px < R.x1; px += rnd(3, 5)) {
@@ -739,24 +954,45 @@ function buildField2() {
       x.fillRect(px, y + rnd(-1.5, 1.5), 2, rnd(3, 5));
     }
   }
-  for (const e of patches) {
-    x.save(); x.beginPath(); x.ellipse(e.x, e.y, e.rx, e.ry, 0, 0, TAU); x.clip();
-    if (e.kind === 1) {                                                      // полеглий хліб — завитки
-      x.fillStyle = 'rgba(150,110,30,.45)'; x.fillRect(e.x - e.rx, e.y - e.ry, e.rx * 2, e.ry * 2);
-      x.strokeStyle = 'rgba(235,200,110,.7)'; x.lineWidth = 2;
-      for (let i = 0; i < 90; i++) { const a = rnd(0, TAU), cx = e.x + rnd(-e.rx, e.rx), cy = e.y + rnd(-e.ry, e.ry); x.beginPath(); x.arc(cx, cy, rnd(5, 12), a, a + 2.2); x.stroke(); }
-    } else {                                                                 // мокра низина
-      x.fillStyle = 'rgba(70,72,60,.55)'; x.fillRect(e.x - e.rx, e.y - e.ry, e.rx * 2, e.ry * 2);
-      for (let i = 0; i < 7; i++) { x.fillStyle = 'rgba(120,150,170,.45)'; x.beginPath(); x.ellipse(e.x + rnd(-e.rx * .6, e.rx * .6), e.y + rnd(-e.ry * .6, e.ry * .6), rnd(10, 26), rnd(6, 12), rnd(0, 3), 0, TAU); x.fill(); }
+  // колоски: світлі колоски з тінню, ряди сівалки, хвилі й плями — стиглий лан має об'єм
+  for (let y = R.y0 + 6; y < R.y1; y += 12) {
+    x.fillStyle = 'rgba(120,80,20,.16)'; x.fillRect(R.x0, y + 3, fw, 2);
+    for (let px = R.x0 + rnd(0, 6); px < R.x1; px += rnd(5, 9)) {
+      x.fillStyle = `hsl(${rnd(40, 50) | 0},${rnd(70, 88) | 0}%,${rnd(60, 74) | 0}%)`;
+      x.beginPath(); x.ellipse(px, y + rnd(-2, 2), 1.6, rnd(3.5, 5), rnd(-.4, .4), 0, TAU); x.fill();
     }
-    x.restore();
+  }
+  x.save(); x.beginPath(); x.rect(R.x0, R.y0, fw, fh); x.clip();
+  for (let i = 0; i < 40; i++) {
+    const px = rnd(R.x0, R.x1), py = rnd(R.y0, R.y1), pr = rnd(60, 150), lite = Math.random() < .55;
+    const gr = x.createRadialGradient(px, py, 0, px, py, pr);
+    gr.addColorStop(0, lite ? 'rgba(255,235,150,.16)' : 'rgba(120,70,10,.16)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+    x.fillStyle = gr; x.fillRect(px - pr, py - pr, pr * 2, pr * 2);
+  }
+  x.fillStyle = 'rgba(255,250,200,.08)';                      // технологічна колія
+  for (let px = R.x0 + 90; px < R.x1; px += 180) { x.fillRect(px, R.y0, 9, fh); x.fillRect(px + 22, R.y0, 9, fh); }
+  const lg2 = x.createLinearGradient(R.x0, R.y0, R.x1, R.y1); lg2.addColorStop(0, 'rgba(255,240,180,.12)'); lg2.addColorStop(1, 'rgba(60,30,0,.16)');
+  x.fillStyle = lg2; x.fillRect(R.x0, R.y0, fw, fh);
+  x.restore();
+  // наслідки оприскування: бур'яни на пропусках, опік на перекриттях
+  for (let i = 0; i < n; i++) {
+    const st = terr[i]; if (!cropArr[i] || !st) continue;
+    const cx = R.x0 + (i % cols) * CELL, cy = R.y0 + ((i / cols) | 0) * CELL;
+    if (st === 3) {
+      x.fillStyle = 'rgba(125,70,25,.45)'; x.fillRect(cx, cy, CELL, CELL);
+      x.fillStyle = 'rgba(80,45,15,.6)'; for (let k = 0; k < 3; k++) x.fillRect(cx + rnd(1, 14), cy + rnd(1, 14), 2, 2);
+    } else {
+      x.fillStyle = st === 2 ? 'rgba(60,115,30,.5)' : 'rgba(95,140,45,.2)'; x.fillRect(cx, cy, CELL, CELL);
+      const nt = st === 2 ? 3 : (Math.random() < .55 ? 1 : 0);
+      for (let k = 0; k < nt; k++) weedTuft(x, cx + rnd(3, 13), cy + rnd(3, 13), rnd(0, 3));
+    }
   }
   for (const p of poles) { x.fillStyle = '#b89a5a'; x.beginPath(); x.arc(p.x, p.y, 15, 0, TAU); x.fill(); }
   stubPat = makeStubble();
 }
 function terrainAt(px, py) {
   const c = ((px - R.x0) / CELL) | 0, r = ((py - R.y0) / CELL) | 0;
-  if (c < 0 || r < 0 || c >= cols || r >= rows) return 0;
+  if (px < R.x0 || py < R.y0 || c >= cols || r >= rows) return 0;
   return terr[r * cols + c];
 }
 function cutAt(px, py) {
@@ -765,13 +1001,15 @@ function cutAt(px, py) {
   if (c >= cols || r >= rows) return 0;
   const i = r * cols + c;
   if (!cropArr[i]) return 0;
-  cropArr[i] = 0; cutCells++;
+  cropArr[i] = 0; cutCells++; harvested += ST_YIELD[terr[i]];
   fx2.fillStyle = stubPat; fx2.fillRect(R.x0 + c * CELL, R.y0 + r * CELL, CELL, CELL);
-  if (terr[i] === 2) { fx2.fillStyle = 'rgba(70,72,60,.45)'; fx2.fillRect(R.x0 + c * CELL, R.y0 + r * CELL, CELL, CELL); }
+  if (terr[i] === 1 || terr[i] === 2) { fx2.fillStyle = '#4d8f22'; for (let k = 0; k < terr[i] * 2; k++) fx2.fillRect(R.x0 + c * CELL + rnd(1, 14), R.y0 + r * CELL + rnd(1, 14), 2, 2); }
+  if (terr[i] === 3) { fx2.fillStyle = 'rgba(110,60,20,.35)'; fx2.fillRect(R.x0 + c * CELL, R.y0 + r * CELL, CELL, CELL); }
   return 1;
 }
-const yieldTHa = () => BASE_YIELD * (res1 ? res1.crop : 85) / 100;
-const tonsCut = () => cutCells / totalCells * FIELD_HA * yieldTHa();
+const yieldTHa = () => BASE_YIELD * avgF;
+const tonsCut = () => totalCells ? harvested / totalCells * FIELD_HA * BASE_YIELD : 0;
+
 
 function beginStage2() {
   buildField2();
@@ -783,9 +1021,8 @@ function beginStage2() {
   poleHits = 0; play2 = 0; hold = false; floaters = []; parts = []; warnAt = -9;
   $('#stage').textContent = 'Етап 2 · Збирання врожаю';
   setChips(['Зібрано', 'Площа', 'Урожайність']);
-  mode = 's2play';
-  showOnly(null); show('top'); show('gauges'); hide('tools');
-  toast('Пора збирати врожай! Ведіть комбайн пальцем', 2400);
+  mode = 's2intro'; introT = 0;                    // «минуло 2 місяці»: зелене поле дозріває
+  showOnly(null); show('top'); hide('gauges'); hide('tools');
   lastInput = performance.now();
 }
 function angDiff(a, b) { let d = (b - a) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return d; }
@@ -793,7 +1030,14 @@ function segDist(px, py, ax, ay, bx, by) {
   const vx = bx - ax, vy = by - ay, k = clamp(((px - ax) * vx + (py - ay) * vy) / (vx * vx + vy * vy), 0, 1);
   return Math.hypot(px - ax - vx * k, py - ay - vy * k);
 }
+let introT = 0;
+const INTRO = 3.6;
 function update2(dt) {
+  if (mode === 's2intro') {
+    introT += dt;
+    if (introT >= INTRO) { mode = 's2play'; show('gauges'); toast('Пора збирати врожай! Ведіть комбайн пальцем', 2400); lastInput = performance.now(); }
+    return;
+  }
   if (mode !== 's2play') return;
   const prevSec = Math.ceil(PLAY2 - play2);
   play2 += dt;
@@ -810,7 +1054,7 @@ function update2(dt) {
     }
   }
   const tr = terrainAt(cmb.x, cmb.y);
-  let factor = tr === 1 ? .55 : tr === 2 ? .4 : 1;
+  let factor = ST_SLOW[tr] || 1;
   if (cmb.fuel <= 0) factor *= .18;
   cmb.stun = Math.max(0, cmb.stun - dt);
   cmb.v = lerp(cmb.v, wantV * factor, Math.min(1, dt * 3));
@@ -847,7 +1091,7 @@ function update2(dt) {
   cmb.unloading = false;
   const dG = Math.hypot(cmb.x - grainTruck.x, cmb.y - grainTruck.y);
   if (dG < 95 && cmb.bunk > 0 && Math.abs(grainTruck.tx - grainTruck.x) < 2) {
-    cmb.unloading = true;
+    cmb.unloading = true; loopSfx('grain');
     const amt = Math.min(cmb.bunk, dt * .7); cmb.bunk -= amt; grainTruck.load = Math.min(1, grainTruck.load + amt * .6);
     if (cmb.bunk <= 0) {
       floatText(grainTruck.x, grainTruck.y - 34, 'Розвантажено!', '#ffe28a'); sfx('done');
@@ -865,7 +1109,7 @@ function update2(dt) {
   // паливозаправник
   cmb.refuel = false;
   if (Math.hypot(cmb.x - fuelTruck.x, cmb.y - fuelTruck.y) < 95 && cmb.fuel < 1) {
-    cmb.refuel = true; const was = cmb.fuel; cmb.fuel = Math.min(1, cmb.fuel + dt * .55);
+    cmb.refuel = true; loopSfx('fuel'); const was = cmb.fuel; cmb.fuel = Math.min(1, cmb.fuel + dt * .55);
     if (was < 1 && cmb.fuel >= 1) { floatText(fuelTruck.x, fuelTruck.y - 34, 'Бак повний!', '#ffd08a'); sfx('done'); }
   }
 
@@ -886,13 +1130,15 @@ function endStage2() {
   $('#fLvl').textContent = L().name.toLowerCase();
   $('#fScore').textContent = total;
   pending = { id: Date.now() + '-' + Math.random().toString(36).slice(2, 7), name: 'Ви', score: total, lv: level, ts: Date.now() };
-  $('#pname').value = ''; $('#nameForm').hidden = false; $('#added').hidden = true;
+  $('#pname').value = ''; $('#pphone').value = ''; $('#phoneErr').hidden = true;
+  $('#nameForm').hidden = false; $('#added').hidden = true;
   renderFinalBoard(true);
-  $('#fPrec').textContent = res1.prec + '%'; $('#fTreat').textContent = res1.treated;
+  $('#fPrec').textContent = res1.cov + '%'; $('#fTreat').textContent = res1.ovl + '%';
   $('#fYield').textContent = fmt1(yieldTHa()) + ' т/га'; $('#fTons').textContent = Math.round(tons) + ' т';
   $('#fArea').textContent = area + '%'; $('#fPoles').textContent = poleHits;
-  $('#fMsg').textContent = res1.crop >= 92 ? 'Точний захист дав повний урожай. Саме так працює точне землеробство.'
-    : 'Кожне втрачене вогнище — мінус центнери з гектара. Точний захист окупається на збиранні.';
+  $('#fMsg').textContent = (res1.cov >= 95 && res1.ovl < 5 ? 'Рівне оприскування без пропусків і перекриттів — і повний урожай. Саме так працює точне землеробство.'
+    : 'Пропуски при оприскуванні стали бур’янами, перекриття — опіком. Точне внесення окупається на збиранні.')
+    + (res1.leapUses ? ' BBLeap заощадив ' + fmt1(res1.saved) + ' л препарату.' : '');
   setTimeout(() => { if (mode === 's2end') { hide('top'); showOnly('final'); lastInput = performance.now(); } }, 900);
 }
 
@@ -903,7 +1149,7 @@ function drawTruckCab(c) {
 }
 function drawFuelTruck(tk) {
   g.save(); g.translate(tk.x, tk.y); g.rotate(tk.a);
-  g.fillStyle = 'rgba(0,0,0,.25)'; rrect(g, -40, -12, 96, 34, 8); g.fill();
+  g.fillStyle = 'rgba(0,0,0,.3)'; rrect(g, -38, -10, 96, 34, 8); g.fill();
   drawTruckCab(g);
   const gr = g.createLinearGradient(0, -14, 0, 14); gr.addColorStop(0, '#f2f2f2'); gr.addColorStop(.5, '#b9c0c6'); gr.addColorStop(1, '#8e969c');
   g.fillStyle = gr; rrect(g, -40, -14, 60, 28, 13); g.fill();
@@ -921,7 +1167,7 @@ function tire(c, x, y, w, h) {
 }
 function drawGrainTruck(tk) {             // трактор John Deere з бункером-перевантажувачем
   g.save(); g.translate(tk.x, tk.y); g.rotate(tk.a);
-  g.fillStyle = 'rgba(0,0,0,.25)'; rrect(g, -32, -16, 168, 44, 10); g.fill();
+  g.fillStyle = 'rgba(0,0,0,.3)'; rrect(g, -30, -12, 168, 44, 10); g.fill();
   g.strokeStyle = '#222'; g.lineWidth = 4; g.beginPath(); g.moveTo(32, 0); g.lineTo(62, 0); g.stroke();
   // бункер-перевантажувач
   tire(g, -14, -27, 26, 9); tire(g, -14, 18, 26, 9);
@@ -948,18 +1194,23 @@ function drawGrainTruck(tk) {             // трактор John Deere з бун
 }
 function drawCombine() {                 // комбайн John Deere серії S
   const { x, y, a } = cmb;
-  g.save(); g.translate(x + 10, y + 14); g.rotate(a); g.fillStyle = 'rgba(0,0,0,.28)';
+  g.save(); g.translate(x + 12, y + 16); g.rotate(a); g.fillStyle = 'rgba(0,0,0,.32)';
   rrect(g, -48, -36, 86, 72, 10); g.fill(); g.fillRect(40, -64, 22, 128); g.restore();
   g.save(); g.translate(x, y); g.rotate(a);
   tire(g, 4, -45, 32, 14); tire(g, 4, 31, 32, 14);                // ведучі колеса
   tire(g, -44, -37, 22, 10); tire(g, -44, 27, 22, 10);            // керовані колеса
   g.fillStyle = JD_Y; g.fillRect(14, -33, 12, 2); g.fillRect(14, 31, 12, 2);
-  g.fillStyle = JD_G; rrect(g, -48, -30, 84, 60, 8); g.fill();     // корпус
+  const bgr = g.createLinearGradient(0, -30, 0, 30); bgr.addColorStop(0, '#4a9a3a'); bgr.addColorStop(.5, JD_G); bgr.addColorStop(1, '#2a6420');
+  g.fillStyle = bgr; rrect(g, -48, -30, 84, 60, 8); g.fill();     // корпус із об'ємом
+  g.fillStyle = 'rgba(255,255,255,.14)'; rrect(g, -44, -28, 76, 6, 3); g.fill();   // блік
   g.fillStyle = JD_D; g.fillRect(-48, -30, 84, 4); g.fillRect(-48, 26, 84, 4);
   g.fillStyle = JD_Y; g.fillRect(-42, -25, 70, 2.5); g.fillRect(-42, 22.5, 70, 2.5);
   g.fillStyle = '#1e1e1e'; g.fillRect(-48, -16, 6, 32);           // решітка двигуна
   g.fillStyle = '#28331f'; rrect(g, -38, -20, 42, 40, 4); g.fill(); // бункер
-  if (cmb.bunk > 0) { g.fillStyle = '#e9bd45'; const w = 42 * cmb.bunk; rrect(g, -38, -20, w, 40, 4); g.fill(); }
+  if (cmb.bunk > 0) {
+    g.fillStyle = '#e9bd45'; const w = 42 * cmb.bunk; rrect(g, -38, -20, w, 40, 4); g.fill();
+    g.fillStyle = 'rgba(255,240,170,.5)'; for (let k = 0; k < 8; k++) g.fillRect(-36 + (k * 11.3) % Math.max(4, w - 4), -18 + (k * 7) % 36, 3, 2);   // зерно
+  }
   g.strokeStyle = JD_D; g.lineWidth = 3; rrect(g, -38, -20, 42, 40, 4); g.stroke();
   if (!cmb.unloading) {                                              // складений шнек уздовж лівого борту
     g.fillStyle = JD_G; rrect(g, -46, -38, 76, 7, 3); g.fill();
@@ -969,13 +1220,18 @@ function drawCombine() {                 // комбайн John Deere серії
   g.fillStyle = JD_G; g.fillRect(34, -9, 9, 18);                    // похила камера
   g.fillStyle = JD_D; rrect(g, 6, -18, 30, 36, 5); g.fill();        // кабіна
   g.fillStyle = JD_G; rrect(g, 8, -16, 26, 32, 4); g.fill();
-  g.fillStyle = GLASS; rrect(g, 30, -14, 5, 28, 2); g.fill();
+  const gl = g.createLinearGradient(30, -14, 35, 14); gl.addColorStop(0, '#bfe0ee'); gl.addColorStop(1, '#6f97ad');
+  g.fillStyle = gl; rrect(g, 28, -14, 7, 28, 2); g.fill();
+  g.fillStyle = 'rgba(255,255,255,.4)'; g.fillRect(29, -12, 2, 10);
   g.fillStyle = JD_Y; g.beginPath(); g.arc(18, 0, 5.5, 0, TAU); g.fill();   // приймач StarFire
   g.fillStyle = JD_D; g.beginPath(); g.arc(18, 0, 2, 0, TAU); g.fill();
   const blink = Math.sin(t * 8) > 0 ? '#ffb000' : '#a85f00';         // проблискові маячки
   g.fillStyle = blink; g.beginPath(); g.arc(10, -14, 2.8, 0, TAU); g.arc(10, 14, 2.8, 0, TAU); g.fill();
-  g.fillStyle = '#1d1d1d'; rrect(g, 42, -60, 16, 120, 3); g.fill();  // жатка
-  g.fillStyle = '#7a7a7a'; g.fillRect(56, -60, 3, 120);              // ріжучий апарат
+  const hg = g.createLinearGradient(42, 0, 58, 0); hg.addColorStop(0, '#2a2a2a'); hg.addColorStop(1, '#111');
+  g.fillStyle = hg; rrect(g, 42, -60, 16, 120, 3); g.fill();         // жатка
+  g.fillStyle = '#c8ccd0'; g.fillRect(56, -60, 3, 120);              // ріжучий апарат
+  g.fillStyle = '#6a6e72'; for (let s = -58; s < 58; s += 6) g.fillRect(56, s, 3, 2);   // сегменти ножа
+  g.fillStyle = JD_Y; g.fillRect(42, -60, 16, 3); g.fillRect(42, 57, 16, 3);          // жовті кінці жатки
   g.strokeStyle = '#4a4a4a'; g.lineWidth = 2.5;                      // мотовило
   const off = (cmb.reel * (cmb.v > 5 ? 90 : 0)) % 10;
   for (let s = -58 + off; s < 58; s += 10) { g.beginPath(); g.moveTo(45, s); g.lineTo(55, s + 4); g.stroke(); }
@@ -1018,6 +1274,19 @@ function drawPointer(target, label) {
   g.restore();
 }
 function draw2() {
+  if (mode === 's2intro') {                        // зелене поле після оприскування поступово дозріває
+    const k = clamp((introT - .7) / 2.1, 0, 1), e = k * k * (3 - 2 * k);
+    g.drawImage(bg, 0, 0, W, H);
+    if (covLayer) g.drawImage(covLayer, 0, 0, W, H);
+    g.globalAlpha = e; g.drawImage(field2, 0, 0, W, H); g.globalAlpha = 1;
+    const msg = introT < 1.9 ? 'Минуло 2 місяці…' : 'Пшениця дозріла — бачите свої пропуски?';
+    g.font = 'bold 34px Arial, Helvetica, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+    const tw = g.measureText(msg).width + 60, cy = (R.y0 + R.y1) / 2;
+    g.globalAlpha = Math.min(1, introT * 3, (INTRO - introT) * 3);
+    g.fillStyle = 'rgba(0,0,0,.78)'; rrect(g, W / 2 - tw / 2, cy - 36, tw, 72, 36); g.fill();
+    g.fillStyle = '#fff'; g.fillText(msg, W / 2, cy + 1); g.globalAlpha = 1;
+    return;
+  }
   g.drawImage(field2, 0, 0, W, H);
   drawFuelTruck(fuelTruck); drawGrainTruck(grainTruck);
   if (cmb.fuel < .25 && !cmb.refuel) drawPointer(fuelTruck);
@@ -1068,13 +1337,109 @@ function submitName(e) {
   poke();
   const name = $('#pname').value.replace(/\s+/g, ' ').trim().slice(0, 18);
   if (!name || !pending) { $('#pname').focus(); return; }
+  const phone = normPhone($('#pphone').value);
+  if (phone === null) { $('#phoneErr').hidden = false; $('#pphone').focus(); return; }
+  $('#phoneErr').hidden = true;
   pending.name = name;
   const board = loadBoard(); board.push({ id: pending.id, name, score: pending.score, lv: pending.lv, ts: pending.ts });
   saveBoard(sortBoard(board));
+  if (phone) {                                   // телефон — лише в службовий список, не в публічний рейтинг
+    const d = new Date(), leads = loadLeads();
+    leads.push({ id: pending.id, date: today(), time: String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'), name, phone, score: pending.score, lv: pending.lv, sent: false });
+    saveLeads(leads); syncLeads();
+  }
   const place = renderFinalBoard(false);
-  $('#pname').blur(); $('#nameForm').hidden = true;
-  $('#added').textContent = name + ', ви на ' + place + '-му місці рейтингу дня!'; $('#added').hidden = false;
+  $('#pname').blur(); $('#pphone').blur(); $('#nameForm').hidden = true;
+  $('#added').textContent = name + ', ви на ' + place + '-му місці рейтингу дня!'
+    + (phone ? ' Підійдіть до консультанта Агросем — на вас чекає подарунок.' : '');
+  $('#added').hidden = false;
   sfx('done');
+}
+// +380XXXXXXXXX; '' — якщо поле порожнє; null — якщо номер некоректний
+function normPhone(v) {
+  const dg = String(v || '').replace(/\D/g, '');
+  if (!dg) return '';
+  if (dg.length === 9) return '+380' + dg;
+  if (dg.length === 10 && dg[0] === '0') return '+38' + dg;
+  if (dg.length === 12 && dg.startsWith('380')) return '+' + dg;
+  return null;
+}
+/* ---------- Google Таблиця: кожен контакт дублюється туди, коли є інтернет ---------- */
+// адреса веб-застосунку Apps Script (див. google-sheets/Code.gs та інструкцію); порожньо — відправка вимкнена
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbxdae1CRLvK7HgKGvGkoqZWa9OJwdVnCgc0LKe7Z1GNCWdpaSZThOo8gPIyk3Da-z-TBw/exec';
+const SHEET_TOKEN = 'agrosem-game-2026';
+let syncing = false;
+async function syncLeads() {
+  if (!SHEET_URL || syncing || (navigator.onLine === false)) return;
+  syncing = true;
+  try {
+    const leads = loadLeads();
+    for (const l of leads) {
+      if (l.sent) continue;
+      if (!l.id) l.id = l.date + '-' + l.time + '-' + l.phone;
+      await fetch(SHEET_URL, {
+        method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ token: SHEET_TOKEN, id: l.id, date: l.date, time: l.time, name: l.name, phone: l.phone, score: l.score, level: (LEVELS[l.lv] || {}).name || '' })
+      });
+      l.sent = true; saveLeads(leads);
+    }
+  } catch (e) { /* немає мережі — спробуємо пізніше */ }
+  syncing = false;
+}
+addEventListener('online', syncLeads);
+setInterval(syncLeads, 60000);
+setTimeout(syncLeads, 3000);
+let memLeads = [];
+function loadLeads() { try { const v = JSON.parse(localStorage.getItem('agrosem-leads') || '[]'); if (Array.isArray(v)) return v; } catch (e) {} return memLeads.slice(); }
+function saveLeads(l) { memLeads = l.slice(); try { localStorage.setItem('agrosem-leads', JSON.stringify(l)); } catch (e) {} }
+
+/* ---------- службова панель (утримувати логотип на старті 3 с) ---------- */
+function openStaff() {
+  mode = 'attract'; showOnly('staff'); lastInput = performance.now();
+  const body = $('#leadsBody'), leads = loadLeads();
+  body.textContent = '';
+  if (!leads.length) { const tr = document.createElement('tr'), td = document.createElement('td'); td.colSpan = 6; td.className = 'empty'; td.textContent = 'Поки що ніхто не залишив телефон.'; tr.appendChild(td); body.appendChild(tr); }
+  leads.slice().reverse().forEach(l => {
+    const tr = document.createElement('tr');
+    [l.date, l.time, l.name, l.phone, l.score, !SHEET_URL ? '—' : l.sent ? 'надіслано' : 'у черзі'].forEach(v => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+    body.appendChild(tr);
+  });
+  const queued = leads.filter(l => !l.sent).length;
+  $('#staffMsg').textContent = 'Контактів: ' + leads.length + '. Гравців у рейтингу сьогодні: ' + loadBoard().length + '. '
+    + (!SHEET_URL ? 'Google Таблицю не підключено.' : queued ? 'Чекають відправки в Google Таблицю: ' + queued + ' (потрібен інтернет).' : 'Усі контакти вже в Google Таблиці.');
+  syncLeads();
+  disarm();
+}
+function leadsText(sep) {
+  const q = v => sep === ';' ? '"' + String(v).replace(/"/g, '""') + '"' : String(v);
+  return [['Дата', 'Час', "Ім'я", 'Телефон', 'Бали', 'Рівень']].concat(loadLeads().map(l => [l.date, l.time, l.name, l.phone, l.score, (LEVELS[l.lv] || {}).name || '']))
+    .map(r => r.map(q).join(sep)).join('\r\n');
+}
+function copyLeads() {
+  const txt = leadsText('\t');
+  const done = () => { $('#staffMsg').textContent = 'Скопійовано — вставте в Excel, Google Таблицю чи месенджер.'; };
+  const fallback = () => {
+    const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta);
+    ta.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} ta.remove();
+    if (ok) done(); else $('#staffMsg').textContent = 'Не вдалося скопіювати — скористайтеся «Завантажити CSV».';
+  };
+  try { navigator.clipboard.writeText(txt).then(done, fallback); } catch (e) { fallback(); }
+}
+function downloadLeads() {
+  try {
+    const blob = new Blob(['﻿' + leadsText(';')], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'agrosem-kontakty-' + today() + '.csv';
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    $('#staffMsg').textContent = 'Файл збережено в «Завантаження».';
+  } catch (e) { $('#staffMsg').textContent = 'Не вдалося зберегти файл — скористайтеся «Копіювати список».'; }
+}
+// дві натиски для небезпечних дій
+let armed = null, armTimer = 0;
+function disarm() { if (armed) { armed.btn.textContent = armed.label; armed = null; } clearTimeout(armTimer); }
+function confirmTap(btn, action) {
+  if (armed && armed.btn === btn) { disarm(); action(); return; }
+  disarm(); armed = { btn, label: btn.textContent }; btn.textContent = 'Натисніть ще раз для підтвердження';
+  armTimer = setTimeout(disarm, 4000);
 }
 function skipName() {
   poke(); $('#pname').blur(); $('#nameForm').hidden = true;
@@ -1105,9 +1470,10 @@ function update(dt) {
   for (const p of parts) { p.age += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vx *= .94; p.vy *= .94; }
   parts = parts.filter(p => p.age < p.life);
 
+  $('#bBack').hidden = !$('#start').hidden;
   const idle = (performance.now() - lastInput) / 1000;
   if ((mode === 's1play' || mode === 's2play') && idle > IDLE_PLAY) goHome();
-  else if (!$('#final').hidden && idle > (document.activeElement === $('#pname') ? 60 : 30)) goHome();
+  else if (!$('#final').hidden && idle > (document.activeElement && document.activeElement.tagName === 'INPUT' ? 60 : 30)) goHome();
   else if (mode !== 'attract' && idle > IDLE_SCREEN && SCREENS.some(id => id !== 'start' && !$('#' + id).hidden)) goHome();
   hud();
 }
@@ -1116,10 +1482,14 @@ function hud() {
   let key = '';
   if (mode.startsWith('s1')) {
     const left = Math.max(0, Math.ceil(PLAY1 - playT));
-    const p = s1.good + s1.wrong + s1.waste ? precision() + '%' : '—';
-    key = [left, s1.treated, s1.lost, p].join('|');
+    const cov = Math.round(s1.covered / totalCells * 100), ovl = Math.round(s1.overlap / totalCells * 100);
+    const litres = Math.round(s1.units * LPC());
+    key = [left, cov, ovl, litres].join('|');
     if (key === hudCache) return; hudCache = key;
-    setTimer(left, mode === 's1play'); setVals([s1.treated, s1.lost, p]);
+    setTimer(left, mode === 's1play'); setVals([cov + '%', ovl + '%', litres + ' л']);
+    $('#vCov').textContent = cov + '%'; $('#fCov').style.width = cov + '%';
+    $('#vTank').textContent = litres + ' / ' + NORM_L + ' л'; $('#fTank').style.width = Math.min(100, litres / NORM_L * 100) + '%';
+    $('#gTank').classList.toggle('over', litres > NORM_L);
   } else if (mode.startsWith('s2')) {
     const left = Math.max(0, Math.ceil(PLAY2 - play2));
     const fuel = Math.round(cmb.fuel * 100), bunk = Math.round(cmb.bunk * 100);
@@ -1137,8 +1507,9 @@ function hud() {
     else if (cmb.fuel <= 0) { msg = 'Пальне скінчилося! Повільно їдьте до паливозаправника.'; warn = true; }
     else if (cmb.fuel < .25) { msg = 'Мало пального — до паливозаправника (внизу ліворуч).'; warn = true; }
     else if (cmb.bunk >= 1) { msg = 'Бункер повний — під’їдьте до трактора з перевантажувачем.'; warn = true; }
-    else if (terrainAt(cmb.x, cmb.y) === 1) msg = 'Вилягання пшениці — комбайн іде повільніше.';
-    else if (terrainAt(cmb.x, cmb.y) === 2) msg = 'Мокра низина — обережно, повільно.';
+    else if (terrainAt(cmb.x, cmb.y) === 2) { msg = 'Густі бур’яни забивають молотарку — комбайн іде повільно.'; warn = true; }
+    else if (terrainAt(cmb.x, cmb.y) === 1) msg = 'Пропуск при оприскуванні — бур’яни, урожай нижчий.';
+    else if (terrainAt(cmb.x, cmb.y) === 3) msg = 'Опік від подвійної дози — рослини слабкі, урожай нижчий.';
     h.textContent = msg; h.classList.toggle('warn', warn);
   }
 }
@@ -1177,17 +1548,16 @@ function toast(s, ms) {
   const el = $('#toast'); el.textContent = s; el.style.opacity = 1;
   clearTimeout(toastTimer); toastTimer = setTimeout(() => el.style.opacity = 0, ms);
 }
-function setProd(p) { prod = p; document.querySelectorAll('.pbtn').forEach(b => b.classList.toggle('sel', b.dataset.p === p)); }
 function poke() { lastInput = performance.now(); }
 function goHome() {
-  mode = 'attract'; hold = false; spots = []; drops = []; floaters = []; parts = [];
+  mode = 'attract'; hold = false; floaters = []; parts = [];
   hide('top'); hide('tools'); hide('gauges'); showOnly('start');
   pending = null; try { $('#pname').blur(); } catch (e) {}
   renderStartBoard();
 }
 
 function setTarget(e) {
-  if (mode.startsWith('s1')) { const a = PA(); drone.tx = clamp(e.clientX, a.x0 - 20, a.x1 + 20); drone.ty = clamp(e.clientY, TOP + 20, H - BOT - 10); }
+  if (mode.startsWith('s1')) { drone.tx = clamp(e.clientX, R.x0 - 40, R.x1 + 40); drone.ty = clamp(e.clientY, R.y0 - 40, R.y1 + 40); }
   else if (mode === 's2play') { cmb.tx = clamp(e.clientX, R.x0 - 40, R.x1 + 40); cmb.ty = clamp(e.clientY, R.y0 - 40, R.y1 + 40); }
 }
 cv.addEventListener('pointerdown', e => {
@@ -1199,8 +1569,11 @@ cv.addEventListener('pointermove', e => { if (!hold) return; poke(); setTarget(e
 const release = () => { hold = false; };
 cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', release);
 
-document.querySelectorAll('.pbtn').forEach(b => b.addEventListener('pointerdown', e => { e.preventDefault(); poke(); setProd(b.dataset.p); }));
-addEventListener('keydown', e => { poke(); const m = { '1': 'herb', '2': 'ins', '3': 'fung' }[e.key]; if (m) setProd(m); });
+addEventListener('keydown', e => {
+  poke(); if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
+  if (e.key === ' ') { e.preventDefault(); leapActivate(); }
+});
+$('#leapBtn').addEventListener('pointerdown', e => { e.preventDefault(); poke(); leapActivate(); });
 
 let wake = null;
 async function keepAwake() { try { if (navigator.wakeLock && !wake) { wake = await navigator.wakeLock.request('screen'); wake.addEventListener('release', () => wake = null); } } catch (e) {} }
@@ -1216,10 +1589,17 @@ document.querySelectorAll('.lvl').forEach(b => b.addEventListener('click', () =>
 $('#nameForm').addEventListener('submit', submitName);
 $('#bSkip').addEventListener('click', skipName);
 $('#pname').addEventListener('input', poke);
+$('#pphone').addEventListener('input', () => { poke(); $('#phoneErr').hidden = true; });
+$('#pname').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#pphone').focus(); } });
 // службове скидання рейтингу: утримувати логотип на стартовому екрані 3 секунди
 let resetTimer = 0;
 const startLogo = $('#start .logo');
-startLogo.addEventListener('pointerdown', () => { clearTimeout(resetTimer); resetTimer = setTimeout(resetBoard, 3000); });
+startLogo.addEventListener('pointerdown', () => { clearTimeout(resetTimer); resetTimer = setTimeout(openStaff, 3000); });
+$('#bCopy').addEventListener('click', () => { poke(); copyLeads(); });
+$('#bCsv').addEventListener('click', () => { poke(); downloadLeads(); });
+$('#bResetBoard').addEventListener('click', e => { poke(); confirmTap(e.currentTarget, () => { resetBoard(); openStaff(); $('#staffMsg').textContent = 'Рейтинг дня очищено.'; }); });
+$('#bDelLeads').addEventListener('click', e => { poke(); confirmTap(e.currentTarget, () => { saveLeads([]); try { localStorage.removeItem('agrosem-leads'); } catch (err) {} openStaff(); $('#staffMsg').textContent = 'Усі контакти видалено.'; }); });
+$('#bStaffClose').addEventListener('click', () => { poke(); disarm(); goHome(); });
 ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev => startLogo.addEventListener(ev, () => clearTimeout(resetTimer)));
 setLevel(level);
 $('#bNext').addEventListener('click', () => { poke(); hide('top'); showOnly('brief2'); });
@@ -1231,7 +1611,14 @@ $('#snd').addEventListener('click', () => {
   if (master) master.gain.setTargetAtTime(muted ? 0 : .55, ac.currentTime, .15);
 });
 addEventListener('pointerdown', poke, true);
-addEventListener('resize', () => { resize(); if (mode.startsWith('s2')) goHome(); });
+let lastW = innerWidth;
+addEventListener('resize', () => {
+  const typing = document.activeElement && document.activeElement.tagName === 'INPUT';
+  if (typing) { poke(); return; }                 // екранна клавіатура змінює висоту — не скидати гру
+  const wChanged = innerWidth !== lastW; lastW = innerWidth;
+  resize(); if (mode.startsWith('s2') && wChanged) goHome();
+});
+$('#bBack').addEventListener('click', () => { poke(); goHome(); });
 addEventListener('contextmenu', e => e.preventDefault());
 
 // службовий хук для автотестів: прокрутити n кадрів без анімації
@@ -1239,7 +1626,7 @@ window.agrosemStep = (n = 1, dt = 1 / 60) => {
   for (let i = 0; i < n; i++) update(dt); draw();
   return { mode, s1, cmb: { x: Math.round(cmb.x), y: Math.round(cmb.y), fuel: +cmb.fuel.toFixed(2), bunk: +cmb.bunk.toFixed(2) }, cut: cutCells, total: totalCells, poleHits,
     fuelTruck, grainTruck: grainTruck && { x: Math.round(grainTruck.x), y: grainTruck.y, tx: Math.round(grainTruck.tx) }, R,
-    spots: spots.filter(s => s.state === 'active').map(s => ({ x: Math.round(s.x), y: Math.round(s.y), type: s.type })) };
+    leap: { ready: leap.ready, left: leap.left, uses: leap.uses, charge: Math.round(leap.charge), need: leap.need }, res1 };
 };
 
 resize(); goHome(); requestAnimationFrame(frame);

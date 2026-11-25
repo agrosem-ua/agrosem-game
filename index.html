@@ -87,9 +87,10 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 .steps{margin:0;padding-left:26px;display:flex;flex-direction:column;gap:6px;font-size:20px;line-height:1.3;color:#e6e2dd}
 .steps b{color:var(--white)}
 .cmp{display:flex;flex-direction:column;gap:10px;background:#1f0d17;border:1px solid rgba(230,0,126,.45);border-radius:14px;padding:14px 18px}
-.cmprow{display:grid;grid-template-columns:140px 1fr 90px;gap:14px;align-items:center;font-size:18px}
+.cmprow{display:grid;grid-template-columns:150px 1fr 90px;gap:14px;align-items:center;font-size:18px}
 .cmprow .bbl-logo{height:20px}
 .cmprow b{text-align:right;font-variant-numeric:tabular-nums;font-size:22px}
+.cmpnote{font-size:17px;line-height:1.35;color:#ffd0e6;padding-top:2px}.cmpnote b{color:#fff}
 .cmpbar{height:18px;background:#2a2a2a;border-radius:9px;overflow:hidden}
 .cmpbar i{display:block;height:100%;border-radius:9px;width:0}
 @media (prefers-reduced-motion:reduce){.pbtn.leap.ready{animation:none}}
@@ -328,7 +329,9 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
       </div>
       <div id="r1Cmp" class="cmp">
         <div class="cmprow"><span>Без BBLeap</span><div class="cmpbar"><i id="cmpA" style="background:#8c8c8c"></i></div><b id="cmpAv">0 л</b></div>
+        <div class="cmprow"><span>Ваш результат</span><div class="cmpbar"><i id="cmpY" style="background:#e8b84a"></i></div><b id="cmpYv">0 л</b></div>
         <div class="cmprow"><span class="bbl-logo" role="img" aria-label="З BBLeap"></span><div class="cmpbar"><i id="cmpB" style="background:var(--leap)"></i></div><b id="cmpBv">0 л</b></div>
+        <div id="cmpNote" class="cmpnote"></div>
       </div>
       <p id="r1Msg"></p>
       <div class="row"><button id="bNext" class="btn-red" type="button">Далі: збирання врожаю</button></div>
@@ -371,10 +374,10 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
         <label for="pname">Впишіть ім'я в рейтинг дня</label>
         <div class="formgrid">
           <input id="pname" name="pname" type="text" maxlength="18" enterkeyhint="next" placeholder="Ваше ім'я" autocomplete="off" autocapitalize="words" spellcheck="false">
-          <input id="pphone" name="pphone" type="tel" inputmode="tel" maxlength="19" enterkeyhint="done" placeholder="Телефон (за бажанням)" autocomplete="off">
+          <input id="pphone" name="pphone" type="tel" inputmode="tel" maxlength="17" value="+380" enterkeyhint="done" placeholder="+380 XX XXX XX XX" autocomplete="off">
         </div>
         <div class="gift">Залиште телефон — і отримайте подарунок від Агросем на стенді. Номер бачать лише наші консультанти.</div>
-        <div id="phoneErr" class="err" hidden>Перевірте номер: формат +380 XX XXX XX XX</div>
+        <div id="phoneErr" class="err" hidden>Введіть ще 9 цифр номера: +380 XX XXX XX XX (або залиште лише +380)</div>
         <div class="row nowrap">
           <button class="btn-red sm" type="submit">Додати</button>
           <button id="bSkip" class="btn-ghost sm" type="button">Пропустити</button>
@@ -445,9 +448,9 @@ const SCREENS = ['start', 'brief1', 'result1', 'brief2', 'final', 'staff'];
 // рівні складності: інтервал появи вогнищ (початок→кінець), час життя вогнища, макс. одночасно,
 // скільки крапель треба на вогнище (× радіус), запас пального і місткість бункера для комбайна
 const LEVELS = {
-  easy:   { name: 'Легкий',   mult: 1,    swath: 33, hot: 3, ponds: 1, hives: 1, dur: 58, ovl: [.2, .9], fuel: 9500, bunker: 540 },
-  medium: { name: 'Середній', mult: 1.15, swath: 28, hot: 4, ponds: 2, hives: 1, dur: 52, ovl: [.3, 1.3], fuel: 7600, bunker: 480 },
-  hard:   { name: 'Важкий',   mult: 1.3,  swath: 24, hot: 5, ponds: 2, hives: 2, dur: 46, ovl: [.4, 1.7], fuel: 6200, bunker: 430 }
+  easy:   { name: 'Легкий',   mult: 1,    swath: 33, hot: 3, ponds: 1, hives: 1, dur: 58, ovl: [.6, 1.6], fuel: 9500, bunker: 540 },
+  medium: { name: 'Середній', mult: 1.15, swath: 28, hot: 4, ponds: 2, hives: 1, dur: 52, ovl: [.8, 2.0], fuel: 7600, bunker: 480 },
+  hard:   { name: 'Важкий',   mult: 1.3,  swath: 24, hot: 5, ponds: 2, hives: 2, dur: 46, ovl: [1.0, 2.4], fuel: 6200, bunker: 430 }
 };
 let level = 'medium';
 try { const saved = localStorage.getItem('agrosem-level'); if (LEVELS[saved]) level = saved; } catch (e) {}
@@ -723,7 +726,7 @@ function sprayCell(i, auto) {
   if (!fresh) return;
   if (zone[i]) {
     if (auto) { s1.saved++; return; }               // BBLeap вимикає форсунку над водоймою й пасікою
-    s1.viol++; recentViol++; paintViolation(i); leapGain(-1.2);
+    s1.viol++; recentViol++; s1.units++; s1.waste++; paintViolation(i); leapGain(-1.2);
     return;
   }
   if (auto && dose[i] >= 1) { s1.saved++; return; } // BBLeap вимикає форсунку над обробленим
@@ -852,17 +855,23 @@ function endStage1() {
   $('#r1Treat').textContent = cov + '%'; $('#r1Lost').textContent = hotP + '%';
   $('#r1Prec').textContent = ovl + '%'; $('#r1Crop').textContent = litres + ' л';
   const without = litres + Math.round(saved);       // скільки пішло б без автовимкнення форсунок
-  $('#r1Cmp').hidden = !leap.uses;
-  $('#cmpAv').textContent = without + ' л'; $('#cmpBv').textContent = litres + ' л';
-  $('#cmpA').style.width = '100%'; $('#cmpB').style.width = (without ? litres / without * 100 : 100) + '%';
+  const ideal = Math.round(treatN * LPC());         // BBLeap на всьому полі: без перекриттів, пропусків і порушень
+  const over = Math.max(0, litres - ideal), overP = ideal ? Math.round(over / ideal * 100) : 0;
+  const mx = Math.max(without, litres, ideal, 1);
+  $('#r1Cmp').hidden = false;
+  $('#cmpAv').textContent = without + ' л'; $('#cmpYv').textContent = litres + ' л'; $('#cmpBv').textContent = ideal + ' л';
+  $('#cmpA').style.width = without / mx * 100 + '%'; $('#cmpY').style.width = litres / mx * 100 + '%'; $('#cmpB').style.width = ideal / mx * 100 + '%';
+  const wasteL = Math.round(s1.waste * LPC());
+  $('#cmpNote').innerHTML = (over > 0
+      ? 'Перевитрата: <b>' + over + ' л (+' + overP + '%)</b> — перекриття' + (wasteL ? ', препарат повз поле та в охоронних зонах' : '') + '. З BBLeap на всьому полі — <b>0 перекриттів, 0 порушень</b>. На 1000 га це <b>≈ ' + Math.round(over / FIELD_HA * 1000) + ' л</b> препарату.'
+      : 'Ідеальна точність: витрата без перекриттів і порушень, як із BBLeap.');
   $('#r1Msg').textContent = (leap.uses ? 'BBLeap вмикався ' + leap.uses + ' раз(и) і заощадив ' + fmt1(saved) + ' л препарату. '
       : 'BBLeap так і не зарядився — обробляйте нову площу без перекриттів і порушень. ')
     + (viol > 0 ? 'Обприскали охоронну зону (водойма чи пасіка) — це порушення. ' : '')
     + (cov >= 95 ? 'Поле оброблене майже повністю — на збиранні буде чисто.'
       : cov >= 70 ? 'Пропуски дадуть бур’яни — побачите їх на збиранні.'
       : 'Більша частина поля лишилася без захисту — на збиранні її заглушать бур’яни.')
-    + (ovl >= 8 ? ' Перекриття дадуть опік рослин.' : '');
-  hide('tools');
+    + (ovl >= 8 ? ' Перекриття дадуть опік рослин.' : '');  hide('tools');
   setTimeout(() => { if (mode === 's1end') { showOnly('result1'); lastInput = performance.now(); } }, 900);
 }
 function update1(dt) {
@@ -1196,6 +1205,16 @@ function update2(dt) {
   cmb.y = clamp(cmb.y + sa * cmb.v * dt, R.y0 - 40, R.y1 + 40);
   cmb.fuel = Math.max(0, cmb.fuel - (cmb.v * dt / L().fuel) - dt * .002);
 
+  // водойми: комбайн не заїжджає в озеро
+  for (const e of zoneList) if (e.kind === 1) {
+    const ex = (cmb.x - e.x) / (e.rx + 46), ey = (cmb.y - e.y) / (e.ry + 46), q = ex * ex + ey * ey;
+    if (q < 1) {
+      const d = Math.sqrt(q) || .01;
+      cmb.x = e.x + ex / d * (e.rx + 46); cmb.y = e.y + ey / d * (e.ry + 46);
+      cmb.v *= .5;
+      if (!cmb.lakeMsg || play2 - cmb.lakeMsg > 2.5) { cmb.lakeMsg = play2; floatText(e.x, e.y - e.ry - 30, 'Озеро — об’їжджайте', '#bfe3ff'); }
+    }
+  }
   // опори ЛЕП
   const hx = cmb.x + ca * 50, hy = cmb.y + sa * 50, px = -sa, py = ca;
   for (const p of poles) {
@@ -1263,7 +1282,7 @@ function endStage2() {
   $('#fLvl').textContent = L().name.toLowerCase();
   $('#fScore').textContent = total;
   pending = { id: Date.now() + '-' + Math.random().toString(36).slice(2, 7), name: 'Ви', score: total, lv: level, ts: Date.now() };
-  $('#pname').value = ''; $('#pphone').value = ''; $('#phoneErr').hidden = true;
+  $('#pname').value = ''; $('#pphone').value = '+380'; $('#phoneErr').hidden = true;
   $('#nameForm').hidden = false; $('#added').hidden = true;
   renderFinalBoard(true);
   $('#fPrec').textContent = res1.cov + '%'; $('#fTreat').textContent = res1.ovl + '%';
@@ -1492,9 +1511,7 @@ function submitName(e) {
 // +380XXXXXXXXX; '' — якщо поле порожнє; null — якщо номер некоректний
 function normPhone(v) {
   const dg = String(v || '').replace(/\D/g, '');
-  if (!dg) return '';
-  if (dg.length === 9) return '+380' + dg;
-  if (dg.length === 10 && dg[0] === '0') return '+38' + dg;
+  if (!dg || dg === '380') return '';
   if (dg.length === 12 && dg.startsWith('380')) return '+' + dg;
   return null;
 }
@@ -1729,7 +1746,17 @@ const setTyping = on => $('#final').classList.toggle('typing', on);
   $(s).addEventListener('blur', () => setTimeout(() => { const a = document.activeElement; if (!a || (a.id !== 'pname' && a.id !== 'pphone')) setTyping(false); }, 120));
 });
 $('#pname').addEventListener('input', poke);
-$('#pphone').addEventListener('input', () => { poke(); $('#phoneErr').hidden = true; });
+$('#pphone').addEventListener('input', () => { poke(); $('#phoneErr').hidden = true; fmtPhone(); });
+$('#pphone').addEventListener('focus', () => { fmtPhone(); });
+function fmtPhone() {
+  const el = $('#pphone');
+  let d = el.value.replace(/\D/g, '');
+  if (d.length <= 3 && '380'.startsWith(d)) d = '';
+  else if (d.startsWith('380')) d = d.slice(3); else if (d.startsWith('80')) d = d.slice(2); else if (d.startsWith('0')) d = d.slice(1);
+  d = d.slice(0, 9);
+  const p = [d.slice(0, 2), d.slice(2, 5), d.slice(5, 7), d.slice(7, 9)].filter(Boolean);
+  el.value = '+380' + (p.length ? ' ' + p.join(' ') : '');
+}
 $('#pname').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('#pphone').focus(); } });
 // службове скидання рейтингу: утримувати логотип на стартовому екрані 3 секунди
 let resetTimer = 0;
@@ -1767,7 +1794,7 @@ window.agrosemStep = (n = 1, dt = 1 / 60) => {
   return { mode, s1, cmb: { x: Math.round(cmb.x), y: Math.round(cmb.y), fuel: +cmb.fuel.toFixed(2), bunk: +cmb.bunk.toFixed(2) }, cut: cutCells, total: totalCells, poleHits,
     fuelTruck, grainTruck: grainTruck && { x: Math.round(grainTruck.x), y: grainTruck.y, tx: Math.round(grainTruck.tx) }, R,
     leap: { ready: leap.ready, left: leap.left, uses: leap.uses, charge: Math.round(leap.charge), need: leap.need }, res1,
-    sec: secOn.slice(), pathS: Math.round(pathS), pathLen: Math.round(pathLen), lanes: lanesX.length, treatN, zoneCells, zones: zoneList.length };
+    sec: secOn.slice(), pathS: Math.round(pathS), pathLen: Math.round(pathLen), lanes: lanesX.length, treatN, zoneCells, zones: zoneList.length, zl: zoneList };
 };
 window.agrosemSec = (arr) => { arr.forEach((v, k) => { secOn[k] = !!v; }); secUI(true); };
 

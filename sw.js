@@ -1,5 +1,5 @@
 // Кеш гри для роботи без інтернету. Версія змінюється при кожній збірці.
-const CACHE = 'agrosem-game-20261125-171601';
+const CACHE = 'agrosem-game-20261125-223503';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {

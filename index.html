@@ -376,7 +376,7 @@ button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
           <input id="pname" name="pname" type="text" maxlength="18" enterkeyhint="next" placeholder="Ваше ім'я" autocomplete="off" autocapitalize="words" spellcheck="false">
           <input id="pphone" name="pphone" type="tel" inputmode="tel" maxlength="17" value="+380" enterkeyhint="done" placeholder="+380 XX XXX XX XX" autocomplete="off">
         </div>
-        <div class="gift">Залиште телефон — і отримайте подарунок від Агросем на стенді. Номер бачать лише наші консультанти.</div>
+        <div class="gift">Залиште телефон — ми з вами зв’яжемось для видачі призу за гру. Номер бачать лише наші консультанти.</div>
         <div id="phoneErr" class="err" hidden>Введіть ще 9 цифр номера: +380 XX XXX XX XX (або залиште лише +380)</div>
         <div class="row nowrap">
           <button class="btn-red sm" type="submit">Додати</button>
@@ -1503,7 +1503,7 @@ function submitName(e) {
   const place = renderFinalBoard(false);
   $('#pname').blur(); $('#pphone').blur(); $('#nameForm').hidden = true;
   $('#added').textContent = name + ', ви на ' + place + '-му місці рейтингу дня!'
-    + (phone ? ' Підійдіть до консультанта Агросем — на вас чекає подарунок.' : '');
+    + (phone ? ' Ми з вами зв’яжемось для видачі призу за гру.' : '');
   $('#added').hidden = false;
   sfx('done');
 }

@@ -740,6 +740,7 @@ function sprayStep(by0, by1, bx, auto) {
   const B = SW * NSEC, bx0 = bx - B / 2;
   const ya = Math.max(R.y0, Math.min(by0, by1)), yb = Math.min(R.y1 - .01, Math.max(by0, by1));
   if (yb <= ya) return;
+  s1.conv += (B / CELL) * ((yb - ya) / CELL);   // скільки пішло б при ввімкненій усій штанзі (для порівняння)
   const r0 = Math.floor((ya - R.y0) / CELL), r1 = Math.floor((yb - R.y0) / CELL);
   const c0 = Math.max(0, Math.floor((bx0 - R.x0) / CELL)), c1 = Math.min(cols - 1, Math.floor((bx0 + B - R.x0) / CELL));
   for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) {
@@ -831,7 +832,7 @@ function leapUI(force) {
 
 function beginStage1() {
   buildStage1(); buildPath();
-  s1 = { covered: 0, overlap: 0, units: 0, saved: 0, hotDone: 0, viol: 0, waste: 0, touched: false };
+  s1 = { conv: 0, covered: 0, overlap: 0, units: 0, saved: 0, hotDone: 0, viol: 0, waste: 0, touched: false };
   leapReset(); savePopAt = 0; savePopBase = 0;
   playT = 0; scanT = 0; hold = false; floaters = []; parts = []; recentOvl = 0; recentViol = 0;
   secOn = secOn.map(() => false); secUI(true);
@@ -854,17 +855,15 @@ function endStage1() {
   leap.left = 0; leap.ready = false; leapUI(true); secUI(true);
   $('#r1Treat').textContent = cov + '%'; $('#r1Lost').textContent = hotP + '%';
   $('#r1Prec').textContent = ovl + '%'; $('#r1Crop').textContent = litres + ' л';
-  const without = litres + Math.round(saved);       // скільки пішло б без автовимкнення форсунок
-  const ideal = Math.round(treatN * LPC());         // BBLeap на всьому полі: без перекриттів, пропусків і порушень
-  const over = Math.max(0, litres - ideal), overP = ideal ? Math.round(over / ideal * 100) : 0;
-  const mx = Math.max(without, litres, ideal, 1);
+  const ideal = Math.round(treatN * LPC());         // BBLeap на всьому полі: кожна форсунка окремо — без перекриттів, пропусків і порушень
+  const without = Math.max(Math.round(s1.conv * LPC()), litres, ideal);   // звичайний оприскувач: вся штанга вмикається на весь проїзд
+  const econ = without - ideal, econP = without ? Math.round(econ / without * 100) : 0;
+  const mine = Math.max(0, without - litres);       // скільки заощадили ви самі (секції + BBLeap)
+  const mx = Math.max(without, 1);
   $('#r1Cmp').hidden = false;
   $('#cmpAv').textContent = without + ' л'; $('#cmpYv').textContent = litres + ' л'; $('#cmpBv').textContent = ideal + ' л';
   $('#cmpA').style.width = without / mx * 100 + '%'; $('#cmpY').style.width = litres / mx * 100 + '%'; $('#cmpB').style.width = ideal / mx * 100 + '%';
-  const wasteL = Math.round(s1.waste * LPC());
-  $('#cmpNote').innerHTML = (over > 0
-      ? 'Перевитрата: <b>' + over + ' л (+' + overP + '%)</b> — перекриття' + (wasteL ? ', препарат повз поле та в охоронних зонах' : '') + '. З BBLeap на всьому полі — <b>0 перекриттів, 0 порушень</b>. На 1000 га це <b>≈ ' + Math.round(over / FIELD_HA * 1000) + ' л</b> препарату.'
-      : 'Ідеальна точність: витрата без перекриттів і порушень, як із BBLeap.');
+  $('#cmpNote').innerHTML = 'Економія з BBLeap на всьому полі: <b>' + econ + ' л (−' + econP + '%)</b> препарату — на 1000 га це <b>≈ ' + Math.round(econ / FIELD_HA * 1000) + ' л</b>. Ви заощадили <b>' + mine + ' л</b>.';
   $('#r1Msg').textContent = (leap.uses ? 'BBLeap вмикався ' + leap.uses + ' раз(и) і заощадив ' + fmt1(saved) + ' л препарату. '
       : 'BBLeap так і не зарядився — обробляйте нову площу без перекриттів і порушень. ')
     + (viol > 0 ? 'Обприскали охоронну зону (водойма чи пасіка) — це порушення. ' : '')
